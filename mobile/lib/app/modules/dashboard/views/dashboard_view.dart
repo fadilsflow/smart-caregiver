@@ -14,10 +14,7 @@ class DashboardView extends GetView<DashboardController> {
         backgroundColor: Colors.white.withValues(alpha: 0.80),
         elevation: 0,
         shape: const Border(
-          bottom: BorderSide(
-            color: Color(0xFFF5F5F4),
-            width: 1,
-          ),
+          bottom: BorderSide(color: Color(0xFFF5F5F4), width: 1),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -62,7 +59,7 @@ class DashboardView extends GetView<DashboardController> {
               const SizedBox(height: 32),
               // Header Profile Info
               const Text(
-                'Budi Santoso',
+                'Ibu Siti',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 32,
@@ -76,7 +73,7 @@ class DashboardView extends GetView<DashboardController> {
               Row(
                 children: [
                   const Text(
-                    '65 Years Old • Male',
+                    '55 Tahun • Female',
                     style: TextStyle(
                       color: Color(0xFF4C4546),
                       fontSize: 14,
@@ -149,7 +146,7 @@ class DashboardView extends GetView<DashboardController> {
                       blurRadius: 40,
                       offset: Offset(0, 20),
                       spreadRadius: 0,
-                    )
+                    ),
                   ],
                 ),
                 child: Column(
@@ -191,7 +188,9 @@ class DashboardView extends GetView<DashboardController> {
                             horizontalInterval: 25,
                             getDrawingHorizontalLine: (value) {
                               return FlLine(
-                                color: const Color(0xFFA8A29E).withValues(alpha: 0.3),
+                                color: const Color(
+                                  0xFFA8A29E,
+                                ).withValues(alpha: 0.3),
                                 strokeWidth: 1,
                                 dashArray: [5, 5],
                               );
@@ -199,9 +198,15 @@ class DashboardView extends GetView<DashboardController> {
                           ),
                           titlesData: FlTitlesData(
                             show: true,
-                            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                            leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                            rightTitles: const AxisTitles(
+                              sideTitles: SideTitles(showTitles: false),
+                            ),
+                            topTitles: const AxisTitles(
+                              sideTitles: SideTitles(showTitles: false),
+                            ),
+                            leftTitles: const AxisTitles(
+                              sideTitles: SideTitles(showTitles: false),
+                            ),
                             bottomTitles: AxisTitles(
                               sideTitles: SideTitles(
                                 showTitles: true,
@@ -216,16 +221,36 @@ class DashboardView extends GetView<DashboardController> {
                                   );
                                   Widget text;
                                   switch (value.toInt()) {
-                                    case 0: text = const Text('Mon', style: style); break;
-                                    case 1: text = const Text('Tue', style: style); break;
-                                    case 2: text = const Text('Wed', style: style); break;
-                                    case 3: text = const Text('Thu', style: style); break;
-                                    case 4: text = const Text('Fri', style: style); break;
-                                    case 5: text = const Text('Sat', style: style); break;
-                                    case 6: text = const Text('Sun', style: style); break;
-                                    default: text = const Text('', style: style); break;
+                                    case 0:
+                                      text = const Text('Mon', style: style);
+                                      break;
+                                    case 1:
+                                      text = const Text('Tue', style: style);
+                                      break;
+                                    case 2:
+                                      text = const Text('Wed', style: style);
+                                      break;
+                                    case 3:
+                                      text = const Text('Thu', style: style);
+                                      break;
+                                    case 4:
+                                      text = const Text('Fri', style: style);
+                                      break;
+                                    case 5:
+                                      text = const Text('Sat', style: style);
+                                      break;
+                                    case 6:
+                                      text = const Text('Sun', style: style);
+                                      break;
+                                    default:
+                                      text = const Text('', style: style);
+                                      break;
                                   }
-                                  return SideTitleWidget(meta: meta, space: 8, child: text);
+                                  return SideTitleWidget(
+                                    meta: meta,
+                                    space: 8,
+                                    child: text,
+                                  );
                                 },
                               ),
                             ),
@@ -258,7 +283,9 @@ class DashboardView extends GetView<DashboardController> {
                               dotData: const FlDotData(show: false),
                               belowBarData: BarAreaData(
                                 show: true,
-                                color: const Color(0xFFBBF246).withValues(alpha: 0.2),
+                                color: const Color(
+                                  0xFFBBF246,
+                                ).withValues(alpha: 0.2),
                               ),
                             ),
                           ],
@@ -300,7 +327,7 @@ class DashboardView extends GetView<DashboardController> {
                           blurRadius: 30,
                           offset: Offset(0, 10),
                           spreadRadius: 0,
-                        )
+                        ),
                       ],
                     ),
                     child: Column(
@@ -340,7 +367,9 @@ class DashboardView extends GetView<DashboardController> {
                                     decoration: ShapeDecoration(
                                       color: const Color(0xFF536250),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(9999),
+                                        borderRadius: BorderRadius.circular(
+                                          9999,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -432,7 +461,7 @@ class DashboardView extends GetView<DashboardController> {
               blurRadius: 25,
               offset: Offset(0, 10),
               spreadRadius: 0,
-            )
+            ),
           ],
         ),
         child: IconButton(
@@ -508,4 +537,3 @@ class DashboardView extends GetView<DashboardController> {
     );
   }
 }
-
