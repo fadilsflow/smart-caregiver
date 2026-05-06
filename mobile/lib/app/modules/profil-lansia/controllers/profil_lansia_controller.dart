@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
 
-class CalendarController extends GetxController {
-  //TODO: Implement CalendarController
+class ProfilLansiaController extends GetxController {
+  //TODO: Implement ProfilLansiaController
 
-  final currentIndex = 1.obs;
+  final currentIndex = 3.obs;
 
   void changePage(int index) {
     if (currentIndex.value == index) return;
@@ -35,9 +35,9 @@ class CalendarController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    if (currentIndex.value != 1) {
+    if (currentIndex.value != 3) {
       Future.delayed(const Duration(milliseconds: 10), () {
-        currentIndex.value = 1;
+        currentIndex.value = 3;
       });
     }
   }

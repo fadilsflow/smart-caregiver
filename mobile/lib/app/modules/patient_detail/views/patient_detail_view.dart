@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/patient_detail_controller.dart';
 
 class PatientDetailView extends GetView<PatientDetailController> {
@@ -9,297 +10,431 @@ class PatientDetailView extends GetView<PatientDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
+      backgroundColor: const Color(0xFFFDF8F8),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xE5FAFAFA),
         elevation: 0,
         scrolledUnderElevation: 0,
+        shape: const Border(
+          bottom: BorderSide(color: Color(0xFFF4F4F5), width: 1),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF1B1B1B)),
           onPressed: () => Get.back(),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Riwayat Kesehatan',
-              style: TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-                color: Color(0xFF1B1B1B),
-              ),
-            ),
-            Obx(() => Text(
-                  controller.patientName.value,
-                  style: const TextStyle(
-                    fontFamily: 'Plus Jakarta Sans',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF4C4546),
-                  ),
-                )),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.more_vert, color: Color(0xFF1B1B1B)),
-            onPressed: () {},
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: const Color(0xFFF5F5F4),
-            height: 1.0,
+        title: const Text(
+          'Riwayat Kesehatan',
+          style: TextStyle(
+            color: Color(0xFF18181B),
+            fontSize: 20,
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.60,
           ),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-              child: Text(
-                'Oktober 2023',
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.only(
+            top: 24,
+            left: 20,
+            right: 20,
+            bottom: 48,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header Texts
+              const Text(
+                'Riwayat Kesehatan',
                 style: TextStyle(
+                  color: Color(0xFF1C1B1C),
+                  fontSize: 24,
                   fontFamily: 'Plus Jakarta Sans',
-                  fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF4C4546), // on-surface-variant
+                  height: 1.33,
+                  letterSpacing: -0.24,
                 ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Obx(() {
-              return Column(
-                children: controller.records.map((record) {
-                  if (record['isInsight'] == true) {
-                    return _buildInsightCard(
-                      record['title'] as String,
-                      record['subtitle'] as String,
-                    );
-                  }
-                  return _buildRecordCard(
-                    status: record['status'] as String,
-                    date: record['date'] as String,
-                    measurements: record['measurements'] as String,
-                    notes: record['notes'] as String,
-                    color: Color(record['color'] as int),
-                    textColor: Color(record['textColor'] as int),
-                  );
-                }).toList(),
-              );
-            }),
-            const SizedBox(height: 24), // bottom padding
-          ],
-        ),
-      ),
-      bottomNavigationBar: _buildCustomBottomNavigationBar(),
-    );
-  }
+              const SizedBox(height: 4),
+              const Text(
+                'Riwayat kesehatan dan pemantauan tanda vital',
+                style: TextStyle(
+                  color: Color(0xFF47464B),
+                  fontSize: 16,
+                  fontFamily: 'Plus Jakarta Sans',
+                  fontWeight: FontWeight.w400,
+                  height: 1.50,
+                ),
+              ),
+              const SizedBox(height: 24),
 
-  Widget _buildCustomBottomNavigationBar() {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(color: Color(0xFFF5F5F4), width: 1),
+              // Timeline items
+              Obx(() {
+                return Column(
+                  children: controller.records.map((record) {
+                    // Menggunakan widget TimelineCard yang baru dibuat
+                    return TimelineCard(record: record);
+                  }).toList(),
+                );
+              }),
+            ],
+          ),
         ),
       ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildNavItem(
-                icon: Icons.home_outlined,
-                label: 'Home',
-                isActive: false,
-                onTap: () {
-                  // Navigate to home if needed
-                },
-              ),
-              _buildNavItem(
-                icon: Icons.favorite,
-                label: 'Health',
-                isActive: true,
-                onTap: () {},
-              ),
-              _buildNavItem(
-                icon: Icons.calendar_today_outlined,
-                label: 'Schedule',
-                isActive: false,
-                onTap: () {},
-              ),
-            ],
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          decoration: ShapeDecoration(
+            color: const Color(0xFF192126),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32),
+            ),
+          ),
+          child: Obx(
+            () => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildNavItem(0, Icons.home_filled, "Home"),
+                _buildNavItem(1, Icons.calendar_today_outlined, "Calendar"),
+                _buildNavItem(2, Icons.medical_services_outlined, "medical"),
+                _buildNavItem(3, Icons.person_outline, "Person"),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildNavItem({
-    required IconData icon,
-    required String label,
-    required bool isActive,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildNavItem(int index, IconData icon, String label) {
+    bool isSelected = controller.currentIndex.value == index;
     return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        decoration: isActive
-            ? BoxDecoration(
-                color: const Color(0xFFF5F5F5), // Light grey background
-                borderRadius: BorderRadius.circular(16),
-              )
-            : null,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+      onTap: () => controller.changePage(index),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: EdgeInsets.symmetric(
+          horizontal: isSelected ? 16 : 12,
+          vertical: 10,
+        ),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFBBF246) : Colors.transparent,
+          borderRadius: BorderRadius.circular(43),
+        ),
+        child: Row(
           children: [
             Icon(
               icon,
-              color: isActive ? const Color(0xFF1B1B1B) : const Color(0xFFA3A3A3),
+              color: isSelected ? const Color(0xFF192126) : Colors.white70,
               size: 24,
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
-                fontSize: 12,
-                fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-                color: isActive ? const Color(0xFF1B1B1B) : const Color(0xFFA3A3A3),
+            if (isSelected && label.isNotEmpty) ...[
+              const SizedBox(width: 4),
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Color(0xFF192126),
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Lato',
+                  fontSize: 13,
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildRecordCard({
-    required String status,
-    required String date,
-    required String measurements,
-    required String notes,
-    required Color color,
-    required Color textColor,
-  }) {
+// Memisahkan Card menjadi StatefulWidget agar memiliki state expand/collapse secara independen
+class TimelineCard extends StatefulWidget {
+  final Map<String, dynamic> record;
+
+  const TimelineCard({super.key, required this.record});
+
+  @override
+  State<TimelineCard> createState() => _TimelineCardState();
+}
+
+class _TimelineCardState extends State<TimelineCard> {
+  // State untuk melacak apakah kartu sedang dibuka atau ditutup
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final record = widget.record;
+    bool hasSymptoms =
+        record['symptoms'] != null && (record['symptoms'] as List).isNotEmpty;
+    bool hasNotes =
+        record['notes'] != null && record['notes'].toString().isNotEmpty;
+    bool isCritical = record['status'] == 'Perlu Perhatian';
+
+    // Opsional: Cek apakah ada detail tambahan untuk ditampilkan,
+    // jika tidak ada, Anda mungkin ingin menyembunyikan icon dropdown sama sekali.
+    bool hasDetails = hasSymptoms || hasNotes || isCritical;
+
     return Container(
+      width: double.infinity,
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
+      clipBehavior: Clip.antiAlias,
+      decoration: ShapeDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shadows: const [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
+            color: Color(0x0A18181B),
+            blurRadius: 16,
+            offset: Offset(0, 4),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  status,
-                  style: TextStyle(
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              width: 4,
+              color: isCritical
+                  ? const Color(0xFF192126)
+                  : const Color(0xFFC6C5CF),
+            ),
+          ),
+        ),
+        padding: const EdgeInsets.only(left: 16), // Spaced from the line
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Date & Status row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  record['date'],
+                  style: const TextStyle(
+                    color: Color(0xFF47464B),
+                    fontSize: 14,
                     fontFamily: 'Plus Jakarta Sans',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: textColor,
+                    fontWeight: FontWeight.w500,
+                    height: 1.43,
+                    letterSpacing: 0.14,
                   ),
                 ),
-              ),
-              Text(
-                date,
-                style: const TextStyle(
-                  fontFamily: 'Plus Jakarta Sans',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF4C4546),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                  decoration: ShapeDecoration(
+                    color: Color(record['color'] as int),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(9999),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      if (isCritical)
+                        const Icon(
+                          Icons.info,
+                          color: Color(0xFF192126),
+                          size: 16,
+                        ),
+                      if (!isCritical)
+                        const Icon(
+                          Icons.check_circle_outline,
+                          color: Color(0xFF5D7000),
+                          size: 14,
+                        ),
+                      const SizedBox(width: 4),
+                      Text(
+                        record['status'],
+                        style: TextStyle(
+                          color: Color(record['textColor'] as int),
+                          fontSize: 12,
+                          fontFamily: 'Plus Jakarta Sans',
+                          fontWeight: FontWeight.w600,
+                          height: 1.33,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Tensi, Suhu, and Dropdown Icon
+            InkWell(
+              onTap: () {
+                // Jika ada detail (symptoms/notes), toggle expand
+                if (hasDetails) {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Tensi ${record['tensi']} ',
+                              style: const TextStyle(
+                                color: Color(0xFF1C1B1C),
+                                fontSize: 18,
+                                fontFamily: 'Plus Jakarta Sans',
+                                fontWeight: FontWeight.w600,
+                                height: 1.56,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: '• ',
+                              style: TextStyle(
+                                color: Color(0xFF1C1B1C),
+                                fontSize: 18,
+                                fontFamily: 'Plus Jakarta Sans',
+                                fontWeight: FontWeight.w700,
+                                height: 1.56,
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'Suhu ${record['suhu']}',
+                              style: const TextStyle(
+                                color: Color(0xFF1C1B1C),
+                                fontSize: 18,
+                                fontFamily: 'Plus Jakarta Sans',
+                                fontWeight: FontWeight.w600,
+                                height: 1.56,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // Ganti icon berdasarkan state _isExpanded
+                    if (hasDetails)
+                      Icon(
+                        _isExpanded
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        color: const Color(0xFF1C1B1C),
+                      ),
+                  ],
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            measurements,
-            style: const TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF1B1B1B),
-              letterSpacing: -0.24,
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            notes,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.italic,
-              color: Color(0xFF4C4546),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildInsightCard(String title, String subtitle) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-      height: 128,
-      decoration: BoxDecoration(
-        color: const Color(0xFFD3E5CE), // secondary-container
-        borderRadius: BorderRadius.circular(24),
-      ),
-      padding: const EdgeInsets.all(24),
-      alignment: Alignment.bottomLeft,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF576755), // on-secondary-container
+            // Animasi ringan untuk buka tutup
+            AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              alignment: Alignment.topCenter,
+              curve: Curves.easeInOut,
+              child: !_isExpanded
+                  ? const SizedBox(width: double.infinity)
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Divider(color: Color(0x7FC8C5CB), height: 32),
+
+                        if (hasSymptoms)
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: (record['symptoms'] as List<String>).map((
+                              symptom,
+                            ) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: ShapeDecoration(
+                                  color: const Color(0xFFE2E2E2),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(9999),
+                                  ),
+                                ),
+                                child: Text(
+                                  symptom,
+                                  style: const TextStyle(
+                                    color: Color(0xFF63646C),
+                                    fontSize: 12,
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.33,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+
+                        if (hasSymptoms) const SizedBox(height: 12),
+
+                        if (hasNotes) ...[
+                          const Text(
+                            'CATATAN CAREGIVER',
+                            style: TextStyle(
+                              color: Color(0xFF47464B),
+                              fontSize: 12,
+                              fontFamily: 'Plus Jakarta Sans',
+                              fontWeight: FontWeight.w600,
+                              height: 1.33,
+                              letterSpacing: 0.60,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            record['notes'],
+                            style: const TextStyle(
+                              color: Color(0xFF1C1B1C),
+                              fontSize: 14,
+                              fontFamily: 'Plus Jakarta Sans',
+                              fontWeight: FontWeight.w400,
+                              height: 1.50,
+                            ),
+                          ),
+                        ],
+
+                        const Divider(color: Color(0x7FC8C5CB), height: 32),
+
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(Routes.DETAIL_HISTORY);
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Lihat Riwayat Kesehatan',
+                                  style: TextStyle(
+                                    color: Color(0xFF1C1B1C),
+                                    fontSize: 16,
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.chevron_right,
+                                  color: Color(0xFF1C1B1C),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
             ),
-          ),
-          Text(
-            subtitle,
-            style: const TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF576755),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

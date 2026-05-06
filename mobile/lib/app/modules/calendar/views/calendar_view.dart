@@ -9,6 +9,46 @@ class CalendarView extends GetView<CalendarController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFDF8F8),
+      appBar: AppBar(
+        backgroundColor: Colors.white.withValues(alpha: 0.80),
+        elevation: 0,
+        shape: const Border(
+          bottom: BorderSide(color: Color(0xFFF5F5F4), width: 1),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          'CareTrack',
+          style: TextStyle(
+            color: Color(0xFF1C1917),
+            fontSize: 19,
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.40,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 24.0),
+            child: Center(
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFF5F5F4), width: 1),
+                  image: const DecorationImage(
+                    image: NetworkImage('https://placehold.co/40x40'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -23,7 +63,7 @@ class CalendarView extends GetView<CalendarController> {
                 Container(
                   width: double.infinity,
                   // Padding bottom disesuaikan
-                  padding: const EdgeInsets.only(top: 100, bottom: 100),
+                  padding: const EdgeInsets.only(top: 24, bottom: 100),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -810,72 +850,6 @@ class CalendarView extends GetView<CalendarController> {
                   ),
                 ),
                 
-                // --- Top App Bar Custom ---
-                Positioned(
-                  left: 0,
-                  top: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 32, left: 20, right: 20, bottom: 16),
-                    decoration: const BoxDecoration(color: Color(0xFFFAFAFA)),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999))),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 40,
-                                height: 40,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: ShapeDecoration(
-                                  image: const DecorationImage(image: NetworkImage("https://placehold.co/40x40"), fit: BoxFit.fill),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999)),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 32,
-                              child: Text('CareTrack', style: TextStyle(color: Color(0xFF18181B), fontSize: 24, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33, letterSpacing: -0.60)),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999))),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [Icon(Icons.notifications_outlined, color: Colors.black)],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-
               ],
             ),
           ),

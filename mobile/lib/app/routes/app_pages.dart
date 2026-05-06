@@ -4,6 +4,8 @@ import '../modules/calendar/bindings/calendar_binding.dart';
 import '../modules/calendar/views/calendar_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
+import '../modules/detail-history/bindings/detail_history_binding.dart';
+import '../modules/detail-history/views/detail_history_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/log-kesehatan/bindings/log_kesehatan_binding.dart';
@@ -12,6 +14,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/patient_detail/bindings/patient_detail_binding.dart';
 import '../modules/patient_detail/views/patient_detail_view.dart';
+import '../modules/profil-lansia/bindings/profil_lansia_binding.dart';
+import '../modules/profil-lansia/views/profil_lansia_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/tambah_lansia/bindings/tambah_lansia_binding.dart';
@@ -34,6 +38,7 @@ class AppPages {
       name: _Paths.PATIENT_DETAIL,
       page: () => const PatientDetailView(),
       binding: PatientDetailBinding(),
+      transition: Transition.noTransition,
     ),
     GetPage(
       name: _Paths.LOGIN,
@@ -61,6 +66,17 @@ class AppPages {
       name: _Paths.LOG_KESEHATAN,
       page: () => const LogKesehatanView(),
       binding: LogKesehatanBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_HISTORY,
+      page: () => const DetailHistoryView(),
+      binding: DetailHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFIL_LANSIA,
+      page: () => const ProfilLansiaView(),
+      binding: ProfilLansiaBinding(),
+      transition: Transition.noTransition,
     ),
   ];
 }

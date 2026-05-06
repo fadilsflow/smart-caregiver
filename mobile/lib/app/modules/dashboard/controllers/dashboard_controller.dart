@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../routes/app_pages.dart';
 
 class DashboardController extends GetxController {
   final currentIndex = 0.obs;
@@ -11,9 +12,13 @@ class DashboardController extends GetxController {
     currentIndex.value = index;
     
     if (index == 0) {
-      Get.offNamed('/dashboard', arguments: {'from': previousIndex});
+      Get.offNamed(Routes.DASHBOARD, arguments: {'from': previousIndex});
     } else if (index == 1) {
-      Get.offNamed('/calendar', arguments: {'from': previousIndex});
+      Get.offNamed(Routes.CALENDAR, arguments: {'from': previousIndex});
+    } else if (index == 2) {
+      Get.offNamed(Routes.PATIENT_DETAIL, arguments: {'from': previousIndex});
+    } else if (index == 3) {
+      Get.offNamed(Routes.PROFIL_LANSIA, arguments: {'from': previousIndex});
     }
   }
 

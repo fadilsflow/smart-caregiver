@@ -1,40 +1,68 @@
 import 'package:get/get.dart';
+import '../../../routes/app_pages.dart';
 
 class PatientDetailController extends GetxController {
   final patientName = 'Budi Santoso'.obs;
 
   final records = [
     {
-      'status': 'Normal',
-      'date': '24 Okt, 08:30',
-      'measurements': 'TD: 120/80 | Gula: 95',
-      'notes': 'Kondisi stabil, nafsu makan baik, rutin jalan pagi...',
-      'color': 0xFFD1E8D1,
-      'textColor': 0xFF111F11,
-    },
-    {
       'status': 'Perlu Perhatian',
-      'date': '21 Okt, 19:45',
-      'measurements': 'TD: 145/95 | Gula: 110',
-      'notes': 'Sedikit pusing di area tengkuk, kurang tidur semalam...',
-      'color': 0xFFFADADD,
-      'textColor': 0xFF584234,
+      'date': '24 Oktober 2026',
+      'tensi': '135/88',
+      'suhu': '36.5°C',
+      'notes': 'Pasien melaporkan merasa sedikit pusing setelah minum obat pagi.\nLatihan fisioterapi ditunda.\nDiberikan tambahan cairan dan dipantau selama satu jam.\nKondisi kembali normal pada pukul 10.00',
+      'color': 0xFFE2E2E2,
+      'textColor': 0xFF192126,
+      'symptoms': ['Pusing Ringan', 'Kelelahan'],
     },
     {
       'status': 'Normal',
-      'date': '18 Okt, 09:15',
-      'measurements': 'TD: 118/75 | Gula: 92',
-      'notes': 'Setelah kontrol ke klinik, obat dilanjutkan sesuai resep...',
-      'color': 0xFFD1E8D1,
-      'textColor': 0xFF111F11,
+      'date': '23 Oktober 2026',
+      'tensi': '120/80',
+      'suhu': '36°C',
+      'notes': '',
+      'color': 0xFFBBF246,
+      'textColor': 0xFF1C1B1C,
+      'symptoms': <String>[],
     },
     {
       'status': 'Normal',
-      'date': '14 Okt, 08:20',
-      'measurements': 'TD: 122/82 | Gula: 88',
-      'notes': 'Kondisi sangat prima, sudah mulai rutin berenang...',
-      'color': 0xFFD1E8D1,
-      'textColor': 0xFF111F11,
+      'date': '22 Oktober 2026',
+      'tensi': '120/80',
+      'suhu': '36°C',
+      'notes': '',
+      'color': 0xFFBBF246,
+      'textColor': 0xFF1C1B1C,
+      'symptoms': <String>[],
+    },
+    {
+      'status': 'Normal',
+      'date': '21 Oktober 2026',
+      'tensi': '120/80',
+      'suhu': '36°C',
+      'notes': '',
+      'color': 0xFFBBF246,
+      'textColor': 0xFF1C1B1C,
+      'symptoms': <String>[],
     },
   ].obs;
+
+  final currentIndex = 2.obs;
+
+  void changePage(int index) {
+    if (currentIndex.value == index) return;
+    
+    int previousIndex = currentIndex.value;
+    currentIndex.value = index;
+    
+    if (index == 0) {
+      Get.offNamed(Routes.DASHBOARD, arguments: {'from': previousIndex});
+    } else if (index == 1) {
+      Get.offNamed(Routes.CALENDAR, arguments: {'from': previousIndex});
+    } else if (index == 2) {
+      Get.offNamed(Routes.PATIENT_DETAIL, arguments: {'from': previousIndex});
+    } else if (index == 3) {
+      Get.offNamed(Routes.PROFIL_LANSIA, arguments: {'from': previousIndex});
+    }
+  }
 }
