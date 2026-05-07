@@ -9,6 +9,27 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFAFAFA),
+      appBar: AppBar(
+        backgroundColor: Colors.white.withValues(alpha: 0.80),
+        elevation: 0,
+        shape: const Border(
+          bottom: BorderSide(color: Color(0xFFF5F5F4), width: 1),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          'Profile Pasien',
+          style: TextStyle(
+            color: Color(0xFF1C1917),
+            fontSize: 19,
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.40,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -23,96 +44,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 16,
                 children: [
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(
-                      top: 32,
-                      left: 20,
-                      right: 20.02,
-                      bottom: 16,
-                    ),
-                    decoration: const BoxDecoration(color: Color(0xFFFAFAFA)),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      spacing: 78.80,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          spacing: 8,
-                          children: [
-                            SizedBox(
-                              width: 226,
-                              height: 32,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 0,
-                                    top: 0,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: ShapeDecoration(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(9999),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () => Get.back(),
-                                                child: const Icon(Icons.arrow_back, size: 16),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const Positioned(
-                                    left: 44,
-                                    top: 0,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 182,
-                                          height: 32,
-                                          child: Text(
-                                            'Profile Pasien',
-                                            style: TextStyle(
-                                              color: Color(0xFF18181B),
-                                              fontSize: 20,
-                                              fontFamily: 'Plus Jakarta Sans',
-                                              fontWeight: FontWeight.w600,
-                                              height: 1.60,
-                                              letterSpacing: -0.60,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -176,6 +107,7 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                               ),
                                             ),
                                             child: Stack(
+                                              alignment: Alignment.center,
                                               children: [
                                                 Positioned(
                                                   left: 0,
@@ -345,49 +277,27 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                          ],
                                        ),
                                      ),
-                                    Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: ShapeDecoration(
-                                        color: const Color(0xFFFDF8F8),
-                                        shape: RoundedRectangleBorder(
-                                          side: const BorderSide(
-                                            width: 1,
-                                            color: Color(0xFFC8C5CB),
-                                          ),
-                                          borderRadius: BorderRadius.circular(16),
-                                        ),
+                                    TextField(
+                                      controller: controller.namaController,
+                                      style: const TextStyle(
+                                        color: Color(0xFF1C1B1C),
+                                        fontSize: 16,
+                                        fontFamily: 'Plus Jakarta Sans',
+                                        fontWeight: FontWeight.w400,
                                       ),
-                                      child: const Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 276,
-                                                  child: Text(
-                                                    'Ibu Siti',
-                                                    style: TextStyle(
-                                                      color: Color(0xFF1C1B1C),
-                                                      fontSize: 16,
-                                                      fontFamily: 'Plus Jakarta Sans',
-                                                      fontWeight: FontWeight.w400,
-                                                      height: 1.50,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color(0xFFFDF8F8),
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: const BorderSide(color: Color(0xFFC8C5CB), width: 1),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: const BorderSide(color: Color(0xFF192126), width: 1.5),
+                                        ),
+                                        isDense: true,
                                       ),
                                     ),
                                   ],
@@ -442,68 +352,28 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                               ],
                                             ),
                                           ),
-                                          Container(
-                                            width: double.infinity,
-                                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: ShapeDecoration(
-                                              color: const Color(0xFFFDF8F8),
-                                              shape: RoundedRectangleBorder(
-                                                side: const BorderSide(
-                                                  width: 1,
-                                                  color: Color(0xFFC8C5CB),
-                                                ),
-                                                borderRadius: BorderRadius.circular(16),
-                                              ),
+                                          TextField(
+                                            controller: controller.umurController,
+                                            keyboardType: TextInputType.number,
+                                            style: const TextStyle(
+                                              color: Color(0xFF1C1B1C),
+                                              fontSize: 16,
+                                              fontFamily: 'Plus Jakarta Sans',
+                                              fontWeight: FontWeight.w400,
                                             ),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: double.infinity,
-                                                  child: Row(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      const Expanded(
-                                                        child: Column(
-                                                          mainAxisSize: MainAxisSize.min,
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            SizedBox(
-                                                              width: double.infinity,
-                                                              child: Column(
-                                                                mainAxisSize: MainAxisSize.min,
-                                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: [
-                                                                  SizedBox(
-                                                                    width: 98,
-                                                                    child: Text(
-                                                                      '55',
-                                                                      style: TextStyle(
-                                                                        color: Color(0xFF1C1B1C),
-                                                                        fontSize: 16,
-                                                                        fontFamily: 'Plus Jakarta Sans',
-                                                                        fontWeight: FontWeight.w400,
-                                                                        height: 1.50,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: const Color(0xFFFDF8F8),
+                                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(16),
+                                                borderSide: const BorderSide(color: Color(0xFFC8C5CB), width: 1),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(16),
+                                                borderSide: const BorderSide(color: Color(0xFF192126), width: 1.5),
+                                              ),
+                                              isDense: true,
                                             ),
                                           ),
                                         ],
@@ -552,45 +422,27 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                               ],
                                             ),
                                           ),
-                                          Container(
-                                            width: double.infinity,
-                                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                            decoration: ShapeDecoration(
-                                              color: const Color(0xFFFDF8F8),
-                                              shape: RoundedRectangleBorder(
-                                                side: const BorderSide(
-                                                  width: 1,
-                                                  color: Color(0xFFC8C5CB),
-                                                ),
-                                                borderRadius: BorderRadius.circular(16),
-                                              ),
+                                          TextField(
+                                            controller: controller.jenisKelaminController,
+                                            style: const TextStyle(
+                                              color: Color(0xFF1C1B1C),
+                                              fontSize: 16,
+                                              fontFamily: 'Plus Jakarta Sans',
+                                              fontWeight: FontWeight.w400,
                                             ),
-                                            child: const Stack(
-                                              children: [
-                                                SizedBox(
-                                                  width: double.infinity,
-                                                  child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 113,
-                                                        child: Text(
-                                                          'Perempuan',
-                                                          style: TextStyle(
-                                                            color: Color(0xFF1C1B1C),
-                                                            fontSize: 16,
-                                                            fontFamily: 'Plus Jakarta Sans',
-                                                            fontWeight: FontWeight.w400,
-                                                            height: 1.50,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: const Color(0xFFFDF8F8),
+                                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(16),
+                                                borderSide: const BorderSide(color: Color(0xFFC8C5CB), width: 1),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(16),
+                                                borderSide: const BorderSide(color: Color(0xFF192126), width: 1.5),
+                                              ),
+                                              isDense: true,
                                             ),
                                           ),
                                         ],
@@ -702,49 +554,27 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                         ],
                                       ),
                                     ),
-                                    Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: ShapeDecoration(
-                                        color: const Color(0xFFFDF8F8),
-                                        shape: RoundedRectangleBorder(
-                                          side: const BorderSide(
-                                            width: 1,
-                                            color: Color(0xFFC8C5CB),
-                                          ),
-                                          borderRadius: BorderRadius.circular(16),
-                                        ),
+                                    TextField(
+                                      controller: controller.riwayatMedisController,
+                                      style: const TextStyle(
+                                        color: Color(0xFF1C1B1C),
+                                        fontSize: 16,
+                                        fontFamily: 'Plus Jakarta Sans',
+                                        fontWeight: FontWeight.w400,
                                       ),
-                                      child: const Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 276,
-                                                  child: Text(
-                                                    'Hipertensi ringan',
-                                                    style: TextStyle(
-                                                      color: Color(0xFF1C1B1C),
-                                                      fontSize: 16,
-                                                      fontFamily: 'Plus Jakarta Sans',
-                                                      fontWeight: FontWeight.w400,
-                                                      height: 1.50,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color(0xFFFDF8F8),
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: const BorderSide(color: Color(0xFFC8C5CB), width: 1),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: const BorderSide(color: Color(0xFF192126), width: 1.5),
+                                        ),
+                                        isDense: true,
                                       ),
                                     ),
                                   ],
@@ -1153,49 +983,27 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                         ],
                                       ),
                                     ),
-                                    Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: ShapeDecoration(
-                                        color: const Color(0xFFFDF8F8),
-                                        shape: RoundedRectangleBorder(
-                                          side: const BorderSide(
-                                            width: 1,
-                                            color: Color(0xFFC8C5CB),
-                                          ),
-                                          borderRadius: BorderRadius.circular(16),
-                                        ),
+                                    TextField(
+                                      controller: controller.minatHobiController,
+                                      style: const TextStyle(
+                                        color: Color(0xFF1C1B1C),
+                                        fontSize: 16,
+                                        fontFamily: 'Plus Jakarta Sans',
+                                        fontWeight: FontWeight.w400,
                                       ),
-                                      child: const Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 276,
-                                                  child: Text(
-                                                    'Berkebun dan Membaca',
-                                                    style: TextStyle(
-                                                      color: Color(0xFF1C1B1C),
-                                                      fontSize: 16,
-                                                      fontFamily: 'Plus Jakarta Sans',
-                                                      fontWeight: FontWeight.w400,
-                                                      height: 1.50,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color(0xFFFDF8F8),
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: const BorderSide(color: Color(0xFFC8C5CB), width: 1),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: const BorderSide(color: Color(0xFF192126), width: 1.5),
+                                        ),
+                                        isDense: true,
                                       ),
                                     ),
                                   ],
@@ -1213,39 +1021,43 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                width: double.infinity,
-                                height: 48,
-                                decoration: ShapeDecoration(
-                                  color: const Color(0xFF192126),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25),
+                              InkWell(
+                                onTap: () => controller.saveChanges(),
+                                borderRadius: BorderRadius.circular(25),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 48,
+                                  decoration: ShapeDecoration(
+                                    color: const Color(0xFF192126),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                    shadows: const [
+                                      BoxShadow(
+                                        color: Color(0x0F000000),
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                        spreadRadius: 0,
+                                      )
+                                    ],
                                   ),
-                                  shadows: const [
-                                    BoxShadow(
-                                      color: Color(0x0F000000),
-                                      blurRadius: 4,
-                                      offset: Offset(0, 2),
-                                      spreadRadius: 0,
-                                    )
-                                  ],
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'Simpan Perubahan',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.43,
-                                      letterSpacing: 0.14,
+                                  child: const Center(
+                                    child: Text(
+                                      'Simpan Perubahan',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontFamily: 'Plus Jakarta Sans',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.43,
+                                        letterSpacing: 0.14,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 5),
                               SizedBox(
                                 width: double.infinity,
                                 child: Column(

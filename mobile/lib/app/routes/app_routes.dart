@@ -14,6 +14,8 @@ abstract class Routes {
   static const DETAIL_HISTORY = _Paths.DETAIL_HISTORY;
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
   static const PROFIL_LANSIA = _Paths.PROFIL_LANSIA;
+  static const JADWAL_LANSIA = _Paths.JADWAL_LANSIA;
+  static const PROFIL_CAREGIVER = _Paths.PROFIL_CAREGIVER;
 }
 
 abstract class _Paths {
@@ -29,4 +31,6 @@ abstract class _Paths {
   static const DETAIL_HISTORY = '/detail-history';
   static const EDIT_PROFILE = '/edit-profile';
   static const PROFIL_LANSIA = '/profil-lansia';
+  static const JADWAL_LANSIA = '/jadwal-lansia';
+  static const PROFIL_CAREGIVER = '/profil-caregiver';
 }

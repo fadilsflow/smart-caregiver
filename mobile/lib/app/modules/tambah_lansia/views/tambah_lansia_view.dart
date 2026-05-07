@@ -13,48 +13,50 @@ class TambahLansiaView extends GetView<TambahLansiaController> {
     return Scaffold(
       backgroundColor: const Color(0xFFFDF8F8),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white.withValues(alpha: 0.80),
         elevation: 0,
-        scrolledUnderElevation: 0,
-        centerTitle: false,
+        shape: const Border(
+          bottom: BorderSide(color: Color(0xFFF5F5F4), width: 1),
+        ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF18181B)),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'CareTrack',
+          'Tambah Lansia Baru',
           style: TextStyle(
-            color: Color(0xFF18181B),
-            fontSize: 20,
+            color: Color(0xFF1C1917),
+            fontSize: 19,
             fontFamily: 'Plus Jakarta Sans',
             fontWeight: FontWeight.w600,
-            height: 1.40,
-            letterSpacing: -0.50,
+            letterSpacing: -0.40,
           ),
         ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(color: const Color(0xFFF4F4F5), height: 1.0),
-        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 24.0),
+            child: Center(
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFF5F5F4), width: 1),
+                  image: const DecorationImage(
+                    image: NetworkImage('https://placehold.co/40x40'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Tambah Lansia Baru',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 27,
-                fontFamily: 'Plus Jakarta Sans',
-                fontWeight: FontWeight.w700,
-                height: 1.27,
-                letterSpacing: -0.60,
-              ),
-            ),
-            const SizedBox(height: 32),
-
             // 1. Informasi Dasar
             _buildCard(
               title: 'Informasi Dasar',

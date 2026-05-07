@@ -12,24 +12,23 @@ class PatientDetailView extends GetView<PatientDetailController> {
     return Scaffold(
       backgroundColor: const Color(0xFFFDF8F8),
       appBar: AppBar(
-        backgroundColor: const Color(0xE5FAFAFA),
+        backgroundColor: Colors.white.withValues(alpha: 0.80),
         elevation: 0,
-        scrolledUnderElevation: 0,
         shape: const Border(
-          bottom: BorderSide(color: Color(0xFFF4F4F5), width: 1),
+          bottom: BorderSide(color: Color(0xFFF5F5F4), width: 1),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF1B1B1B)),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Get.back(),
         ),
         title: const Text(
           'Riwayat Kesehatan',
           style: TextStyle(
-            color: Color(0xFF18181B),
-            fontSize: 20,
+            color: Color(0xFF1C1917),
+            fontSize: 19,
             fontFamily: 'Plus Jakarta Sans',
             fontWeight: FontWeight.w600,
-            letterSpacing: -0.60,
+            letterSpacing: -0.40,
           ),
         ),
       ),

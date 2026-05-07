@@ -10,6 +10,27 @@ class DetailHistoryView extends GetView<DetailHistoryController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFDF8F8),
+      appBar: AppBar(
+        backgroundColor: Colors.white.withValues(alpha: 0.80),
+        elevation: 0,
+        shape: const Border(
+          bottom: BorderSide(color: Color(0xFFF5F5F4), width: 1),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          'Detail Riwayat Kesehatan',
+          style: TextStyle(
+            color: Color(0xFF1C1917),
+            fontSize: 19,
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.40,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -22,54 +43,6 @@ class DetailHistoryView extends GetView<DetailHistoryController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: double.infinity,
-                    height: 64,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    decoration: const ShapeDecoration(
-                      color: Color(0xE5FAFAFA),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 1, color: Color(0xFFF4F4F5)),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () => Get.back(),
-                          borderRadius: BorderRadius.circular(9999),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(9999),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.arrow_back,
-                              size: 16,
-                              color: Color(0xFF18181B),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Text(
-                            'Detail Riwayat Kesehatan',
-                            style: TextStyle(
-                              color: Color(0xFF18181B),
-                              fontSize: 20,
-                              fontFamily: 'Plus Jakarta Sans',
-                              fontWeight: FontWeight.w600,
-                              height: 1.60,
-                              letterSpacing: -0.60,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.only(

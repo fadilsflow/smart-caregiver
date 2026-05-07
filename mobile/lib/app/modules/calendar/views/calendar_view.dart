@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/calendar_controller.dart';
 
 class CalendarView extends GetView<CalendarController> {
@@ -874,7 +875,7 @@ class CalendarView extends GetView<CalendarController> {
           ],
         ),
         child: IconButton(
-          onPressed: () {},
+          onPressed: () => Get.toNamed(Routes.JADWAL_LANSIA),
           icon: const Icon(Icons.add, color: Colors.white),
         ),
       ),

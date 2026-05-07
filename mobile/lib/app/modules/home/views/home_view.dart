@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mobile/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
@@ -36,19 +37,24 @@ class HomeView extends GetView<HomeController> {
                 children: [
                   Row(
                     children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFFE5E2E1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(9999),
+                      GestureDetector(
+                        onTap: () => Get.toNamed(Routes.PROFIL_CAREGIVER),
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFFE5E2E1),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(9999),
+                            ),
                           ),
-                        ),
-                        child: Image.network(
-                          "https://placehold.co/40x40",
-                          fit: BoxFit.fill,
+                          child: CachedNetworkImage(
+                            imageUrl: "https://placehold.co/40x40",
+                            fit: BoxFit.fill,
+                            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -423,9 +429,11 @@ class HomeView extends GetView<HomeController> {
                   borderRadius: BorderRadius.circular(9999),
                 ),
               ),
-              child: Image.network(
-                "https://placehold.co/60x60",
+              child: CachedNetworkImage(
+                imageUrl: "https://placehold.co/60x60",
                 fit: BoxFit.fill,
+                placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
             const SizedBox(width: 24),

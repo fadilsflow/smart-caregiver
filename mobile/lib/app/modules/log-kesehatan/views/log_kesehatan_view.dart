@@ -11,21 +11,23 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
       backgroundColor: const Color(0xFFFAFAFA),
       // 1. Memindahkan bagian Top Bar ke AppBar agar otomatis Sticky (tidak hilang saat discroll)
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFAFAFA),
+        backgroundColor: Colors.white.withValues(alpha: 0.80),
         elevation: 0,
-        scrolledUnderElevation:
-            0, // Mencegah perubahan warna saat discroll di Material 3
+        shape: const Border(
+          bottom: BorderSide(color: Color(0xFFF5F5F4), width: 1),
+        ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF1C1B1C)),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'Data Kesehatan',
+          'Isi Data Kesehatan',
           style: TextStyle(
-            color: Color(0xFF1C1B1C),
+            color: Color(0xFF1C1917),
             fontSize: 19,
             fontFamily: 'Plus Jakarta Sans',
             fontWeight: FontWeight.w600,
+            letterSpacing: -0.40,
           ),
         ),
       ),

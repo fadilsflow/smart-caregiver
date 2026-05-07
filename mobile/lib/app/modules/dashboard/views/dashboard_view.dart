@@ -22,7 +22,7 @@ class DashboardView extends GetView<DashboardController> {
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'Health Dashboard',
+          'Data Kesehatan',
           style: TextStyle(
             color: Color(0xFF1C1917),
             fontSize: 19,
@@ -74,7 +74,7 @@ class DashboardView extends GetView<DashboardController> {
               Row(
                 children: [
                   const Text(
-                    '55 Tahun • Female',
+                    '55 Tahun • Perempuan',
                     style: TextStyle(
                       color: Color(0xFF4C4546),
                       fontSize: 14,
@@ -154,7 +154,7 @@ class DashboardView extends GetView<DashboardController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Health Trend',
+                      'Tren Kesehatan',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 24,
@@ -166,7 +166,7 @@ class DashboardView extends GetView<DashboardController> {
                     ),
                     const SizedBox(height: 4),
                     const Text(
-                      'Overall physical stability over 7 days',
+                      'Stabilitas fisik keseluruhan selama 1 minggu',
                       style: TextStyle(
                         color: Color(0xFF4C4546),
                         fontSize: 14,
