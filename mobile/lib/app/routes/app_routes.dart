@@ -16,6 +16,7 @@ abstract class Routes {
   static const PROFIL_LANSIA = _Paths.PROFIL_LANSIA;
   static const JADWAL_LANSIA = _Paths.JADWAL_LANSIA;
   static const PROFIL_CAREGIVER = _Paths.PROFIL_CAREGIVER;
+  static const NOTIFIKASI = _Paths.NOTIFIKASI;
 }
 
 abstract class _Paths {
@@ -33,4 +34,5 @@ abstract class _Paths {
   static const PROFIL_LANSIA = '/profil-lansia';
   static const JADWAL_LANSIA = '/jadwal-lansia';
   static const PROFIL_CAREGIVER = '/profil-caregiver';
+  static const NOTIFIKASI = '/notifikasi';
 }

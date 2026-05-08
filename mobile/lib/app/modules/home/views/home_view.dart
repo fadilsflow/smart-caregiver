@@ -71,13 +71,16 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ],
                   ),
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: const ShapeDecoration(shape: CircleBorder()),
-                    child: const Icon(
-                      Icons.notifications_none,
-                      color: Color(0xFF18181B),
+                  GestureDetector(
+                    onTap: () => Get.toNamed(Routes.NOTIFIKASI),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: const ShapeDecoration(shape: CircleBorder()),
+                      child: const Icon(
+                        Icons.notifications_none,
+                        color: Color(0xFF18181B),
+                      ),
                     ),
                   ),
                 ],
