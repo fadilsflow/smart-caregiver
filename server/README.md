@@ -19,7 +19,6 @@ Backend FastAPI untuk aplikasi Smart Caregiver - sistem monitoring dan perawatan
 | `/elderly`      | CRUD data lansia                      |
 | `/health`       | Data kesehatan & rekomendasi          |
 | `/dashboard`    | Analytics & overview                  |
-| `/viewer`       | Real-time monitoring                  |
 | `/notification` | Sistem notifikasi                     |
 
 ## Fuzzy Logic System
@@ -94,7 +93,7 @@ src/
 │   │   ├── elderly.py
 │   │   ├── health.py
 │   │   ├── dashboard.py
-│   │   ├── viewer.py
+
 │   │   └── notification.py
 │   ├── services/        # Business logic
 │   ├── schemas/         # Pydantic models

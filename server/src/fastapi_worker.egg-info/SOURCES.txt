@@ -26,7 +26,6 @@ src/app/routers/internal_jobs.py
 src/app/routers/notification.py
 src/app/routers/recommendation.py
 src/app/routers/schedule.py
-src/app/routers/viewer.py
 src/app/schemas/__init__.py
 src/app/schemas/auth.py
 src/app/schemas/dashboard.py
@@ -36,7 +35,6 @@ src/app/schemas/health.py
 src/app/schemas/notification.py
 src/app/schemas/recommendation.py
 src/app/schemas/schedule.py
-src/app/schemas/viewer.py
 src/app/services/__init__.py
 src/app/services/auth_service.py
 src/app/services/dashboard_service.py
@@ -47,7 +45,6 @@ src/app/services/oauth_google.py
 src/app/services/recommendation_service.py
 src/app/services/schedule_service.py
 src/app/services/summary_service.py
-src/app/services/viewer_service.py
 src/database/__init__.py
 src/database/base.py
 src/database/enums.py

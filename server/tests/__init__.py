@@ -15,14 +15,13 @@ from sqlalchemy.pool import StaticPool
 
 from src.database.base import Base
 from src.database.models.user import User
-from src.database.models.elderly import ElderlyProfile, ViewerInvitation
+from src.database.models.elderly import ElderlyProfile
 from src.database.models.health import HealthRecord
 from src.database.models.notification import Notification
 from src.database.models.schedule import Schedule
 from src.database.models.recommendation import AIActivityRecommendation
 from src.database.enums import (
     HealthStatus,
-    InvitationStatus,
     ScheduleType,
     RecurrenceType,
     RecommendationStatus,
@@ -118,21 +117,6 @@ def caregiver_user(db_session: Session) -> User:
     return user
 
 
-@pytest.fixture
-def viewer_user(db_session: Session) -> User:
-    """Create a test viewer user."""
-    user = User(
-        id=uuid.UUID("22222222-2222-2222-2222-222222222222"),
-        email="viewer@test.com",
-        hashed_password="$2b$12$dummy_hash_for_testing",
-        full_name="Test Viewer",
-        is_active=True,
-    )
-    db_session.add(user)
-    db_session.commit()
-    return user
-
-
 # =============================================================================
 # Test Elderly Profile Fixture
 # =============================================================================
@@ -155,32 +139,6 @@ def elderly_profile(db_session: Session, caregiver_user: User) -> ElderlyProfile
 
 
 # =============================================================================
-# Viewer Invitation Fixture
-# =============================================================================
-
-
-@pytest.fixture
-def viewer_invitation(
-    db_session: Session,
-    elderly_profile: ElderlyProfile,
-    viewer_user: User,
-) -> None:
-    """Create accepted viewer invitation."""
-    invitation = ViewerInvitation(
-        id=uuid.UUID("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-        elderly_id=elderly_profile.id,
-        viewer_id=viewer_user.id,
-        invited_by=elderly_profile.caregiver_id,
-        email="viewer@test.com",
-        token="test-token-123",
-        status=InvitationStatus.ACCEPTED,
-        expires_at=datetime.now(timezone.utc) + timedelta(days=7),
-    )
-    db_session.add(invitation)
-    db_session.commit()
-
-
-# =============================================================================
 # Auth Tokens Fixtures
 # =============================================================================
 
@@ -190,14 +148,6 @@ def caregiver_token(caregiver_user: User) -> str:
     """Generate access token for caregiver."""
     return create_access_token(
         data={"sub": str(caregiver_user.id), "type": "access"}
-    )
-
-
-@pytest.fixture
-def viewer_token(viewer_user: User) -> str:
-    """Generate access token for viewer."""
-    return create_access_token(
-        data={"sub": str(viewer_user.id), "type": "access"}
     )
 
 
@@ -213,16 +163,6 @@ async def auth_client(
 ) -> AsyncClient:
     """Client with caregiver authentication."""
     client.headers["Authorization"] = f"Bearer {caregiver_token}"
-    return client
-
-
-@pytest_asyncio.fixture
-async def viewer_client(
-    client: AsyncClient,
-    viewer_token: str,
-) -> AsyncClient:
-    """Client with viewer authentication."""
-    client.headers["Authorization"] = f"Bearer {viewer_token}"
     return client
 
 

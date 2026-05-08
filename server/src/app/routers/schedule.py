@@ -13,7 +13,7 @@ Internal (MVP):
   POST   /internal/jobs/dispatch-due-alarms           → Dispatch pending alarms
 
 Authentication:
-  All endpoints require caregiver owner or viewer with accepted invitation.
+  All endpoints require caregiver owner.
 """
 
 from __future__ import annotations

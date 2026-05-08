@@ -10,7 +10,7 @@ Endpoints:
 
 Authentication:
   Generate/Approve/Reject: caregiver owner only
-  List/GET: caregiver owner OR viewer with accepted invitation
+  List/GET: caregiver owner only
 """
 
 from __future__ import annotations
@@ -103,7 +103,7 @@ async def list_recommendations(
 ):
     """
     List recommendations for an elderly profile.
-    Accessible to caregiver owner or viewer with accepted invitation.
+    Accessible to caregiver owner only.
     """
     total, recommendations = await recommendation_service.list_recommendations(
         db=db,
@@ -127,7 +127,7 @@ async def get_recommendation(
 ):
     """
     Get a single recommendation by ID.
-    Accessible to caregiver owner or viewer with accepted invitation.
+    Accessible to caregiver owner only.
     """
     recommendation = await recommendation_service.get_recommendation(
         db=db,

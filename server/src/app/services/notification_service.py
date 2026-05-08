@@ -1,9 +1,9 @@
 """
-Notification Service — business logic for in-app notifications.
+Notification Service business logic for in-app notifications.
 
 Responsibilities:
   1. Create single notification for a recipient
-  2. Create fan-out notifications (caregiver + all accepted viewers)
+  2. Create fan-out notifications (caregiver owner)
   3. List, mark read, get preferences for a user
 """
 
@@ -20,8 +20,8 @@ from src.app.schemas.notification import (
     NotificationPreferenceResponse,
     NotificationPreferenceUpdate,
 )
-from src.database.enums import InvitationStatus, NotificationChannel, NotificationPriority, NotificationType
-from src.database.models.elderly import ElderlyProfile, ViewerInvitation
+from src.database.enums import NotificationChannel, NotificationPriority, NotificationType
+from src.database.models.elderly import ElderlyProfile
 from src.database.models.notification import Notification, NotificationPreference
 from src.database.models.user import User
 
@@ -78,7 +78,7 @@ async def create_health_record_notification(
 ) -> list[uuid.UUID]:
     """
     Create notifications when a health record is recorded.
-    Fan-out to: caregiver (owner) + all accepted viewers.
+    Fan-out to caregiver owner.
 
     Args:
         db: Database session
@@ -98,17 +98,6 @@ async def create_health_record_notification(
         return []
 
     recipient_ids = [elderly.caregiver_id]
-
-    viewers_stmt = select(ViewerInvitation).where(
-        ViewerInvitation.elderly_id == elderly_id,
-        ViewerInvitation.status == InvitationStatus.ACCEPTED,
-    )
-    viewers_result = await db.execute(viewers_stmt)
-    viewers = viewers_result.scalars().all()
-
-    for viewer in viewers:
-        if viewer.viewer_id:
-            recipient_ids.append(viewer.viewer_id)
 
     is_critical = health_status == "critical" or bool(triggered_parameters)
 

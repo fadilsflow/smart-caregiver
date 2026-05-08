@@ -10,8 +10,7 @@ Endpoints:
 
 Authentication:
   All endpoints require JWT bearer token authentication.
-  - Caregiver can read/write health records for their elderly profiles
-  - Viewer with accepted invitation can only read health records
+  Only caregiver owners can access health records for their elderly profiles.
 """
 
 from __future__ import annotations
@@ -116,7 +115,7 @@ async def reanalyze_health_record(
     summary="List all health records for an elderly person",
     description=(
         "Returns paginated health records ordered by measurement date (newest first). "
-        "Requires caregiver owner or viewer with accepted invitation."
+        "Requires caregiver owner."
     ),
 )
 async def list_health_records(

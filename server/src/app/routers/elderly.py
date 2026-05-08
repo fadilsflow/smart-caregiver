@@ -14,8 +14,7 @@ Endpoints:
 
 Authentication:
   All endpoints require JWT bearer token authentication.
-  - Caregiver can read/write their own elderly profiles
-  - Viewer with accepted invitation can read elderly profiles
+  Only the caregiver owner can access their elderly profiles.
 """
 
 from __future__ import annotations
@@ -38,7 +37,6 @@ from src.app.core.auth import (
     get_current_user,
     require_caregiver_owner,
     require_elderly_access,
-    get_viewer_access_elderly_ids,
 )
 from src.database.enums import ElderlyStatus
 from src.database.models.user import User
@@ -79,7 +77,7 @@ async def create_elderly_profile(
     description=(
         "Mengembalikan semua profil lansia yang dimiliki oleh caregiver ini. "
         "Mendukung filter status dan pagination. "
-        "Also returns elderly profiles the viewer has accepted access to."
+        "Only returns elderly profiles belonging to this caregiver."
     ),
 )
 async def list_elderly_profiles(
@@ -100,56 +98,13 @@ async def list_elderly_profiles(
         limit=limit,
         offset=offset,
     )
-async def create_elderly_profile(
-    payload: ElderlyProfileCreate,
-    current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
-) -> ElderlyProfileResponse:
-    caregiver_id = current_user.id
-    return await elderly_service.create_profile(
-        db=db,
-        payload=payload,
-        caregiver_id=caregiver_id,
-    )
-
-
-@router.get(
-    "",
-    response_model=ElderlyProfileListResponse,
-    summary="Daftar semua profil lansia milik caregiver (REQ-003)",
-    description=(
-        "Mengembalikan semua profil lansia yang dimiliki oleh caregiver ini. "
-        "Mendukung filter status dan pagination."
-    ),
-)
-async def list_elderly_profiles(
-    status_filter: Optional[ElderlyStatus] = Query(
-        None,
-        alias="status",
-        description="Filter berdasarkan status: active | inactive | critical",
-    ),
-    limit: int = Query(20, ge=1, le=100, description="Jumlah profil per halaman"),
-    offset: int = Query(0, ge=0, description="Skip N profil"),
-    current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
-) -> ElderlyProfileListResponse:
-    caregiver_id = current_user.id
-    return await elderly_service.list_profiles(
-        db=db,
-        caregiver_id=caregiver_id,
-        status=status_filter,
-        limit=limit,
-        offset=offset,
-    )
-
-
 @router.get(
     "/{profile_id}",
     response_model=ElderlyProfileResponse,
     summary="Detail profil lansia",
     description=(
         "Mengambil detail lengkap satu profil lansia. "
-        "Dapat diakses oleh caregiver pemilik atau viewer dengan invitation accepted."
+        "Hanya dapat diakses oleh caregiver pemilik."
     ),
 )
 async def get_elderly_profile(
@@ -235,7 +190,7 @@ async def deactivate_elderly_profile(
     summary="Hapus permanen profil lansia ⚠️",
     description=(
         "**PERINGATAN:** Menghapus profil secara permanen beserta SEMUA data terkait "
-        "(rekaman kesehatan, jadwal, rekomendasi, undangan viewer). "
+        "(rekaman kesehatan, jadwal, rekomendasi). "
         "Aksi ini tidak dapat dibatalkan. "
         "Gunakan endpoint DELETE biasa untuk soft-delete yang aman."
     ),

@@ -18,7 +18,6 @@ from src.app.core.scheduler import start_scheduler, stop_scheduler
 from src.app.routers import auth_google, health, elderly
 from src.app.routers import auth as auth_router
 from src.app.routers import dashboard
-from src.app.routers import viewer
 from src.app.routers import notification
 from src.app.routers import schedule
 from src.app.routers import recommendation
@@ -46,26 +45,25 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# ── Logging ────────────────────────────────────────────────────────────────────
+# ── Logging 
 setup_logging(debug=settings.DEBUG)
 app.add_middleware(RequestLoggingMiddleware)
 
-# ── Exception handlers ─────────────────────────────────────────────────────────
+# ── Exception handlers 
 app.add_exception_handler(HTTPException, http_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(Exception, unhandled_exception_handler)
 
-# ── Rate limiter ───────────────────────────────────────────────────────────────
+# ── Rate limiter 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-# ── Routers ────────────────────────────────────────────────────────────────────
+# ── Routers 
 app.include_router(auth_router.router)
 app.include_router(auth_google.router)
 app.include_router(elderly.router)
 app.include_router(health.router)
 app.include_router(dashboard.router)
-app.include_router(viewer.router)
 app.include_router(notification.router, prefix="/notifications")
 app.include_router(schedule.router)
 app.include_router(recommendation.router)

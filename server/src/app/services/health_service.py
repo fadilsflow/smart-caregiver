@@ -287,7 +287,7 @@ async def create_health_record(
 
     # Session is committed by the get_db() dependency after this function returns
 
-    # ── Create notifications for caregiver and viewers ───────────────────────────
+    # ── Create notification for caregiver ─────────────────────────────────────────
     health_status_value = record.health_status.value if hasattr(record.health_status, 'value') else str(record.health_status)
     await notification_service.create_health_record_notification(
         db=db,

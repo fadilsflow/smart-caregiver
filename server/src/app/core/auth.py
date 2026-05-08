@@ -3,7 +3,7 @@ JWT Authentication Dependencies and Access Control Helpers.
 
 This module provides:
 - get_current_user: JWT bearer token dependency
-- Access level helpers for caregiver owner / viewer with accepted invitation
+- Access level helpers for caregiver owner
 """
 
 from enum import Enum
@@ -15,13 +15,11 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from src.app.core.config import settings
 from src.app.core.security import decode_token
+from src.database.models.elderly import ElderlyProfile
 from src.database.models.user import User
-from src.database.models.elderly import ElderlyProfile, ViewerInvitation
-from src.database.enums import InvitationStatus
 from src.database.session import get_db
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -31,7 +29,6 @@ class AccessLevel(str, Enum):
     """Access level for elderly data."""
 
     CAREGIVER_OWNER = "caregiver_owner"
-    VIEWER_ACCEPTED = "viewer_accepted"
     NONE = "none"
 
 
@@ -114,7 +111,6 @@ async def check_elderly_access(
     
     Returns:
     - CAREGIVER_OWNER: user is the caregiver who owns this elderly profile
-    - VIEWER_ACCEPTED: user has an accepted viewer invitation for this elderly
     - NONE: no access
     """
     stmt = select(ElderlyProfile).where(ElderlyProfile.id == elderly_id)
@@ -126,20 +122,6 @@ async def check_elderly_access(
 
     if elderly.caregiver_id == user.id:
         return AccessLevel.CAREGIVER_OWNER
-
-    invitation_stmt = (
-        select(ViewerInvitation)
-        .where(
-            ViewerInvitation.elderly_id == elderly_id,
-            ViewerInvitation.viewer_id == user.id,
-            ViewerInvitation.status == InvitationStatus.ACCEPTED,
-        )
-    )
-    inv_result = await db.execute(invitation_stmt)
-    invitation = inv_result.scalar_one_or_none()
-
-    if invitation is not None:
-        return AccessLevel.VIEWER_ACCEPTED
 
     return AccessLevel.NONE
 
@@ -172,11 +154,10 @@ async def require_elderly_access(
     db: AsyncSession = Depends(get_db),
 ) -> tuple[uuid.UUID, User, AccessLevel]:
     """
-    Dependency that ensures the current user has at least read access to the elderly profile.
+    Dependency that ensures the current user has access to the elderly profile.
     
-    Allows both caregiver owner AND viewer with accepted invitation.
+    Only the caregiver owner can access elderly data.
     Raises 403 if no access.
-    Raises 404 if elderly profile not found.
     """
     stmt = select(ElderlyProfile).where(ElderlyProfile.id == elderly_id)
     result = await db.execute(stmt)
@@ -197,21 +178,3 @@ async def require_elderly_access(
         )
     
     return elderly_id, user, access_level
-
-
-async def get_viewer_access_elderly_ids(
-    user: User,
-    db: AsyncSession,
-) -> list[uuid.UUID]:
-    """
-    Get all elderly IDs that a viewer has accepted access to.
-    """
-    stmt = (
-        select(ViewerInvitation.elderly_id)
-        .where(
-            ViewerInvitation.viewer_id == user.id,
-            ViewerInvitation.status == InvitationStatus.ACCEPTED,
-        )
-    )
-    result = await db.execute(stmt)
-    return [row[0] for row in result.fetchall()]

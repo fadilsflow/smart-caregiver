@@ -13,14 +13,13 @@ from httpx import AsyncClient, ASGITransport
 
 from src.database.session import AsyncSessionLocal, get_db
 from src.database.models.user import User
-from src.database.models.elderly import ElderlyProfile, ViewerInvitation
+from src.database.models.elderly import ElderlyProfile
 from src.database.models.health import HealthRecord, HealthThreshold
 from src.database.models.schedule import Schedule
 from src.database.models.recommendation import AIActivityRecommendation
 from src.database.enums import (
     HealthParameter,
     HealthStatus,
-    InvitationStatus,
     ScheduleType,
     RecurrenceType,
     RecommendationStatus,
@@ -75,23 +74,6 @@ async def caregiver_user(db_session) -> User:
         email="caregiver@test.com",
         hashed_password="$2b$12$dummy_hash_for_testing",
         full_name="Test Caregiver",
-        is_active=True,
-    )
-    db_session.add(user)
-    try:
-        await db_session.commit()
-    except:
-        await db_session.rollback()
-    return user
-
-
-@pytest_asyncio.fixture
-async def viewer_user(db_session) -> User:
-    user = User(
-        id=uuid.UUID("22222222-2222-2222-2222-222222222222"),
-        email="viewer@test.com",
-        hashed_password="$2b$12$dummy_hash_for_testing",
-        full_name="Test Viewer",
         is_active=True,
     )
     db_session.add(user)
@@ -181,26 +163,6 @@ async def health_thresholds(db_session, elderly_profile) -> list[HealthThreshold
 
 
 @pytest_asyncio.fixture
-async def viewer_invitation(db_session, elderly_profile, viewer_user) -> ViewerInvitation:
-    invitation = ViewerInvitation(
-        id=uuid.UUID("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-        elderly_id=elderly_profile.id,
-        viewer_id=viewer_user.id,
-        invited_by=elderly_profile.caregiver_id,
-        email="viewer@test.com",
-        token="test-token-seed",
-        status=InvitationStatus.ACCEPTED,
-        expires_at=datetime.now(timezone.utc) + timedelta(days=7),
-    )
-    db_session.add(invitation)
-    try:
-        await db_session.commit()
-    except:
-        await db_session.rollback()
-    return invitation
-
-
-@pytest_asyncio.fixture
 async def health_records(db_session, elderly_profile, caregiver_user) -> list:
     records = []
     for i in range(7):
@@ -264,7 +226,7 @@ async def schedule(db_session, elderly_profile) -> Schedule:
 
 
 # =============================================================================
-# Auth Token Fixtures - generate from user fixture
+# Auth Token Fixtures
 # =============================================================================
 
 @pytest_asyncio.fixture
@@ -273,30 +235,18 @@ async def caregiver_token(caregiver_user: User) -> str:
 
 
 @pytest_asyncio.fixture
-async def viewer_token(viewer_user: User) -> str:
-    return create_access_token(subject=str(viewer_user.id))
-
-
-@pytest_asyncio.fixture
 async def other_token(other_user: User) -> str:
     return create_access_token(subject=str(other_user.id))
 
 
 # =============================================================================
-# Client with Auth - different naming to avoid conflicts
+# Client with Auth
 # =============================================================================
 
 @pytest_asyncio.fixture
 async def client_caregiver(http_client, caregiver_token):
-    """Client with caregiver auth - set headers directly."""
+    """Client with caregiver auth."""
     http_client.headers["Authorization"] = f"Bearer {caregiver_token}"
-    return http_client
-
-
-@pytest_asyncio.fixture
-async def client_viewer(http_client, viewer_token):
-    """Client with viewer auth."""
-    http_client.headers["Authorization"] = f"Bearer {viewer_token}"
     return http_client
 
 

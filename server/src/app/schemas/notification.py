@@ -1,6 +1,6 @@
 """
 Notification Pydantic schemas.
-REQ-019: Notify on new health record (caregiver + all viewers)
+REQ-019: Notify on new health record (caregiver)
 REQ-020: Notify on critical status
 """
 
