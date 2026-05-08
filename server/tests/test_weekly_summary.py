@@ -16,6 +16,7 @@ async def test_weekly_summary_batch(
     elderly_profile: ElderlyProfile,
 ):
     """Weekly summary batch job should work."""
+    client_caregiver.headers["X-API-Key"] = "test-internal-api-key"
     response = await client_caregiver.post("/internal/jobs/send-weekly-summary")
     assert response.status_code in [200, 500]
 
@@ -27,6 +28,7 @@ async def test_weekly_summary_single(
     elderly_profile: ElderlyProfile,
 ):
     """Weekly summary for specific elderly should work."""
+    client_caregiver.headers["X-API-Key"] = "test-internal-api-key"
     response = await client_caregiver.post(
         f"/internal/jobs/send-weekly-summary/{elderly_profile.id}"
     )

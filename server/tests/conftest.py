@@ -14,10 +14,11 @@ from httpx import AsyncClient, ASGITransport
 from src.database.session import AsyncSessionLocal, get_db
 from src.database.models.user import User
 from src.database.models.elderly import ElderlyProfile, ViewerInvitation
-from src.database.models.health import HealthRecord
+from src.database.models.health import HealthRecord, HealthThreshold
 from src.database.models.schedule import Schedule
 from src.database.models.recommendation import AIActivityRecommendation
 from src.database.enums import (
+    HealthParameter,
     HealthStatus,
     InvitationStatus,
     ScheduleType,
@@ -134,6 +135,49 @@ async def elderly_profile(db_session, caregiver_user) -> ElderlyProfile:
     except:
         await db_session.rollback()
     return elderly
+
+
+@pytest_asyncio.fixture
+async def health_thresholds(db_session, elderly_profile) -> list[HealthThreshold]:
+    thresholds = [
+        HealthThreshold(
+            elderly_id=elderly_profile.id,
+            parameter=HealthParameter.SYSTOLIC_BP,
+            min_value=90,
+            max_value=140,
+        ),
+        HealthThreshold(
+            elderly_id=elderly_profile.id,
+            parameter=HealthParameter.DIASTOLIC_BP,
+            min_value=60,
+            max_value=90,
+        ),
+        HealthThreshold(
+            elderly_id=elderly_profile.id,
+            parameter=HealthParameter.BLOOD_SUGAR,
+            min_value=70,
+            max_value=180,
+        ),
+        HealthThreshold(
+            elderly_id=elderly_profile.id,
+            parameter=HealthParameter.HEART_RATE,
+            min_value=60,
+            max_value=100,
+        ),
+        HealthThreshold(
+            elderly_id=elderly_profile.id,
+            parameter=HealthParameter.BODY_TEMPERATURE,
+            min_value=36.0,
+            max_value=37.5,
+        ),
+    ]
+    for t in thresholds:
+        db_session.add(t)
+    try:
+        await db_session.commit()
+    except:
+        await db_session.rollback()
+    return thresholds
 
 
 @pytest_asyncio.fixture

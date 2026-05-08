@@ -4,7 +4,7 @@ Berikut plan implementasi fitur yang belum ada berdasarkan [prd.md](/Users/fadil
 
 1. **Fondasi Auth & Authorization** ✅ done
    - Ganti header sementara `X-Caregiver-Id` / `X-User-Id` menjadi dependency JWT: `get_current_user`.
-   - Buat helper akses:
+   - Buat helper akses:p
      - caregiver pemilik lansia boleh `read/write`.
      - viewer dengan invitation `accepted` hanya boleh `read`.
    - Terapkan helper ini ke elderly, health records, dashboard, schedule, recommendation, notification.
@@ -105,7 +105,7 @@ Berikut plan implementasi fitur yang belum ada berdasarkan [prd.md](/Users/fadil
    - Test minimal (7 tests):
      - ✅ health check endpoint
      - ✅ root endpoint
-     - ✅ auth validation  
+     - ✅ auth validation
      - ✅ weekly summary internal job
      - ✅ openapi docs
      - ✅ swagger ui

@@ -15,6 +15,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.core.auth import get_current_user
+from src.app.core.rate_limiter import limiter
 from src.app.schemas.auth import (
     MessageResponse,
     TokenResponse,
@@ -41,7 +42,9 @@ router = APIRouter(prefix="/auth", tags=["auth"])
         "Returns JWT access and refresh tokens upon successful registration."
     ),
 )
+@limiter.limit("5/minute")
 async def register(
+    request: Request,
     payload: UserRegisterRequest,
     db: AsyncSession = Depends(get_db),
 ) -> TokenResponse:
@@ -67,7 +70,9 @@ async def register(
         "Use form-data content type."
     ),
 )
+@limiter.limit("10/minute")
 async def login_form(
+    request: Request,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: AsyncSession = Depends(get_db),
 ) -> TokenResponse:
@@ -95,7 +100,9 @@ async def login_form(
         "Use JSON content type with 'email' and 'password' fields."
     ),
 )
+@limiter.limit("10/minute")
 async def login_json(
+    request: Request,
     payload: UserLoginRequest,
     db: AsyncSession = Depends(get_db),
 ) -> TokenResponse:
@@ -121,7 +128,9 @@ async def login_json(
         "Both access and refresh tokens are returned."
     ),
 )
+@limiter.limit("10/minute")
 async def refresh(
+    request: Request,
     payload: TokenRefreshRequest,
     db: AsyncSession = Depends(get_db),
 ) -> TokenResponse:

@@ -27,8 +27,8 @@ from src.app.schemas.health import (
     HealthRecordResponse,
     HealthRecordSummary,
 )
-from src.database.enums import HealthStatus
-from src.database.models.health import HealthRecord
+from src.database.enums import HealthParameter, HealthStatus
+from src.database.models.health import HealthRecord, HealthThreshold
 
 from src.app.services import notification_service
 
@@ -148,6 +148,81 @@ async def _run_fuzzy_async(record: HealthRecord) -> FuzzyAnalysisResult:
     return result
 
 
+# ── Threshold checking ──────────────────────────────────────────────────────────
+
+_PARAM_FIELD_MAP: dict[HealthParameter, str] = {
+    HealthParameter.SYSTOLIC_BP: "systolic_bp",
+    HealthParameter.DIASTOLIC_BP: "diastolic_bp",
+    HealthParameter.BLOOD_SUGAR: "blood_sugar",
+    HealthParameter.HEART_RATE: "heart_rate",
+    HealthParameter.BODY_TEMPERATURE: "body_temperature",
+    HealthParameter.BODY_WEIGHT: "body_weight",
+    HealthParameter.CHOLESTEROL: "cholesterol",
+    HealthParameter.URIC_ACID: "uric_acid",
+    HealthParameter.SPO2_LEVEL: "spo2_level",
+}
+
+
+def _max_priority_status(a: HealthStatus, b: HealthStatus) -> HealthStatus:
+    """Return the higher-priority status from two.
+
+    Priority order: CRITICAL > NEEDS_ATTENTION > WARNING > NORMAL
+    """
+    rank = {
+        HealthStatus.NORMAL: 0,
+        HealthStatus.WARNING: 1,
+        HealthStatus.NEEDS_ATTENTION: 2,
+        HealthStatus.CRITICAL: 3,
+    }
+    return a if rank.get(a, 0) >= rank.get(b, 0) else b
+
+
+async def _check_thresholds(
+    db: AsyncSession,
+    record: HealthRecord,
+) -> list[dict]:
+    """Compare each non-null parameter against HealthThreshold for this elderly.
+
+    Returns a list of dicts, one per triggered parameter:
+        [{ "parameter": "systolic_bp", "value": 145, "min_value": 90, "max_value": 140 }]
+    Empty list means no thresholds were exceeded.
+    """
+    result = await db.execute(
+        select(HealthThreshold).where(
+            HealthThreshold.elderly_id == record.elderly_id,
+            HealthThreshold.is_active == True,
+        )
+    )
+    thresholds: list[HealthThreshold] = result.scalars().all()
+    if not thresholds:
+        return []
+
+    threshold_map: dict[HealthParameter, HealthThreshold] = {
+        t.parameter: t for t in thresholds
+    }
+
+    triggered: list[dict] = []
+
+    for param, field_name in _PARAM_FIELD_MAP.items():
+        value = getattr(record, field_name, None)
+        if value is None:
+            continue
+        threshold = threshold_map.get(param)
+        if threshold is None:
+            continue
+        if (threshold.min_value is not None and value < threshold.min_value) or (
+            threshold.max_value is not None and value > threshold.max_value
+        ):
+            triggered.append({
+                "parameter": param.value,
+                "value": value,
+                "min_value": threshold.min_value,
+                "max_value": threshold.max_value,
+            })
+
+    return triggered
+
+
 # ── Public service functions ───────────────────────────────────────────────────
 
 async def create_health_record(
@@ -203,6 +278,13 @@ async def create_health_record(
     record.fuzzy_final_score = fuzzy_result.final_score
     record.health_status     = _fuzzy_status_to_health_status(fuzzy_result.final_status)
 
+    # ── Threshold checking (REQ-015) ───────────────────────────────────────────
+    triggered_params = await _check_thresholds(db, record)
+    if triggered_params:
+        record.health_status = _max_priority_status(
+            record.health_status, HealthStatus.NEEDS_ATTENTION
+        )
+
     # Session is committed by the get_db() dependency after this function returns
 
     # ── Create notifications for caregiver and viewers ───────────────────────────
@@ -212,6 +294,7 @@ async def create_health_record(
         elderly_id=record.elderly_id,
         health_record_id=record.id,
         health_status=health_status_value,
+        triggered_parameters=triggered_params or None,
     )
 
     return _record_to_response(record, fuzzy_result)

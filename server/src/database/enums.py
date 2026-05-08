@@ -72,6 +72,11 @@ class NotificationType(str, enum.Enum):
     INVITATION = "invitation"
 
 
+class NotificationPriority(str, enum.Enum):
+    NORMAL = "normal"
+    HIGH = "high"
+
+
 class NotificationChannel(str, enum.Enum):
     IN_APP = "in_app"
     EMAIL = "email"

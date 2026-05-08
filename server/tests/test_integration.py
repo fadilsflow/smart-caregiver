@@ -67,9 +67,21 @@ async def test_login_invalid_credentials(client: AsyncClient):
 @pytest.mark.asyncio
 async def test_weekly_summary_internal_job(client: AsyncClient):
     """Internal weekly summary job should work (internal endpoint)."""
-    response = await client.post("/internal/jobs/send-weekly-summary")
-    # May return 200 (success) or 500 (if no data) but should not be 401
-    assert response.status_code in [200, 500, 404]
+    response = await client.post(
+        "/internal/jobs/send-weekly-summary",
+        headers={"X-API-Key": "test-internal-api-key"},
+    )
+    # May return 200 (success) or 500 (if no data)
+    assert response.status_code in [200, 500]
+
+
+@pytest.mark.asyncio
+async def test_error_handler_returns_error_schema(client: AsyncClient):
+    """Verify error responses include detail field."""
+    response = await client.get("/nonexistent-endpoint")
+    assert response.status_code == 404
+    data = response.json()
+    assert "detail" in data
 
 
 # =============================================================================

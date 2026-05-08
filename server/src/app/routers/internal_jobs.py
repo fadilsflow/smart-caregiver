@@ -8,6 +8,7 @@ import uuid
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.app.core.internal_auth import verify_internal_api_key
 from src.app.services import summary_service
 from src.database.session import get_db
 
@@ -22,8 +23,8 @@ router = APIRouter(prefix="/internal/jobs", tags=["internal-jobs"])
 )
 async def trigger_weekly_summary(
     db: AsyncSession = Depends(get_db),
+    _: None = Depends(verify_internal_api_key),
 ):
-    # In a real app, this should be protected by an API key or internal network check
     sent_count = await summary_service.process_all_weekly_summaries(db)
     return {"status": "success", "notifications_sent": sent_count}
 
@@ -36,6 +37,7 @@ async def trigger_weekly_summary(
 async def trigger_weekly_summary_single(
     elderly_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
+    _: None = Depends(verify_internal_api_key),
 ):
     sent_count = await summary_service.send_weekly_summary_notifications(db, elderly_id)
     return {"status": "success", "notifications_sent": sent_count}

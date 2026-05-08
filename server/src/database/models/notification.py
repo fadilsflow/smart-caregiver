@@ -14,7 +14,7 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database.base import Base
-from src.database.enums import NotificationChannel, NotificationType
+from src.database.enums import NotificationChannel, NotificationPriority, NotificationType
 
 
 class Notification(Base):
@@ -59,6 +59,9 @@ class Notification(Base):
     )
     channel: Mapped[NotificationChannel] = mapped_column(
         String(20), nullable=False, default=NotificationChannel.IN_APP
+    )
+    priority: Mapped[NotificationPriority] = mapped_column(
+        String(10), nullable=False, default=NotificationPriority.NORMAL
     )
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)

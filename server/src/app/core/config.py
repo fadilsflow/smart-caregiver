@@ -34,6 +34,9 @@ class Settings(BaseSettings):
     # ── GROQ (AI Recommendations) ────────────────────────────────────────────────
     GROQ_API_KEY: str = ""
 
+    # ── Internal API ──────────────────────────────────────────────────────────
+    INTERNAL_API_KEY: str = ""
+
     # ── CORS ──────────────────────────────────────────────────────────────────
     ALLOWED_ORIGINS: list[str] = ["http://localhost:3000"]
 
