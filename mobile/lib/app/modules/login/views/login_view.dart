@@ -21,7 +21,7 @@ class LoginView extends GetView<LoginController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.eco, color: Color(0xFF2E6343), size: 32),
+                  const Icon(Icons.eco, color: Color(0xFF192126), size: 32),
                   const SizedBox(width: 8),
                   const Text(
                     'CareTrack',
@@ -160,7 +160,7 @@ class LoginView extends GetView<LoginController> {
               ElevatedButton(
                 onPressed: controller.login,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFA5F482), // Light green
+                  backgroundColor: const Color(0xFFBBF246), // Light green
                   foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -183,10 +183,7 @@ class LoginView extends GetView<LoginController> {
                     ),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(Icons.chevron_right, size: 20),
-                      ),
+                      child: Padding(padding: EdgeInsets.only(right: 8.0)),
                     ),
                   ],
                 ),

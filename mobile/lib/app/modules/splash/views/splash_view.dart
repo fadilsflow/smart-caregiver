@@ -21,7 +21,7 @@ class SplashView extends GetView<SplashController> {
             height: size.height * 0.6,
             child: Container(
               decoration: const BoxDecoration(
-                color: Color(0xFF0B1221), // Dark blue background
+                color: Color(0xFF192126), // Dark blue background
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(800), // Very wide curve
                 ),
@@ -57,7 +57,7 @@ class SplashView extends GetView<SplashController> {
                     child: Icon(
                       Icons.eco, // Keeping the eco leaf icon
                       size: 60,
-                      color: Color(0xFF2E6343),
+                      color: Color(0xFFBBF246),
                     ),
                   ),
                 ),

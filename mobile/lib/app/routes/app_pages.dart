@@ -32,7 +32,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.SPLASH;
 
   static final routes = [
     GetPage(
@@ -98,6 +98,11 @@ class AppPages {
       name: _Paths.NOTIFIKASI,
       page: () => const NotifikasiView(),
       binding: NotifikasiBinding(),
+    ),
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () => const SplashView(),
+      binding: SplashBinding(),
     ),
   ];
 }

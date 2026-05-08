@@ -361,28 +361,28 @@ class HomeView extends GetView<HomeController> {
                     _buildPatientCard(
                       name: 'Ibu Siti',
                       age: '55 Tahun',
-                      status: 'Stabil',
+                      status: 'NORMAL',
                       isCritical: false,
                     ),
                     const SizedBox(height: 16),
                     _buildPatientCard(
-                      name: 'Pak Budi',
+                      name: 'Budi',
                       age: '67 Tahun',
-                      status: 'Perlu Perhatian',
+                      status: 'PERHATIAN',
                       isCritical: true,
                     ),
                     const SizedBox(height: 16),
                     _buildPatientCard(
                       name: 'Oma Maria',
                       age: '88 Tahun',
-                      status: 'High BP',
+                      status: 'PERHATIAN',
                       isCritical: true,
                     ),
                     const SizedBox(height: 16),
                     _buildPatientCard(
                       name: 'Opa Joko',
                       age: '56 Tahun',
-                      status: 'Stabil',
+                      status: 'NORMAL',
                       isCritical: false,
                     ),
                   ],
@@ -405,16 +405,16 @@ class HomeView extends GetView<HomeController> {
       onTap: () => Get.toNamed(Routes.DASHBOARD),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         decoration: ShapeDecoration(
           color: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(24),
           ),
           shadows: const [
             BoxShadow(
-              color: Color(0x26A1A1AA),
-              blurRadius: 16,
+              color: Color(0x0D000000),
+              blurRadius: 20,
               offset: Offset(0, 4),
               spreadRadius: 0,
             ),
@@ -422,24 +422,31 @@ class HomeView extends GetView<HomeController> {
         ),
         child: Row(
           children: [
+            // Profile Image
             Container(
-              width: 60,
-              height: 60,
+              width: 72,
+              height: 72,
               clipBehavior: Clip.antiAlias,
-              decoration: ShapeDecoration(
-                color: const Color(0xFFE5E2E1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(9999),
-                ),
+              decoration: const ShapeDecoration(
+                shape: CircleBorder(),
               ),
               child: CachedNetworkImage(
-                imageUrl: "https://placehold.co/60x60",
-                fit: BoxFit.fill,
-                placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                imageUrl: isCritical
+                    ? "https://ui-avatars.com/api/?name=Budi&background=f59e0b&color=fff"
+                    : "https://ui-avatars.com/api/?name=Siti&background=ec4899&color=fff",
+                fit: BoxFit.cover,
+                placeholder: (context, url) => const Center(
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                ),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
-            const SizedBox(width: 24),
+            const SizedBox(width: 16),
+            // Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -447,46 +454,72 @@ class HomeView extends GetView<HomeController> {
                   Text(
                     name,
                     style: const TextStyle(
-                      color: Color(0xFF1C1B1C),
-                      fontSize: 20,
+                      color: Color(0xFF18181B),
+                      fontSize: 22,
                       fontFamily: 'Plus Jakarta Sans',
-                      fontWeight: FontWeight.w600,
-                      height: 1.40,
+                      fontWeight: FontWeight.w700,
+                      height: 1.2,
                     ),
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     age,
                     style: const TextStyle(
-                      color: Color(0xFF47464B),
+                      color: Color(0xFF71717A),
                       fontSize: 16,
                       fontFamily: 'Plus Jakarta Sans',
-                      fontWeight: FontWeight.w400,
-                      height: 1.50,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
             ),
+            // Status Badge
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: ShapeDecoration(
                 color: isCritical
-                    ? const Color(0xFF192126)
+                    ? const Color(0xFFE4E4E7)
                     : const Color(0xFFBBF246),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(9999),
                 ),
               ),
-              child: Text(
-                status,
-                style: TextStyle(
-                  color: isCritical ? Colors.white : Colors.black,
-                  fontSize: 12,
-                  fontFamily: 'Plus Jakarta Sans',
-                  fontWeight: FontWeight.w600,
-                  height: 1.33,
-                ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: isCritical
+                          ? const Color(0xFF18181B)
+                          : const Color(0xFF3F6212),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    status.toUpperCase(),
+                    style: TextStyle(
+                      color: isCritical
+                          ? const Color(0xFF3F3F46)
+                          : const Color(0xFF3F6212),
+                      fontSize: 12,
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
               ),
+            ),
+            const SizedBox(width: 12),
+            // Chevron
+            const Icon(
+              Icons.chevron_right,
+              color: Color(0xFF71717A),
+              size: 24,
             ),
           ],
         ),
