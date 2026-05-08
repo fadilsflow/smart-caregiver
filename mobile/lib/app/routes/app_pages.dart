@@ -14,6 +14,8 @@ import '../modules/log-kesehatan/bindings/log_kesehatan_binding.dart';
 import '../modules/log-kesehatan/views/log_kesehatan_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/notifikasi/bindings/notifikasi_binding.dart';
+import '../modules/notifikasi/views/notifikasi_view.dart';
 import '../modules/patient_detail/bindings/patient_detail_binding.dart';
 import '../modules/patient_detail/views/patient_detail_view.dart';
 import '../modules/profil-caregiver/bindings/profil_caregiver_binding.dart';
@@ -91,6 +93,11 @@ class AppPages {
       name: _Paths.PROFIL_CAREGIVER,
       page: () => const ProfilCaregiverView(),
       binding: ProfilCaregiverBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTIFIKASI,
+      page: () => const NotifikasiView(),
+      binding: NotifikasiBinding(),
     ),
   ];
 }
