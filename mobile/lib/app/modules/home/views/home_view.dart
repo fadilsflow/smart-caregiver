@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mobile/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
@@ -10,143 +10,383 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    const Color surfaceColor = Color(0xFFF9F9F9);
-    const Color onSurfaceColor = Color(0xFF1B1B1B);
-    const Color onSurfaceVariantColor = Color(0xFF4C4546);
-    const Color primaryColor = Color(0xFF000000);
-    const Color secondaryContainerColor = Color(0xFFD3E5CE);
-    const Color tertiaryFixedColor = Color(0xFFFDDCC9);
-    const Color outlineVariantColor = Color(0xFFCFC4C5);
-    const Color secondaryColor = Color(0xFF536250);
-    const Color errorColor = Color(0xFFBA1A1A);
-
     return Scaffold(
-      backgroundColor: surfaceColor,
+      backgroundColor: const Color(0xFFFDF8F8),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.toNamed(Routes.TAMBAH_LANSIA),
+        backgroundColor: const Color(0xFF18181B),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 8,
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Custom Top App Bar
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Icon(Icons.menu, color: primaryColor, size: 28),
-                    Text(
-                      'CareTrack',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: primaryColor,
-                        letterSpacing: -0.5,
+        child: Column(
+          children: [
+            // Custom Top App Bar
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.only(
+                top: 16,
+                left: 20,
+                right: 20,
+                bottom: 16,
+              ),
+              decoration: const BoxDecoration(color: Color(0xFFFAFAFA)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Get.toNamed(Routes.PROFIL_CAREGIVER),
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFFE5E2E1),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(9999),
+                            ),
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: "https://placehold.co/40x40",
+                            fit: BoxFit.fill,
+                            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                          ),
+                        ),
                       ),
-                    ),
-                    const Icon(
-                      Icons.notifications_none_outlined,
-                      color: primaryColor,
-                      size: 28,
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Greeting Section
-              Text(
-                'Halo, Sari 👋',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: primaryColor,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Kamis, 24 Oktober 2024',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 14,
-                  color: onSurfaceVariantColor,
-                ),
-              ),
-
-              const SizedBox(height: 32),
-
-              // Patients Section Title
-              Text(
-                'Pasien Saya',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: primaryColor,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Patient List
-              _buildPatientCard(
-                name: 'Budi Santoso',
-                age: '65 Tahun',
-                status: 'Stabil',
-                statusColor: secondaryColor,
-                backgroundColor: secondaryContainerColor,
-                imageUrl:
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuD9F7uUGSzbuMoAMa5YJbePkhQC9M54ApZcI5t68cccbtqS-echkieElbrafbmB3orkuIPFOfBcvN8xgLvzjimUVQ0KS1zllB8aS4R05NwTbFh7m056GX7Ry-_cx_e7mN2y-YjzWxNQRVDq0zzzvDo1Mb6Lvekr6KusEyoGzT4mQPideQlwC_5fNoVE4N8vMkeVfBLpbz91pIKoLk6CBXoiH7LLHBkOEzbVDceBCoRXll9S0PSff7WPFAb2fSllmkA-zdqiq3Qvpng',
-              ),
-              const SizedBox(height: 16),
-              _buildPatientCard(
-                name: 'Siti Aminah',
-                age: '72 Tahun',
-                status: 'Perlu Perhatian',
-                statusColor: errorColor,
-                backgroundColor: tertiaryFixedColor,
-                imageUrl:
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuCu47Bswe-kechA7-4BxSxMADf7gHS_ezXJ5TVLfwlsT7V0fccGbMsMXm1JSEh2WnVBO7627Thd6Np2QJoX48AvLHEFA4Wv6-3TXmfPWNHHHkx8BR3TCI4DRGi0rGIdWRKXTvQ9vTJQwWqFRuYUdpXwKkyHTf1eQNZ__eDEaMs4tJf7fI1uBhgL_dptlYVjXqzncYqDibiWXBwlPV-f9CcYW7s66wQdSyTNZoP2JP9L9m171I3QKYojGiHzgU8CAD8470ds0vkfQU8',
-              ),
-              const SizedBox(height: 16),
-
-              // Add Patient Button
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF3F3F3),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: outlineVariantColor,
-                    width: 2,
-                    style: BorderStyle
-                        .solid, // Flutter doesn't have native dashed border in BoxDecoration easily
+                      const SizedBox(width: 16),
+                      const Text(
+                        'CareTrack',
+                        style: TextStyle(
+                          color: Color(0xFF18181B),
+                          fontSize: 19,
+                          fontFamily: 'Plus Jakarta Sans',
+                          fontWeight: FontWeight.w700,
+                          height: 1.27,
+                          letterSpacing: -0.75,
+                        ),
+                      ),
+                    ],
                   ),
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: const ShapeDecoration(shape: CircleBorder()),
+                    child: const Icon(
+                      Icons.notifications_none,
+                      color: Color(0xFF18181B),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.only(
+                  top: 32,
+                  left: 20,
+                  right: 20,
+                  bottom: 80,
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFE2E2E2),
-                        shape: BoxShape.circle,
+                    // Greeting Section
+                    const Text(
+                      'Selamat Pagi, Sari',
+                      style: TextStyle(
+                        color: Color(0xFF1C1B1C),
+                        fontSize: 21,
+                        fontFamily: 'Plus Jakarta Sans',
+                        fontWeight: FontWeight.w700,
+                        height: 1.27,
+                        letterSpacing: -0.60,
                       ),
-                      child: const Icon(Icons.add, color: primaryColor),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Tambah Pasien',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: onSurfaceColor,
+                    const SizedBox(height: 4),
+                    const Text(
+                      'Berikut adalah status pasien Anda hari ini.',
+                      style: TextStyle(
+                        color: Color(0xFF47464B),
+                        fontSize: 18,
+                        fontFamily: 'Plus Jakarta Sans',
+                        fontWeight: FontWeight.w400,
+                        height: 1.56,
                       ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Dashboard Cards
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(24),
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              shadows: const [
+                                BoxShadow(
+                                  color: Color(0x26A1A1AA),
+                                  blurRadius: 16,
+                                  offset: Offset(0, 4),
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  margin: const EdgeInsets.only(bottom: 16),
+                                  decoration: const ShapeDecoration(
+                                    color: Color(0x191B1B1E),
+                                    shape: CircleBorder(),
+                                  ),
+                                  child: const Icon(
+                                    Icons.people_outline,
+                                    color: Color(0xFF1B1B1E),
+                                  ),
+                                ),
+                                const Text(
+                                  '8',
+                                  style: TextStyle(
+                                    color: Color(0xFF1C1B1C),
+                                    fontSize: 30,
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.27,
+                                    letterSpacing: -0.60,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                const Text(
+                                  'Total Pasien',
+                                  style: TextStyle(
+                                    color: Color(0xFF47464B),
+                                    fontSize: 14,
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.43,
+                                    letterSpacing: 0.14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(24),
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xFFFEF3C7),
+                                ),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              shadows: const [
+                                BoxShadow(
+                                  color: Color(0x26A1A1AA),
+                                  blurRadius: 16,
+                                  offset: Offset(0, 4),
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  margin: const EdgeInsets.only(bottom: 16),
+                                  decoration: const ShapeDecoration(
+                                    color: Color(0xFFFEF3C7),
+                                    shape: CircleBorder(),
+                                  ),
+                                  child: const Icon(
+                                    Icons.warning_amber_rounded,
+                                    color: Color(0xFFD97706),
+                                  ),
+                                ),
+                                const Text(
+                                  '2',
+                                  style: TextStyle(
+                                    color: Color(0xFF1C1B1C),
+                                    fontSize: 30,
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.27,
+                                    letterSpacing: -0.60,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                const Text(
+                                  'Perlu Perhatian',
+                                  style: TextStyle(
+                                    color: Color(0xFF47464B),
+                                    fontSize: 14,
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.43,
+                                    letterSpacing: 0.14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Search Bar Placeholder
+                    Container(
+                      width: double.infinity,
+                      height: 48,
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      decoration: ShapeDecoration(
+                        color: const Color(0xFF192126),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        shadows: const [
+                          BoxShadow(
+                            color: Color(0x0F000000),
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                            spreadRadius: 0,
+                          ),
+                        ],
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.search,
+                            color: Color(0xFF8C9093),
+                            size: 20,
+                          ),
+                          SizedBox(width: 16),
+                          Text(
+                            'Cari Pasien',
+                            style: TextStyle(
+                              color: Color(0xFF8C9093),
+                              fontSize: 16,
+                              fontFamily: 'Plus Jakarta Sans',
+                              fontWeight: FontWeight.w400,
+                              height: 1.50,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Patient List Header
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Pasien Anda',
+                          style: TextStyle(
+                            color: Color(0xFF1C1B1C),
+                            fontSize: 24,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w600,
+                            height: 1.33,
+                            letterSpacing: -0.24,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(9999),
+                            ),
+                            shadows: const [
+                              BoxShadow(
+                                color: Color(0x19A1A1AA),
+                                blurRadius: 8,
+                                offset: Offset(0, 2),
+                                spreadRadius: 0,
+                              ),
+                            ],
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.filter_list,
+                                size: 16,
+                                color: Color(0xFF1C1B1C),
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                'Filter',
+                                style: TextStyle(
+                                  color: Color(0xFF1C1B1C),
+                                  fontSize: 14,
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.43,
+                                  letterSpacing: 0.14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Patient List
+                    _buildPatientCard(
+                      name: 'Ibu Siti',
+                      age: '55 Tahun',
+                      status: 'Stabil',
+                      isCritical: false,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildPatientCard(
+                      name: 'Pak Budi',
+                      age: '67 Tahun',
+                      status: 'Perlu Perhatian',
+                      isCritical: true,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildPatientCard(
+                      name: 'Oma Maria',
+                      age: '88 Tahun',
+                      status: 'High BP',
+                      isCritical: true,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildPatientCard(
+                      name: 'Opa Joko',
+                      age: '56 Tahun',
+                      status: 'Stabil',
+                      isCritical: false,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -156,80 +396,93 @@ class HomeView extends GetView<HomeController> {
     required String name,
     required String age,
     required String status,
-    required Color statusColor,
-    required Color backgroundColor,
-    required String imageUrl,
+    required bool isCritical,
   }) {
     return GestureDetector(
-      onTap: () => Get.toNamed(Routes.PATIENT_DETAIL),
+      onTap: () => Get.toNamed(Routes.DASHBOARD),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
+        decoration: ShapeDecoration(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          shadows: const [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: Color(0x26A1A1AA),
+              blurRadius: 16,
+              offset: Offset(0, 4),
+              spreadRadius: 0,
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.5),
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(imageUrl),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+            Container(
+              width: 60,
+              height: 60,
+              clipBehavior: Clip.antiAlias,
+              decoration: ShapeDecoration(
+                color: const Color(0xFFE5E2E1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(9999),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: statusColor,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Text(
-                    status.toUpperCase(),
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Text(
-              name,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF000000),
+              ),
+              child: CachedNetworkImage(
+                imageUrl: "https://placehold.co/60x60",
+                fit: BoxFit.fill,
+                placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
-            Text(
-              age,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 12,
-                color: const Color(0xFF4C4546),
+            const SizedBox(width: 24),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      color: Color(0xFF1C1B1C),
+                      fontSize: 20,
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontWeight: FontWeight.w600,
+                      height: 1.40,
+                    ),
+                  ),
+                  Text(
+                    age,
+                    style: const TextStyle(
+                      color: Color(0xFF47464B),
+                      fontSize: 16,
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontWeight: FontWeight.w400,
+                      height: 1.50,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: ShapeDecoration(
+                color: isCritical
+                    ? const Color(0xFF192126)
+                    : const Color(0xFFBBF246),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(9999),
+                ),
+              ),
+              child: Text(
+                status,
+                style: TextStyle(
+                  color: isCritical ? Colors.white : Colors.black,
+                  fontSize: 12,
+                  fontFamily: 'Plus Jakarta Sans',
+                  fontWeight: FontWeight.w600,
+                  height: 1.33,
+                ),
               ),
             ),
           ],

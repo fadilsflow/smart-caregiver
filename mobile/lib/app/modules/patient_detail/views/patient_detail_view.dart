@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/patient_detail_controller.dart';
 
 class PatientDetailView extends GetView<PatientDetailController> {
@@ -9,533 +9,432 @@ class PatientDetailView extends GetView<PatientDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    const Color backgroundColor = Color(0xFFF9F9F9);
-    const Color primaryColor = Color(0xFF000000);
-    const Color onPrimaryContainerColor = Color(0xFF848484);
-    const Color secondaryContainerColor = Color(0xFFD3E5CE);
-    const Color onSecondaryContainerColor = Color(0xFF576755);
-    
-    // Vital Colors
-    const Color tdColor = Color(0xFFE9E7FD);
-    const Color gulaColor = Color(0xFFFFEAD8);
-    const Color suhuColor = Color(0xFFFFF8D6);
-
     return Scaffold(
-      backgroundColor: backgroundColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Custom Top App Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () => Get.back(),
-                    icon: const Icon(Icons.arrow_back),
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                  ),
-                  const SizedBox(width: 16),
-                  Text(
-                    'Patient Details',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const Spacer(),
-                  const Icon(Icons.person_outline),
-                ],
-              ),
-            ),
-
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    // Profile Header
-                    Row(
-                      children: [
-                        Text(
-                          'Budi Santoso',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: primaryColor,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: secondaryContainerColor,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Text(
-                            'NORMAL',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: onSecondaryContainerColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      '65 Tahun',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 16,
-                        color: onPrimaryContainerColor,
-                      ),
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    // Vitals Section
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildVitalCard(
-                            label: 'TD',
-                            value: '120/80',
-                            unit: 'mmHg',
-                            color: tdColor,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _buildVitalCard(
-                            label: 'Gula',
-                            value: '110',
-                            unit: 'mg/dL',
-                            color: gulaColor,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _buildVitalCard(
-                            label: 'Suhu',
-                            value: '36.5',
-                            unit: '°C',
-                            color: suhuColor,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    // Health Trend Section
-                    Container(
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.04),
-                            blurRadius: 40,
-                            offset: const Offset(0, 20),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Health Trend',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: primaryColor,
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFF3F3F3),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Row(
-                                  children: [
-                                    _buildToggleOption('7 Hari', true),
-                                    _buildToggleOption('30 Hari', false),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 24),
-                          // Chart Placeholder
-                          SizedBox(
-                            height: 160,
-                            width: double.infinity,
-                            child: CustomPaint(
-                              painter: SimpleChartPainter(),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              'Sen',
-                              'Sel',
-                              'Rab',
-                              'Kam',
-                              'Jum',
-                              'Sab',
-                              'Min'
-                            ]
-                                .map((day) => Text(
-                                      day,
-                                      style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 10,
-                                        color: const Color(0xFFB4B4B4),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    // History Section
-                    Text(
-                      'Riwayat Cek Kesehatan',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: primaryColor,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _buildHistoryItem(
-                      day: '24',
-                      month: 'OKT',
-                      status: 'STABIL',
-                      statusColor: secondaryContainerColor,
-                      onStatusColor: onSecondaryContainerColor,
-                      description:
-                          'Kondisi fisik prima, tekanan darah dalam batas normal setelah istirahat.',
-                    ),
-                    const SizedBox(height: 12),
-                    _buildHistoryItem(
-                      day: '20',
-                      month: 'OKT',
-                      status: 'OBSERVASI',
-                      statusColor: const Color(0xFFFFEAD8),
-                      onStatusColor: const Color(0xFF997F6E),
-                      description:
-                          'Sedikit peningkatan kadar gula pagi hari, disarankan diet rendah karbo.',
-                    ),
-                    const SizedBox(height: 12),
-                    _buildHistoryItem(
-                      day: '15',
-                      month: 'OKT',
-                      status: 'STABIL',
-                      statusColor: secondaryContainerColor,
-                      onStatusColor: onSecondaryContainerColor,
-                      description:
-                          'Check-up rutin pasca medikasi, hasil laboratorium menunjukkan progres baik.',
-                    ),
-                    const SizedBox(height: 100), // Space for Bottom Nav/FAB
-                  ],
-                ),
-              ),
-            ),
-          ],
+      backgroundColor: const Color(0xFFFDF8F8),
+      appBar: AppBar(
+        backgroundColor: Colors.white.withValues(alpha: 0.80),
+        elevation: 0,
+        shape: const Border(
+          bottom: BorderSide(color: Color(0xFFF5F5F4), width: 1),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          'Riwayat Kesehatan',
+          style: TextStyle(
+            color: Color(0xFF1C1917),
+            fontSize: 19,
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.40,
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.black,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white, size: 32),
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.only(
+            top: 24,
+            left: 20,
+            right: 20,
+            bottom: 48,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header Texts
+              const Text(
+                'Riwayat Kesehatan',
+                style: TextStyle(
+                  color: Color(0xFF1C1B1C),
+                  fontSize: 24,
+                  fontFamily: 'Plus Jakarta Sans',
+                  fontWeight: FontWeight.w600,
+                  height: 1.33,
+                  letterSpacing: -0.24,
+                ),
+              ),
+              const SizedBox(height: 4),
+              const Text(
+                'Riwayat kesehatan dan pemantauan tanda vital',
+                style: TextStyle(
+                  color: Color(0xFF47464B),
+                  fontSize: 16,
+                  fontFamily: 'Plus Jakarta Sans',
+                  fontWeight: FontWeight.w400,
+                  height: 1.50,
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Timeline items
+              Obx(() {
+                return Column(
+                  children: controller.records.map((record) {
+                    // Menggunakan widget TimelineCard yang baru dibuat
+                    return TimelineCard(record: record);
+                  }).toList(),
+                );
+              }),
+            ],
+          ),
+        ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          decoration: ShapeDecoration(
+            color: const Color(0xFF192126),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32),
+            ),
+          ),
+          child: Obx(
+            () => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildNavItem(0, Icons.home_filled, "Home"),
+                _buildNavItem(1, Icons.calendar_today_outlined, "Calendar"),
+                _buildNavItem(2, Icons.medical_services_outlined, "medical"),
+                _buildNavItem(3, Icons.person_outline, "Person"),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildVitalCard({
-    required String label,
-    required String value,
-    required String unit,
-    required Color color,
-  }) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        padding: const EdgeInsets.all(16),
+  Widget _buildNavItem(int index, IconData icon, String label) {
+    bool isSelected = controller.currentIndex.value == index;
+    return GestureDetector(
+      onTap: () => controller.changePage(index),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: EdgeInsets.symmetric(
+          horizontal: isSelected ? 16 : 12,
+          vertical: 10,
+        ),
         decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(24),
+          color: isSelected ? const Color(0xFFBBF246) : Colors.transparent,
+          borderRadius: BorderRadius.circular(43),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              label,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF717171),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  value,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  unit,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF717171),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildToggleOption(String text, bool active) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        color: active ? Colors.white : Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: active
-            ? [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ]
-            : [],
-      ),
-      child: Text(
-        text,
-        style: GoogleFonts.plusJakartaSans(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          color: active ? Colors.black : const Color(0xFF848484),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHistoryItem({
-    required String day,
-    required String month,
-    required String status,
-    required Color statusColor,
-    required Color onStatusColor,
-    required String description,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 30,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: const Color(0xFFEEEEEE),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  month,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFFB4B4B4),
-                  ),
-                ),
-                Text(
-                  day,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: statusColor,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Text(
-                        status,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: onStatusColor,
-                        ),
-                      ),
-                    ),
-                    const Icon(Icons.chevron_right,
-                        size: 16, color: Color(0xFFD4D4D4)),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 12,
-                    color: const Color(0xFF848484),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-  Widget _buildBottomNavBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        border: const Border(top: BorderSide(color: Color(0xFFF1F1F1))),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(Icons.home_filled, 'Home', true),
-            _buildNavItem(Icons.favorite_outline, 'Health', false),
-            _buildNavItem(Icons.calendar_today_outlined, 'Schedule', false),
+            Icon(
+              icon,
+              color: isSelected ? const Color(0xFF192126) : Colors.white70,
+              size: 24,
+            ),
+            if (isSelected && label.isNotEmpty) ...[
+              const SizedBox(width: 4),
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Color(0xFF192126),
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Lato',
+                  fontSize: 13,
+                ),
+              ),
+            ],
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, String label, bool active) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: active
-          ? BoxDecoration(
-              color: const Color(0xFFF1F1F1),
-              borderRadius: BorderRadius.circular(16),
-            )
-          : null,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: active ? Colors.black : const Color(0xFFB4B4B4)),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 11,
-              fontWeight: FontWeight.w500,
-              color: active ? Colors.black : const Color(0xFFB4B4B4),
-            ),
-          ),
-        ],
       ),
     );
   }
 }
 
-class SimpleChartPainter extends CustomPainter {
+// Memisahkan Card menjadi StatefulWidget agar memiliki state expand/collapse secara independen
+class TimelineCard extends StatefulWidget {
+  final Map<String, dynamic> record;
+
+  const TimelineCard({super.key, required this.record});
+
   @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
+  State<TimelineCard> createState() => _TimelineCardState();
+}
 
-    final path = Path();
-    path.moveTo(0, size.height * 0.875);
-    path.quadraticBezierTo(
-        size.width * 0.15, size.height * 0.8, size.width * 0.25, size.height * 0.625);
-    path.quadraticBezierTo(
-        size.width * 0.375, size.height * 0.7, size.width * 0.5, size.height * 0.7);
-    path.quadraticBezierTo(
-        size.width * 0.625, size.height * 0.7, size.width * 0.75, size.height * 0.375);
-    path.quadraticBezierTo(
-        size.width * 0.875, size.height * 0.5, size.width, size.height * 0.5);
+class _TimelineCardState extends State<TimelineCard> {
+  // State untuk melacak apakah kartu sedang dibuka atau ditutup
+  bool _isExpanded = false;
 
-    canvas.drawPath(path, paint);
+  @override
+  Widget build(BuildContext context) {
+    final record = widget.record;
+    bool hasSymptoms =
+        record['symptoms'] != null && (record['symptoms'] as List).isNotEmpty;
+    bool hasNotes =
+        record['notes'] != null && record['notes'].toString().isNotEmpty;
+    bool isCritical = record['status'] == 'Perlu Perhatian';
 
-    final dotPaint = Paint()..color = Colors.black;
-    canvas.drawCircle(Offset(size.width * 0.25, size.height * 0.625), 2, dotPaint);
-    canvas.drawCircle(Offset(size.width * 0.5, size.height * 0.7), 2, dotPaint);
-    canvas.drawCircle(Offset(size.width * 0.75, size.height * 0.375), 2, dotPaint);
-    
-    // Draw grid lines
-    final gridPaint = Paint()
-      ..color = Colors.black.withOpacity(0.05)
-      ..strokeWidth = 1;
-      
-    for (int i = 1; i <= 4; i++) {
-      double y = size.height * i / 4;
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), gridPaint);
-    }
+    // Opsional: Cek apakah ada detail tambahan untuk ditampilkan,
+    // jika tidak ada, Anda mungkin ingin menyembunyikan icon dropdown sama sekali.
+    bool hasDetails = hasSymptoms || hasNotes || isCritical;
+
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(20),
+      clipBehavior: Clip.antiAlias,
+      decoration: ShapeDecoration(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shadows: const [
+          BoxShadow(
+            color: Color(0x0A18181B),
+            blurRadius: 16,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              width: 4,
+              color: isCritical
+                  ? const Color(0xFF192126)
+                  : const Color(0xFFC6C5CF),
+            ),
+          ),
+        ),
+        padding: const EdgeInsets.only(left: 16), // Spaced from the line
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Date & Status row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  record['date'],
+                  style: const TextStyle(
+                    color: Color(0xFF47464B),
+                    fontSize: 14,
+                    fontFamily: 'Plus Jakarta Sans',
+                    fontWeight: FontWeight.w500,
+                    height: 1.43,
+                    letterSpacing: 0.14,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                  decoration: ShapeDecoration(
+                    color: Color(record['color'] as int),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(9999),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      if (isCritical)
+                        const Icon(
+                          Icons.info,
+                          color: Color(0xFF192126),
+                          size: 16,
+                        ),
+                      if (!isCritical)
+                        const Icon(
+                          Icons.check_circle_outline,
+                          color: Color(0xFF5D7000),
+                          size: 14,
+                        ),
+                      const SizedBox(width: 4),
+                      Text(
+                        record['status'],
+                        style: TextStyle(
+                          color: Color(record['textColor'] as int),
+                          fontSize: 12,
+                          fontFamily: 'Plus Jakarta Sans',
+                          fontWeight: FontWeight.w600,
+                          height: 1.33,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Tensi, Suhu, and Dropdown Icon
+            InkWell(
+              onTap: () {
+                // Jika ada detail (symptoms/notes), toggle expand
+                if (hasDetails) {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Tensi ${record['tensi']} ',
+                              style: const TextStyle(
+                                color: Color(0xFF1C1B1C),
+                                fontSize: 18,
+                                fontFamily: 'Plus Jakarta Sans',
+                                fontWeight: FontWeight.w600,
+                                height: 1.56,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: '• ',
+                              style: TextStyle(
+                                color: Color(0xFF1C1B1C),
+                                fontSize: 18,
+                                fontFamily: 'Plus Jakarta Sans',
+                                fontWeight: FontWeight.w700,
+                                height: 1.56,
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'Suhu ${record['suhu']}',
+                              style: const TextStyle(
+                                color: Color(0xFF1C1B1C),
+                                fontSize: 18,
+                                fontFamily: 'Plus Jakarta Sans',
+                                fontWeight: FontWeight.w600,
+                                height: 1.56,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // Ganti icon berdasarkan state _isExpanded
+                    if (hasDetails)
+                      Icon(
+                        _isExpanded
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        color: const Color(0xFF1C1B1C),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Animasi ringan untuk buka tutup
+            AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              alignment: Alignment.topCenter,
+              curve: Curves.easeInOut,
+              child: !_isExpanded
+                  ? const SizedBox(width: double.infinity)
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Divider(color: Color(0x7FC8C5CB), height: 32),
+
+                        if (hasSymptoms)
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: (record['symptoms'] as List<String>).map((
+                              symptom,
+                            ) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: ShapeDecoration(
+                                  color: const Color(0xFFE2E2E2),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(9999),
+                                  ),
+                                ),
+                                child: Text(
+                                  symptom,
+                                  style: const TextStyle(
+                                    color: Color(0xFF63646C),
+                                    fontSize: 12,
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.33,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+
+                        if (hasSymptoms) const SizedBox(height: 12),
+
+                        if (hasNotes) ...[
+                          const Text(
+                            'CATATAN CAREGIVER',
+                            style: TextStyle(
+                              color: Color(0xFF47464B),
+                              fontSize: 12,
+                              fontFamily: 'Plus Jakarta Sans',
+                              fontWeight: FontWeight.w600,
+                              height: 1.33,
+                              letterSpacing: 0.60,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            record['notes'],
+                            style: const TextStyle(
+                              color: Color(0xFF1C1B1C),
+                              fontSize: 14,
+                              fontFamily: 'Plus Jakarta Sans',
+                              fontWeight: FontWeight.w400,
+                              height: 1.50,
+                            ),
+                          ),
+                        ],
+
+                        const Divider(color: Color(0x7FC8C5CB), height: 32),
+
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(Routes.DETAIL_HISTORY);
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Lihat Riwayat Kesehatan',
+                                  style: TextStyle(
+                                    color: Color(0xFF1C1B1C),
+                                    fontSize: 16,
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.chevron_right,
+                                  color: Color(0xFF1C1B1C),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
