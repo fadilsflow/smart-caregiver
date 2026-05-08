@@ -1,6 +1,6 @@
 """
 Notification models
-REQ-019: Notify on new health record (caregiver + all viewers)
+REQ-019: Notify on new health record (caregiver)
 REQ-020: Notify on critical status
 REQ-021: Weekly summary notification
 """
@@ -14,24 +14,18 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database.base import Base
-from src.database.enums import NotificationChannel, NotificationType
+from src.database.enums import NotificationChannel, NotificationPriority, NotificationType
 
 
 class Notification(Base):
     """
     Single-table for all notification types and channels.
 
-    Fan-out strategy for REQ-019 / REQ-020:
-        1. Health record saved for elderly_id X.
-        2. Service fetches all accepted viewer_invitations WHERE elderly_id = X.
-        3. Inserts one Notification row per recipient (caregiver + each viewer).
-        4. Background worker reads unsent rows → dispatches via email/push/in-app.
-
     metadata (JSONB) stores context per notification_type, e.g.:
-        health_recorded  → { "health_record_id": "...", "health_status": "needs_attention" }
-        critical_alert   → { "health_record_id": "...", "triggered_params": ["systolic_bp"] }
-        alarm_reminder   → { "schedule_id": "...", "schedule_title": "Minum Obat Pagi" }
-        weekly_summary   → { "period_start": "...", "period_end": "..." }
+        health_recorded  { "health_record_id": "...", "health_status": "needs_attention" }
+        critical_alert   { "health_record_id": "...", "triggered_params": ["systolic_bp"] }
+        alarm_reminder   { "schedule_id": "...", "schedule_title": "Minum Obat Pagi" }
+        weekly_summary   { "period_start": "...", "period_end": "..." }
     """
 
     __tablename__ = "notifications"
@@ -45,7 +39,6 @@ class Notification(Base):
         nullable=False,
         index=True,
     )
-    # Which elderly triggered this notification (for quick lookup / filtering)
     elderly_id: Mapped[Optional[uuid.UUID]] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("elderly_profiles.id", ondelete="SET NULL"),
@@ -53,22 +46,24 @@ class Notification(Base):
         index=True,
     )
 
-    # ── Content ───────────────────────────────────────────────────────────────
+    # ── Content 
     notification_type: Mapped[NotificationType] = mapped_column(
         String(40), nullable=False, index=True
     )
     channel: Mapped[NotificationChannel] = mapped_column(
         String(20), nullable=False, default=NotificationChannel.IN_APP
     )
+    priority: Mapped[NotificationPriority] = mapped_column(
+        String(10), nullable=False, default=NotificationPriority.NORMAL
+    )
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
     payload: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
-    # ── State ─────────────────────────────────────────────────────────────────
+    # ── State 
     is_read: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False, index=True)
     read_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
 
-    # sent_at = None means not yet dispatched (worker polls this)
     sent_at: Mapped[Optional[datetime]] = mapped_column(
         DateTime(timezone=True), nullable=True, index=True
     )
@@ -77,18 +72,16 @@ class Notification(Base):
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
 
-    # ── Relationships ─────────────────────────────────────────────────────────
-    recipient: Mapped["User"] = relationship(  # noqa: F821
+    # ── Relationships 
+    recipient: Mapped["User"] = relationship(
         back_populates="notifications", lazy="select"
     )
-    elderly: Mapped[Optional["ElderlyProfile"]] = relationship(lazy="select")  # noqa: F821
+    elderly: Mapped[Optional["ElderlyProfile"]] = relationship(lazy="select")
 
     from sqlalchemy import Index
 
     __table_args__ = (
-        # Inbox query: unread notifications for a user, newest first
         Index("ix_notifications_inbox", "recipient_id", "is_read", "created_at"),
-        # Worker query: unsent notifications
         Index(
             "ix_notifications_unsent",
             "sent_at",
@@ -133,8 +126,8 @@ class NotificationPreference(Base):
         nullable=False,
     )
 
-    # ── Relationships ─────────────────────────────────────────────────────────
-    user: Mapped["User"] = relationship(  # noqa: F821
+    # ── Relationships 
+    user: Mapped["User"] = relationship(
         back_populates="notification_preferences", lazy="select"
     )
 

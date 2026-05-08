@@ -1,8 +1,8 @@
 """
-Dashboard Service — business logic for dashboard overview and health trends.
+Dashboard Service business logic for dashboard overview and health trends.
 
 Responsibilities:
-  1. Get dashboard overview for the current user (caregiver's elderly or viewer's elderly)
+  1. Get dashboard overview for the current caregiver
   2. Get health trends data for a specific elderly person (7d or 30d range)
 """
 
@@ -14,9 +14,7 @@ from typing import Optional
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
-from src.app.core.auth import get_viewer_access_elderly_ids
 from src.app.schemas.dashboard import (
     DashboardElderlyItem,
     DashboardOverviewResponse,
@@ -31,20 +29,17 @@ from src.database.models.health import HealthRecord
 
 
 async def get_dashboard_overview(
-    user: "User",  # Forward reference to avoid circular import
+    user: "User",
     db: AsyncSession,
 ) -> DashboardOverviewResponse:
     """
-    Get dashboard overview for the current user.
+    Get dashboard overview for the current caregiver.
 
     Caregivers see all their elderly profiles (status=ACTIVE).
-    Viewers see all elderly they have accepted access to.
 
     Returns:
         DashboardOverviewResponse with list of elderly and their latest health status.
     """
-    elderly_ids: list[uuid.UUID] = []
-
     caregiver_stmt = (
         select(ElderlyProfile.id)
         .where(
@@ -54,20 +49,14 @@ async def get_dashboard_overview(
     )
     caregiver_result = await db.execute(caregiver_stmt)
     caregiver_ids = [row[0] for row in caregiver_result.fetchall()]
-    elderly_ids.extend(caregiver_ids)
 
-    viewer_ids = await get_viewer_access_elderly_ids(user, db)
-    elderly_ids.extend(viewer_ids)
-
-    if not elderly_ids:
+    if not caregiver_ids:
         return DashboardOverviewResponse(total=0, elderly=[])
-
-    elderly_ids = list(set(elderly_ids))
 
     elderly_stmt = (
         select(ElderlyProfile)
         .where(
-            ElderlyProfile.id.in_(elderly_ids),
+            ElderlyProfile.id.in_(caregiver_ids),
             ElderlyProfile.status == ElderlyStatus.ACTIVE,
         )
     )
@@ -79,7 +68,7 @@ async def get_dashboard_overview(
             HealthRecord.elderly_id,
             func.max(HealthRecord.recorded_at).label("max_recorded_at"),
         )
-        .where(HealthRecord.elderly_id.in_(elderly_ids))
+        .where(HealthRecord.elderly_id.in_(caregiver_ids))
         .group_by(HealthRecord.elderly_id)
         .subquery()
     )

@@ -26,13 +26,6 @@ class HealthStatus(str, enum.Enum):
     CRITICAL = "critical"
 
 
-class InvitationStatus(str, enum.Enum):
-    PENDING = "pending"
-    ACCEPTED = "accepted"
-    REVOKED = "revoked"
-    EXPIRED = "expired"
-
-
 class ScheduleType(str, enum.Enum):
     MEDICATION = "medication"
     ROUTINE_CHECKUP = "routine_checkup"
@@ -69,7 +62,11 @@ class NotificationType(str, enum.Enum):
     WEEKLY_SUMMARY = "weekly_summary"
     ALARM_REMINDER = "alarm_reminder"
     ACTIVITY_RECOMMENDATION = "activity_recommendation"
-    INVITATION = "invitation"
+
+
+class NotificationPriority(str, enum.Enum):
+    NORMAL = "normal"
+    HIGH = "high"
 
 
 class NotificationChannel(str, enum.Enum):

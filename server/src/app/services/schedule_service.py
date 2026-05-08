@@ -1,5 +1,5 @@
 """
-Schedule Service — business logic for schedules and alarms.
+Schedule Service business logic for schedules and alarms.
 """
 
 from __future__ import annotations
@@ -12,11 +12,10 @@ from sqlalchemy import select, and_, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.enums import (
-    InvitationStatus,
     NotificationChannel,
     NotificationType,
 )
-from src.database.models.elderly import ElderlyProfile, ViewerInvitation
+from src.database.models.elderly import ElderlyProfile
 from src.database.models.notification import Notification
 from src.database.models.schedule import Schedule, ScheduleAlarm
 
@@ -264,16 +263,6 @@ async def dispatch_due_alarms(
             continue
 
         recipient_ids = [elderly.caregiver_id]
-
-        viewers_stmt = select(ViewerInvitation).where(
-            ViewerInvitation.elderly_id == elderly.id,
-            ViewerInvitation.status == InvitationStatus.ACCEPTED,
-        )
-        viewers_result = await db.execute(viewers_stmt)
-        viewers = viewers_result.scalars().all()
-        for viewer in viewers:
-            if viewer.viewer_id:
-                recipient_ids.append(viewer.viewer_id)
 
         title = f"Reminder: {schedule.title}"
         body = f"It's time for {schedule.schedule_type.replace('_', ' ')}: {schedule.title}"

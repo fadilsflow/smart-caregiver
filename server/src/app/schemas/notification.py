@@ -1,6 +1,6 @@
 """
 Notification Pydantic schemas.
-REQ-019: Notify on new health record (caregiver + all viewers)
+REQ-019: Notify on new health record (caregiver)
 REQ-020: Notify on critical status
 """
 
@@ -10,7 +10,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from src.database.enums import NotificationChannel, NotificationType
+from src.database.enums import NotificationChannel, NotificationPriority, NotificationType
 
 
 class NotificationResponse(BaseModel):
@@ -19,6 +19,7 @@ class NotificationResponse(BaseModel):
     elderly_id: Optional[UUID] = None
     notification_type: NotificationType
     channel: NotificationChannel
+    priority: NotificationPriority = NotificationPriority.NORMAL
     title: str
     body: str
     payload: Optional[dict] = None

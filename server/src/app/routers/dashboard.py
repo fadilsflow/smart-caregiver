@@ -2,13 +2,12 @@
 Dashboard Router
 
 Endpoints:
-  GET /dashboard/overview      → Overview of all accessible elderly
+  GET /dashboard/overview      → Overview of all elderly managed by caregiver
   GET /elderly/{elderly_id}/health/trends → Health trends data (7d/30d)
 
 Authentication:
   All endpoints require JWT bearer token.
-  - Caregivers see their own elderly profiles
-  - Viewers see elderly they have accepted access to
+  Caregivers see their own elderly profiles.
 """
 
 from __future__ import annotations
@@ -35,8 +34,7 @@ router = APIRouter(tags=["dashboard"])
     response_model=DashboardOverviewResponse,
     summary="Get dashboard overview",
     description=(
-        "Returns a list of all elderly profiles the current user has access to. "
-        "Caregivers see their own elderly, viewers see elderly they have accepted access to. "
+        "Returns a list of all elderly profiles owned by the current caregiver. "
         "Each entry includes basic info and the latest health status if available."
     ),
 )
@@ -58,7 +56,7 @@ async def get_dashboard_overview(
         "Returns health data trends over a specified period (7d or 30d). "
         "Data is aggregated by date, showing vital parameters for each day. "
         "Includes summary statistics (min, max, avg) for each parameter. "
-        "Requires caregiver owner or viewer with accepted invitation."
+        "Requires caregiver owner."
     ),
 )
 async def get_health_trends(

@@ -1,9 +1,9 @@
 """
-Weekly Summary Service — business logic for periodic health summaries.
+Weekly Summary Service business logic for periodic health summaries.
 
 Responsibilities:
   1. Generate weekly health summaries for an elderly person
-  2. Send summary notifications to caregiver and viewers
+  2. Send summary notifications to caregiver
 """
 
 from __future__ import annotations
@@ -16,8 +16,8 @@ from sqlalchemy import select, func, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.services.notification_service import create_notification
-from src.database.enums import HealthStatus, NotificationType, InvitationStatus
-from src.database.models.elderly import ElderlyProfile, ViewerInvitation
+from src.database.enums import HealthStatus, NotificationType
+from src.database.models.elderly import ElderlyProfile
 from src.database.models.health import HealthRecord
 
 
@@ -123,7 +123,7 @@ async def send_weekly_summary_notifications(
     elderly_id: uuid.UUID,
 ) -> int:
     """
-    Generate and send weekly summary notifications to caregiver and viewers.
+    Generate and send weekly summary notification to caregiver.
     
     Args:
         db: Database session
@@ -143,21 +143,8 @@ async def send_weekly_summary_notifications(
     if not elderly:
         return 0
 
-    # Collect recipients: caregiver + accepted viewers
+    # Send to caregiver only
     recipient_ids = [elderly.caregiver_id]
-    
-    viewers_stmt = select(ViewerInvitation).where(
-        and_(
-            ViewerInvitation.elderly_id == elderly_id,
-            ViewerInvitation.status == InvitationStatus.ACCEPTED,
-        )
-    )
-    viewers_result = await db.execute(viewers_stmt)
-    viewers = viewers_result.scalars().all()
-    
-    for viewer in viewers:
-        if viewer.viewer_id:
-            recipient_ids.append(viewer.viewer_id)
 
     title = "Weekly Summary: {0}".format(elderly.full_name)
     body = "Here is the health summary for {0} from the past 7 days. {1}".format(elderly.full_name, summary['body_summary'])

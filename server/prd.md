@@ -18,15 +18,11 @@
 
 - Pencatatan kesehatan lansia masih banyak dilakukan secara manual (buku catatan / spreadsheet), sehingga rawan terlewat, tidak konsisten, dan sulit dianalisis trennya.
 
-- Keluarga (non-caregiver) kesulitan mendapatkan informasi kondisi lansia secara real-time karena tidak ada kanal komunikasi data yang terpusat dan terpercaya.
-
 - Rekomendasi aktivitas untuk lansia umumnya bersifat generik dan tidak mempertimbangkan kondisi fisik, riwayat penyakit, serta minat individu masing-masing lansia.
 
 #### 1.2. Tujuan
 
 - Memudahkan caregiver dalam memantau dan mencatat kondisi kesehatan harian dari banyak lansia sekaligus dalam satu platform.
-
-- Memberikan visibilitas kondisi lansia kepada keluarga (viewer) secara aman dan terkontrol berdasarkan hak akses per lansia.
 
 - Meningkatkan kepatuhan jadwal minum obat dan rutinitas pemeriksaan melalui sistem pengingat otomatis.
 
@@ -39,8 +35,6 @@
 - \[Secondary\] Persentase alarm pengingat yang ditindaklanjuti tepat waktu oleh caregiver
 
 - \[Secondary\] Tingkat adopsi fitur rekomendasi aktivitas AI (persentase rekomendasi yang di-approve dan dimasukkan ke jadwal)
-
-- \[Secondary\] Kepuasan viewer (keluarga) terhadap kemudahan akses informasi kondisi lansia
 
 3. ### _Requirements_ (Kebutuhan) Aplikasi
 
@@ -61,8 +55,6 @@
 | REQ-008                        | _Caregiver_ dapat melihat semua lansia yang dikelola dalam satu tampilan ringkasan (_overview_)                                                        |
 | REQ-009                        | _Caregiver_ dapat masuk ke halaman detail per lansia untuk melihat grafik tren per parameter kesehatan dalam rentang 7 hari atau 30 hari               |
 | REQ-010                        | _Caregiver_ dapat melihat riwayat catatan kesehatan lengkap per lansia                                                                                 |
-| REQ-011                        | _Caregiver_ dapat mengundang _Viewer_ untuk mengakses data lansia tertentu saja                                                                        |
-| REQ-012                        | _Viewer_ yang diundang hanya dapat melihat dashboard dan data lansia yang relevan sesuai undangan, tanpa akses ke data lansia lain                     |
 | **Jadwal & Alarm Pengingat**   |                                                                                                                                                        |
 | REQ-013                        | _Caregiver_ dapat membuat jadwal per lansia yang mencakup: jadwal minum obat, pemeriksaan rutin, dan aktivitas harian                                  |
 | REQ-014                        | Setiap jadwal yang dibuat dapat dilengkapi dengan alarm notifikasi pengingat                                                                           |
@@ -72,9 +64,9 @@
 | REQ-017                        | _Caregiver_ dapat melihat daftar rekomendasi aktivitas AI per lansia                                                                                   |
 | REQ-018                        | _Caregiver_ dapat meng-_approve_ rekomendasi aktivitas, sehingga aktivitas tersebut otomatis masuk ke jadwal lansia yang bersangkutan                  |
 | **Notifikasi**                 |                                                                                                                                                        |
-| REQ-019                        | Sistem mengirimkan notifikasi kepada _caregiver_ dan semua _viewer_ terdaftar per lansia ketika data kesehatan baru dicatat                            |
-| REQ-020                        | Sistem mengirimkan notifikasi kepada _caregiver_ dan _viewer_ terkait ketika kondisi lansia ditandai sebagai **Kritis**                                |
-| REQ-021                        | Sistem mengirimkan ringkasan mingguan kondisi lansia kepada _caregiver_ dan _viewer_ yang terdaftar                                                    |
+| REQ-019                        | Sistem mengirimkan notifikasi kepada _caregiver_ ketika data kesehatan baru dicatat                                                                    |
+| REQ-020                        | Sistem mengirimkan notifikasi kepada _caregiver_ ketika kondisi lansia ditandai sebagai **Kritis**                                                     |
+| REQ-021                        | Sistem mengirimkan ringkasan mingguan kondisi lansia kepada _caregiver_                                                                                |
 
     3.2 Fitur di Luar Ruang Lingkup
 
@@ -101,8 +93,6 @@
 | _Caregiver_ dapat melihat semua lansia yang dikelola dalam satu tampilan ringkasan (_overview_)                                                   | Halaman Beranda (_Dashboard_) menampilkan ringkasan semua lansia dalam bentuk _card_ atau _list_. Setiap \*card\* menampilkan: \- Nama Lansia \- Usia \- Status Kesehatan Terakhir (Normal/Perlu Perhatian) \- Pembaruan Terakhir                                                                               |
 | _Caregiver_ dapat masuk ke halaman detail per lansia untuk melihat grafik tren per parameter kesehatan dalam rentang 7 hari atau 30 hari          | Halaman Detail Lansia memiliki tab "Tren Kesehatan". Menampilkan visualisasi grafik _line chart_ untuk masing-masing parameter (Tekanan Darah, Gula Darah, dll.). Terdapat filter rentang waktu "7 Hari Terakhir" dan "30 Hari Terakhir".                                                                       |
 | _Caregiver_ dapat melihat riwayat catatan kesehatan lengkap per lansia                                                                            | Halaman Detail Lansia memiliki tab "Riwayat". Menampilkan daftar riwayat (_history log_) pencatatan kesehatan, diurutkan dari yang paling baru. Setiap entri riwayat dapat diklik untuk melihat detail lengkap.                                                                                                 |
-| _Caregiver_ dapat mengundang _Viewer_ untuk mengakses data lansia tertentu saja                                                                   | Pada halaman pengaturan atau detail lansia, terdapat fitur "Undang Viewer". Pengguna dapat memasukkan email _Viewer_ dan memberikan akses khusus untuk lansia tersebut saja.                                                                                                                                    |
-| _Viewer_ yang diundang hanya dapat melihat dashboard dan data lansia yang relevan sesuai undangan, tanpa akses ke data lansia lain                | Saat _Viewer_ login, sistem hanya menampilkan data lansia yang telah diberikan akses kepadanya. _Viewer_ tidak memiliki akses untuk menambah/mengedit data (hanya _Read-Only_).                                                                                                                                 |
 | **Jadwal & Alarm Pengingat**                                                                                                                      |                                                                                                                                                                                                                                                                                                                 |
 | _Caregiver_ dapat membuat jadwal per lansia yang mencakup: jadwal minum obat, pemeriksaan rutin, dan aktivitas harian                             | Fitur "Manajemen Jadwal". Pengguna dapat menambahkan jadwal baru dengan komponen: \- Judul Kegiatan \- Tipe Kegiatan (Dropdown: Obat/Pemeriksaan/Aktivitas) \- Tanggal & Waktu \- Frekuensi (Sekali/Harian/Mingguan) \- Button "Simpan Jadwal"                                                                  |
 | Setiap jadwal yang dibuat dapat dilengkapi dengan alarm notifikasi pengingat                                                                      | Pada form penambahan jadwal, terdapat _toggle_ "Aktifkan Alarm". Jika diaktifkan, pengguna dapat mengatur waktu pengingat (contoh: Tepat waktu, 10 menit sebelumnya).                                                                                                                                           |
@@ -112,6 +102,6 @@
 | _Caregiver_ dapat melihat daftar rekomendasi aktivitas AI per lansia                                                                              | Pada halaman Detail Lansia, terdapat tab "Rekomendasi Aktivitas AI". Menampilkan _card_ aktivitas dengan komponen: \- Nama Aktivitas \- Deskripsi Singkat \- Estimasi Durasi \- Button "Lihat Detail" \- Button "Tambahkan ke Jadwal"                                                                           |
 | _Caregiver_ dapat meng-_approve_ rekomendasi aktivitas, sehingga aktivitas tersebut otomatis masuk ke jadwal lansia yang bersangkutan             | Ketika _Caregiver_ mengklik button "Tambahkan ke Jadwal" pada _card_ rekomendasi, sistem menampilkan pop-up untuk mengatur waktu dan tanggal pelaksanaan, kemudian aktivitas tersebut tersimpan di jadwal lansia.                                                                                               |
 | **Notifikasi**                                                                                                                                    |                                                                                                                                                                                                                                                                                                                 |
-| Sistem mengirimkan notifikasi kepada _caregiver_ dan semua _viewer_ terdaftar per lansia ketika data kesehatan baru dicatat                       | _Push notification_ dan/atau notifikasi di dalam aplikasi terkirim otomatis setiap kali catatan kesehatan harian yang baru disubmit.                                                                                                                                                                            |
-| Sistem mengirimkan notifikasi kepada _caregiver_ dan _viewer_ terkait ketika kondisi lansia ditandai sebagai **Kritis**                           | _Push notification_ dengan prioritas tinggi (suara khusus/peringatan warna merah) dikirim jika kondisi parameter kesehatan dinilai sangat mengkhawatirkan/Kritis.                                                                                                                                               |
-| Sistem mengirimkan ringkasan mingguan kondisi lansia kepada _caregiver_ dan _viewer_ yang terdaftar                                               | Sistem secara otomatis mem-_build_ laporan mingguan yang mencakup rata-rata parameter kesehatan dan tren, kemudian dikirimkan melalui notifikasi atau _Email_ pada akhir minggu.                                                                                                                                |
+| Sistem mengirimkan notifikasi kepada _caregiver_ ketika data kesehatan baru dicatat                                                               | _Push notification_ dan/atau notifikasi di dalam aplikasi terkirim otomatis setiap kali catatan kesehatan harian yang baru disubmit.                                                                                                                                                                            |
+| Sistem mengirimkan notifikasi kepada _caregiver_ ketika kondisi lansia ditandai sebagai **Kritis**                                                | _Push notification_ dengan prioritas tinggi (suara khusus/peringatan warna merah) dikirim jika kondisi parameter kesehatan dinilai sangat mengkhawatirkan/Kritis.                                                                                                                                               |
+| Sistem mengirimkan ringkasan mingguan kondisi lansia kepada _caregiver_                                                                           | Sistem secara otomatis mem-_build_ laporan mingguan yang mencakup rata-rata parameter kesehatan dan tren, kemudian dikirimkan melalui notifikasi atau _Email_ pada akhir minggu.                                                                                                                                |

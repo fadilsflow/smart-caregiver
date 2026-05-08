@@ -1,9 +1,9 @@
 """
-Notification Service — business logic for in-app notifications.
+Notification Service business logic for in-app notifications.
 
 Responsibilities:
   1. Create single notification for a recipient
-  2. Create fan-out notifications (caregiver + all accepted viewers)
+  2. Create fan-out notifications (caregiver owner)
   3. List, mark read, get preferences for a user
 """
 
@@ -20,8 +20,8 @@ from src.app.schemas.notification import (
     NotificationPreferenceResponse,
     NotificationPreferenceUpdate,
 )
-from src.database.enums import InvitationStatus, NotificationChannel, NotificationType
-from src.database.models.elderly import ElderlyProfile, ViewerInvitation
+from src.database.enums import NotificationChannel, NotificationPriority, NotificationType
+from src.database.models.elderly import ElderlyProfile
 from src.database.models.notification import Notification, NotificationPreference
 from src.database.models.user import User
 
@@ -35,6 +35,7 @@ async def create_notification(
     elderly_id: Optional[uuid.UUID] = None,
     channel: NotificationChannel = NotificationChannel.IN_APP,
     payload: Optional[dict] = None,
+    priority: NotificationPriority = NotificationPriority.NORMAL,
 ) -> Notification:
     """
     Create a single notification for a recipient.
@@ -48,6 +49,7 @@ async def create_notification(
         elderly_id: Optional elderly ID for context
         channel: Notification channel (default: in_app)
         payload: Optional additional payload
+        priority: Notification priority (default: NORMAL)
 
     Returns:
         Created Notification object
@@ -60,6 +62,7 @@ async def create_notification(
         title=title,
         body=body,
         payload=payload,
+        priority=priority,
     )
     db.add(notification)
     await db.flush()
@@ -71,16 +74,18 @@ async def create_health_record_notification(
     elderly_id: uuid.UUID,
     health_record_id: uuid.UUID,
     health_status: str,
+    triggered_parameters: Optional[list[dict]] = None,
 ) -> list[uuid.UUID]:
     """
     Create notifications when a health record is recorded.
-    Fan-out to: caregiver (owner) + all accepted viewers.
+    Fan-out to caregiver owner.
 
     Args:
         db: Database session
         elderly_id: UUID of the elderly profile
         health_record_id: UUID of the created health record
         health_status: Health status from the record
+        triggered_parameters: Optional list of parameters that exceeded thresholds
 
     Returns:
         List of created notification IDs
@@ -94,19 +99,11 @@ async def create_health_record_notification(
 
     recipient_ids = [elderly.caregiver_id]
 
-    viewers_stmt = select(ViewerInvitation).where(
-        ViewerInvitation.elderly_id == elderly_id,
-        ViewerInvitation.status == InvitationStatus.ACCEPTED,
-    )
-    viewers_result = await db.execute(viewers_stmt)
-    viewers = viewers_result.scalars().all()
-
-    for viewer in viewers:
-        if viewer.viewer_id:
-            recipient_ids.append(viewer.viewer_id)
+    is_critical = health_status == "critical" or bool(triggered_parameters)
 
     notifications = []
-    notification_type = NotificationType.CRITICAL_ALERT if health_status == "critical" else NotificationType.HEALTH_RECORDED
+    notification_type = NotificationType.CRITICAL_ALERT if is_critical else NotificationType.HEALTH_RECORDED
+    notification_priority = NotificationPriority.HIGH if is_critical else NotificationPriority.NORMAL
 
     title_map = {
         NotificationType.HEALTH_RECORDED: "Health Record Created",
@@ -118,12 +115,15 @@ async def create_health_record_notification(
         NotificationType.CRITICAL_ALERT: f"Critical health status detected for {elderly.full_name}. Immediate attention required.",
     }
 
-    payload = {
+    payload: dict[str, object] = {
         "health_record_id": str(health_record_id),
         "health_status": health_status,
         "elderly_id": str(elderly_id),
         "elderly_name": elderly.full_name,
     }
+
+    if triggered_parameters:
+        payload["triggered_parameters"] = triggered_parameters
 
     for recipient_id in recipient_ids:
         notification = Notification(
@@ -131,6 +131,7 @@ async def create_health_record_notification(
             elderly_id=elderly_id,
             notification_type=notification_type,
             channel=NotificationChannel.IN_APP,
+            priority=notification_priority,
             title=title_map[notification_type],
             body=body_map[notification_type],
             payload=payload,

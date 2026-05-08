@@ -8,18 +8,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.database.session import AsyncSessionLocal
 from src.database.models import (
     User, ElderlyProfile, HealthRecord, HealthThreshold,
-    Schedule, AIActivityRecommendation, ViewerInvitation
+    Schedule, AIActivityRecommendation
 )
 from src.database.enums import (
     MobilityLevel, ElderlyStatus, HealthStatus, HealthParameter,
     ScheduleType, RecurrenceType, ActivityCategory, RecommendationStatus,
-    InvitationStatus
 )
 from src.app.core.security import hash_password
 
 async def clear_db(session: AsyncSession):
     """Clear all data from tables before seeding."""
-    await session.execute(delete(ViewerInvitation))
     await session.execute(delete(AIActivityRecommendation))
     await session.execute(delete(Schedule))
     await session.execute(delete(HealthRecord))
@@ -33,7 +31,7 @@ async def seed_data():
     async with AsyncSessionLocal() as session:
         await clear_db(session)
 
-        # 1. Create Users
+        # 1. Create Caregiver User
         caregiver = User(
             full_name="Andi Caregiver",
             email="caregiver@example.com",
@@ -41,14 +39,7 @@ async def seed_data():
             is_email_verified=True,
             is_active=True
         )
-        viewer = User(
-            full_name="Budi Viewer",
-            email="viewer@example.com",
-            hashed_password=hash_password("password123"),
-            is_email_verified=True,
-            is_active=True
-        )
-        session.add_all([caregiver, viewer])
+        session.add(caregiver)
         await session.flush()
 
         # 2. Create Elderly Profiles
@@ -151,23 +142,9 @@ async def seed_data():
         )
         session.add_all([rec])
 
-        # 7. Create Viewer Invitation (Accepted)
-        invitation = ViewerInvitation(
-            elderly_id=budi.id,
-            invited_by=caregiver.id,
-            viewer_id=viewer.id,
-            email=viewer.email,
-            token=str(uuid.uuid4()),
-            status=InvitationStatus.ACCEPTED,
-            expires_at=now + timedelta(days=7),
-            accepted_at=now - timedelta(days=1)
-        )
-        session.add_all([invitation])
-
         await session.commit()
         print(f"Successfully seeded data:")
         print(f"- Caregiver: {caregiver.email} (password123)")
-        print(f"- Viewer: {viewer.email} (password123)")
         print(f"- Elderly Profiles: Budi Santoso, Siti Aminah")
 
 if __name__ == "__main__":
