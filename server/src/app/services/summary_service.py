@@ -10,55 +10,26 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime, timezone, timedelta
-from typing import Optional
+from typing import Optional, List, Sequence
+from collections import defaultdict
 
 from sqlalchemy import select, func, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.services.notification_service import create_notification
-from src.database.enums import HealthStatus, NotificationType
+from src.database.enums import HealthStatus, NotificationType, NotificationChannel, NotificationPriority
 from src.database.models.elderly import ElderlyProfile
 from src.database.models.health import HealthRecord
+from src.database.models.notification import Notification
 
-
-async def generate_weekly_summary(
-    db: AsyncSession,
+def _calculate_weekly_summary(
     elderly_id: uuid.UUID,
+    elderly_name: str,
+    records: Sequence[HealthRecord],
+    start_date: datetime,
+    end_date: datetime,
 ) -> Optional[dict]:
-    """
-    Generate health summary for the last 7 days.
-    
-    Args:
-        db: Database session
-        elderly_id: UUID of the elderly profile
-        
-    Returns:
-        Dictionary containing summary data or None if no records found
-    """
-    elderly_stmt = select(ElderlyProfile).where(ElderlyProfile.id == elderly_id)
-    elderly_result = await db.execute(elderly_stmt)
-    elderly = elderly_result.scalar_one_or_none()
-    
-    if not elderly:
-        return None
-
-    end_date = datetime.now(timezone.utc)
-    start_date = end_date - timedelta(days=7)
-
-    # Fetch health records for the last 7 days
-    stmt = (
-        select(HealthRecord)
-        .where(
-            and_(
-                HealthRecord.elderly_id == elderly_id,
-                HealthRecord.recorded_at >= start_date,
-            )
-        )
-        .order_by(HealthRecord.recorded_at)
-    )
-    result = await db.execute(stmt)
-    records = result.scalars().all()
-
+    """Helper to calculate statistics given a list of records."""
     if not records:
         return None
 
@@ -108,7 +79,7 @@ async def generate_weekly_summary(
 
     return {
         "elderly_id": str(elderly_id),
-        "elderly_name": elderly.full_name,
+        "elderly_name": elderly_name,
         "period_start": start_date.isoformat(),
         "period_end": end_date.isoformat(),
         "total_records": total_records,
@@ -116,6 +87,47 @@ async def generate_weekly_summary(
         "averages": averages,
         "body_summary": status_summary
     }
+
+
+async def generate_weekly_summary(
+    db: AsyncSession,
+    elderly_id: uuid.UUID,
+) -> Optional[dict]:
+    """
+    Generate health summary for the last 7 days.
+
+    Args:
+        db: Database session
+        elderly_id: UUID of the elderly profile
+
+    Returns:
+        Dictionary containing summary data or None if no records found
+    """
+    elderly_stmt = select(ElderlyProfile).where(ElderlyProfile.id == elderly_id)
+    elderly_result = await db.execute(elderly_stmt)
+    elderly = elderly_result.scalar_one_or_none()
+
+    if not elderly:
+        return None
+
+    end_date = datetime.now(timezone.utc)
+    start_date = end_date - timedelta(days=7)
+
+    # Fetch health records for the last 7 days
+    stmt = (
+        select(HealthRecord)
+        .where(
+            and_(
+                HealthRecord.elderly_id == elderly_id,
+                HealthRecord.recorded_at >= start_date,
+            )
+        )
+        .order_by(HealthRecord.recorded_at)
+    )
+    result = await db.execute(stmt)
+    records = result.scalars().all()
+
+    return _calculate_weekly_summary(elderly_id, elderly.full_name, records, start_date, end_date)
 
 
 async def send_weekly_summary_notifications(
@@ -132,15 +144,32 @@ async def send_weekly_summary_notifications(
     Returns:
         Number of notifications sent
     """
-    summary = await generate_weekly_summary(db, elderly_id)
-    if not summary:
-        return 0
-
     elderly_stmt = select(ElderlyProfile).where(ElderlyProfile.id == elderly_id)
     elderly_result = await db.execute(elderly_stmt)
     elderly = elderly_result.scalar_one_or_none()
     
     if not elderly:
+        return 0
+
+    end_date = datetime.now(timezone.utc)
+    start_date = end_date - timedelta(days=7)
+
+    stmt = (
+        select(HealthRecord)
+        .where(
+            and_(
+                HealthRecord.elderly_id == elderly_id,
+                HealthRecord.recorded_at >= start_date,
+            )
+        )
+        .order_by(HealthRecord.recorded_at)
+    )
+    result = await db.execute(stmt)
+    records = result.scalars().all()
+
+    summary = _calculate_weekly_summary(elderly_id, elderly.full_name, records, start_date, end_date)
+
+    if not summary:
         return 0
 
     # Send to caregiver only
@@ -169,13 +198,71 @@ async def send_weekly_summary_notifications(
 async def process_all_weekly_summaries(db: AsyncSession) -> int:
     """
     Internal job to process weekly summaries for all active elderly profiles.
+    Optimized to minimize database queries (N+1 issue fixed).
     """
-    stmt = select(ElderlyProfile.id).where(ElderlyProfile.status == "active")
+    # 1. Fetch all active elderly profiles
+    stmt = select(ElderlyProfile).where(ElderlyProfile.status == "active")
     result = await db.execute(stmt)
-    elderly_ids = result.scalars().all()
+    elderly_profiles = result.scalars().all()
+
+    if not elderly_profiles:
+        return 0
+
+    elderly_map = {e.id: e for e in elderly_profiles}
+    elderly_ids = list(elderly_map.keys())
+
+    end_date = datetime.now(timezone.utc)
+    start_date = end_date - timedelta(days=7)
     
-    total_sent = 0
-    for eid in elderly_ids:
-        total_sent += await send_weekly_summary_notifications(db, eid)
+    # 2. Fetch all health records for these profiles in bulk
+    records_stmt = (
+        select(HealthRecord)
+        .where(
+            and_(
+                HealthRecord.elderly_id.in_(elderly_ids),
+                HealthRecord.recorded_at >= start_date,
+            )
+        )
+    )
+    records_result = await db.execute(records_stmt)
+    all_records = records_result.scalars().all()
     
-    return total_sent
+    # Group records by elderly ID
+    records_by_elderly = defaultdict(list)
+    for record in all_records:
+        records_by_elderly[record.elderly_id].append(record)
+
+    # Sort them by recorded_at since we dropped the order_by in bulk query
+    for eid in records_by_elderly:
+        records_by_elderly[eid].sort(key=lambda x: x.recorded_at)
+
+    notifications_to_create = []
+
+    # 3. Process summaries and prepare notifications
+    for eid, records in records_by_elderly.items():
+        elderly = elderly_map[eid]
+        summary = _calculate_weekly_summary(eid, elderly.full_name, records, start_date, end_date)
+
+        if summary:
+            recipient_id = elderly.caregiver_id
+            title = "Weekly Summary: {0}".format(elderly.full_name)
+            body = "Here is the health summary for {0} from the past 7 days. {1}".format(elderly.full_name, summary['body_summary'])
+
+            notification = Notification(
+                recipient_id=recipient_id,
+                elderly_id=eid,
+                notification_type=NotificationType.WEEKLY_SUMMARY,
+                channel=NotificationChannel.IN_APP,
+                title=title,
+                body=body,
+                payload={**summary, "elderly_id": str(eid), "recipient_id": str(recipient_id)},
+                priority=NotificationPriority.NORMAL,
+            )
+            notifications_to_create.append(notification)
+
+    # 4. Bulk insert notifications
+    if notifications_to_create:
+        db.add_all(notifications_to_create)
+        await db.flush()
+
+    return len(notifications_to_create)
