@@ -1,4 +1,6 @@
 import asyncio
+import os
+import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
 
@@ -32,10 +34,11 @@ async def seed_data():
         await clear_db(session)
 
         # 1. Create Caregiver User
+        caregiver_password = os.environ.get("SEED_CAREGIVER_PASSWORD") or secrets.token_urlsafe(12)
         caregiver = User(
             full_name="Andi Caregiver",
             email="caregiver@example.com",
-            hashed_password=hash_password("password123"),
+            hashed_password=hash_password(caregiver_password),
             is_email_verified=True,
             is_active=True
         )
@@ -144,7 +147,7 @@ async def seed_data():
 
         await session.commit()
         print(f"Successfully seeded data:")
-        print(f"- Caregiver: {caregiver.email} (password123)")
+        print(f"- Caregiver: {caregiver.email} ({caregiver_password})")
         print(f"- Elderly Profiles: Budi Santoso, Siti Aminah")
 
 if __name__ == "__main__":
