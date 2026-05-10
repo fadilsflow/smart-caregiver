@@ -10,17 +10,23 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime, timezone, timedelta
-from typing import Optional, List, Sequence
+from typing import Optional, Sequence
 from collections import defaultdict
 
-from sqlalchemy import select, func, and_
+from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.services.notification_service import create_notification
-from src.database.enums import HealthStatus, NotificationType, NotificationChannel, NotificationPriority
+from src.database.enums import (
+    HealthStatus,
+    NotificationType,
+    NotificationChannel,
+    NotificationPriority,
+)
 from src.database.models.elderly import ElderlyProfile
 from src.database.models.health import HealthRecord
 from src.database.models.notification import Notification
+
 
 def _calculate_weekly_summary(
     elderly_id: uuid.UUID,
@@ -41,7 +47,7 @@ def _calculate_weekly_summary(
         HealthStatus.NEEDS_ATTENTION: 0,
         HealthStatus.CRITICAL: 0,
     }
-    
+
     param_values = {
         "systolic_bp": [],
         "diastolic_bp": [],
@@ -56,14 +62,20 @@ def _calculate_weekly_summary(
         status = record.health_status
         if status in status_counts:
             status_counts[status] += 1
-        
+
         # Collect values for averages
-        if record.systolic_bp is not None: param_values["systolic_bp"].append(record.systolic_bp)
-        if record.diastolic_bp is not None: param_values["diastolic_bp"].append(record.diastolic_bp)
-        if record.blood_sugar is not None: param_values["blood_sugar"].append(record.blood_sugar)
-        if record.heart_rate is not None: param_values["heart_rate"].append(record.heart_rate)
-        if record.body_temperature is not None: param_values["body_temperature"].append(record.body_temperature)
-        if record.spo2_level is not None: param_values["spo2_level"].append(record.spo2_level)
+        if record.systolic_bp is not None:
+            param_values["systolic_bp"].append(record.systolic_bp)
+        if record.diastolic_bp is not None:
+            param_values["diastolic_bp"].append(record.diastolic_bp)
+        if record.blood_sugar is not None:
+            param_values["blood_sugar"].append(record.blood_sugar)
+        if record.heart_rate is not None:
+            param_values["heart_rate"].append(record.heart_rate)
+        if record.body_temperature is not None:
+            param_values["body_temperature"].append(record.body_temperature)
+        if record.spo2_level is not None:
+            param_values["spo2_level"].append(record.spo2_level)
 
     averages = {}
     for param, values in param_values.items():
@@ -74,8 +86,14 @@ def _calculate_weekly_summary(
 
     # Construct summary message body
     status_summary = "Records: {0}. ".format(total_records)
-    alert_count = status_counts[HealthStatus.WARNING] + status_counts[HealthStatus.NEEDS_ATTENTION] + status_counts[HealthStatus.CRITICAL]
-    status_summary += "Status: {0} Normal, {1} Alerts.".format(status_counts[HealthStatus.NORMAL], alert_count)
+    alert_count = (
+        status_counts[HealthStatus.WARNING]
+        + status_counts[HealthStatus.NEEDS_ATTENTION]
+        + status_counts[HealthStatus.CRITICAL]
+    )
+    status_summary += "Status: {0} Normal, {1} Alerts.".format(
+        status_counts[HealthStatus.NORMAL], alert_count
+    )
 
     return {
         "elderly_id": str(elderly_id),
@@ -85,7 +103,7 @@ def _calculate_weekly_summary(
         "total_records": total_records,
         "status_counts": {k.value: v for k, v in status_counts.items()},
         "averages": averages,
-        "body_summary": status_summary
+        "body_summary": status_summary,
     }
 
 
@@ -127,7 +145,9 @@ async def generate_weekly_summary(
     result = await db.execute(stmt)
     records = result.scalars().all()
 
-    return _calculate_weekly_summary(elderly_id, elderly.full_name, records, start_date, end_date)
+    return _calculate_weekly_summary(
+        elderly_id, elderly.full_name, records, start_date, end_date
+    )
 
 
 async def send_weekly_summary_notifications(
@@ -136,18 +156,18 @@ async def send_weekly_summary_notifications(
 ) -> int:
     """
     Generate and send weekly summary notification to caregiver.
-    
+
     Args:
         db: Database session
         elderly_id: UUID of the elderly profile
-        
+
     Returns:
         Number of notifications sent
     """
     elderly_stmt = select(ElderlyProfile).where(ElderlyProfile.id == elderly_id)
     elderly_result = await db.execute(elderly_stmt)
     elderly = elderly_result.scalar_one_or_none()
-    
+
     if not elderly:
         return 0
 
@@ -167,7 +187,9 @@ async def send_weekly_summary_notifications(
     result = await db.execute(stmt)
     records = result.scalars().all()
 
-    summary = _calculate_weekly_summary(elderly_id, elderly.full_name, records, start_date, end_date)
+    summary = _calculate_weekly_summary(
+        elderly_id, elderly.full_name, records, start_date, end_date
+    )
 
     if not summary:
         return 0
@@ -176,8 +198,10 @@ async def send_weekly_summary_notifications(
     recipient_ids = [elderly.caregiver_id]
 
     title = "Weekly Summary: {0}".format(elderly.full_name)
-    body = "Here is the health summary for {0} from the past 7 days. {1}".format(elderly.full_name, summary['body_summary'])
-    
+    body = "Here is the health summary for {0} from the past 7 days. {1}".format(
+        elderly.full_name, summary["body_summary"]
+    )
+
     sent_count = 0
     for recipient_id in recipient_ids:
         await create_notification(
@@ -187,10 +211,14 @@ async def send_weekly_summary_notifications(
             title=title,
             body=body,
             elderly_id=elderly_id,
-            payload={**summary, "elderly_id": str(elderly_id), "recipient_id": str(recipient_id)}
+            payload={
+                **summary,
+                "elderly_id": str(elderly_id),
+                "recipient_id": str(recipient_id),
+            },
         )
         sent_count += 1
-    
+
     await db.flush()
     return sent_count
 
@@ -213,20 +241,17 @@ async def process_all_weekly_summaries(db: AsyncSession) -> int:
 
     end_date = datetime.now(timezone.utc)
     start_date = end_date - timedelta(days=7)
-    
+
     # 2. Fetch all health records for these profiles in bulk
-    records_stmt = (
-        select(HealthRecord)
-        .where(
-            and_(
-                HealthRecord.elderly_id.in_(elderly_ids),
-                HealthRecord.recorded_at >= start_date,
-            )
+    records_stmt = select(HealthRecord).where(
+        and_(
+            HealthRecord.elderly_id.in_(elderly_ids),
+            HealthRecord.recorded_at >= start_date,
         )
     )
     records_result = await db.execute(records_stmt)
     all_records = records_result.scalars().all()
-    
+
     # Group records by elderly ID
     records_by_elderly = defaultdict(list)
     for record in all_records:
@@ -241,12 +266,18 @@ async def process_all_weekly_summaries(db: AsyncSession) -> int:
     # 3. Process summaries and prepare notifications
     for eid, records in records_by_elderly.items():
         elderly = elderly_map[eid]
-        summary = _calculate_weekly_summary(eid, elderly.full_name, records, start_date, end_date)
+        summary = _calculate_weekly_summary(
+            eid, elderly.full_name, records, start_date, end_date
+        )
 
         if summary:
             recipient_id = elderly.caregiver_id
             title = "Weekly Summary: {0}".format(elderly.full_name)
-            body = "Here is the health summary for {0} from the past 7 days. {1}".format(elderly.full_name, summary['body_summary'])
+            body = (
+                "Here is the health summary for {0} from the past 7 days. {1}".format(
+                    elderly.full_name, summary["body_summary"]
+                )
+            )
 
             notification = Notification(
                 recipient_id=recipient_id,
@@ -255,7 +286,11 @@ async def process_all_weekly_summaries(db: AsyncSession) -> int:
                 channel=NotificationChannel.IN_APP,
                 title=title,
                 body=body,
-                payload={**summary, "elderly_id": str(eid), "recipient_id": str(recipient_id)},
+                payload={
+                    **summary,
+                    "elderly_id": str(eid),
+                    "recipient_id": str(recipient_id),
+                },
                 priority=NotificationPriority.NORMAL,
             )
             notifications_to_create.append(notification)

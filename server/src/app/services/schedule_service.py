@@ -15,7 +15,6 @@ from src.database.enums import (
     NotificationChannel,
     NotificationType,
 )
-from src.database.models.elderly import ElderlyProfile
 from src.database.models.notification import Notification
 from src.database.models.schedule import Schedule, ScheduleAlarm
 
@@ -229,7 +228,7 @@ async def dispatch_due_alarms(
     stmt = (
         select(ScheduleAlarm)
         .where(
-            ScheduleAlarm.is_sent == False,
+            not ScheduleAlarm.is_sent,
             ScheduleAlarm.alarm_at <= now,
         )
         .limit(100)
