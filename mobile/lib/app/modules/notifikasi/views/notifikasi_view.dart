@@ -40,7 +40,7 @@ class NotifikasiView extends GetView<NotifikasiController> {
                   shape: BoxShape.circle,
                   border: Border.all(color: const Color(0xFFF5F5F4), width: 1),
                   image: const DecorationImage(
-                    image: NetworkImage('https://placehold.co/38x38'),
+                    image: AssetImage('assets/images/patient_ibu_siti.png'),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -56,6 +56,14 @@ class NotifikasiView extends GetView<NotifikasiController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Notification Cards
+              _buildNotificationCard(
+                name: 'Kritis - Oma Maria',
+                time: 'Baru saja',
+                description: 'Gula darah terdeteksi sangat rendah (65 mg/dL). Segera berikan penanganan!',
+                hasDot: true,
+                isCritical: true,
+              ),
+              const SizedBox(height: 16),
               _buildNotificationCard(
                 name: 'Semua Lansia',
                 time: '08.30',
@@ -99,6 +107,7 @@ class NotifikasiView extends GetView<NotifikasiController> {
     required String time,
     required String description,
     required bool hasDot,
+    bool isCritical = false,
   }) {
     return Container(
       width: double.infinity,
@@ -106,6 +115,7 @@ class NotifikasiView extends GetView<NotifikasiController> {
       decoration: BoxDecoration(
         color: const Color(0xFF384046),
         borderRadius: BorderRadius.circular(15),
+        border: isCritical ? Border.all(color: const Color(0xFFEF4444), width: 1.5) : null,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,8 +125,8 @@ class NotifikasiView extends GetView<NotifikasiController> {
             children: [
               Text(
                 name,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: isCritical ? const Color(0xFFEF4444) : Colors.white,
                   fontSize: 16,
                   fontFamily: 'Lato',
                   fontWeight: FontWeight.w500,
@@ -139,8 +149,8 @@ class NotifikasiView extends GetView<NotifikasiController> {
                     Container(
                       width: 10,
                       height: 10,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFBBF246),
+                      decoration: BoxDecoration(
+                        color: isCritical ? const Color(0xFFEF4444) : const Color(0xFFBBF246),
                         shape: BoxShape.circle,
                       ),
                     ),

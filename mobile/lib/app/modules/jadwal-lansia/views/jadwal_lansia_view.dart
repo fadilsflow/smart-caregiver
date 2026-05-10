@@ -40,7 +40,7 @@ class JadwalLansiaView extends GetView<JadwalLansiaController> {
                   shape: BoxShape.circle,
                   border: Border.all(color: const Color(0xFFF5F5F4), width: 1),
                   image: const DecorationImage(
-                    image: NetworkImage('https://placehold.co/40x40'),
+                    image: AssetImage('assets/images/caregiver_profile.png'),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -137,7 +137,6 @@ class JadwalLansiaView extends GetView<JadwalLansiaController> {
                             SizedBox(
                               width: double.infinity,
                               child: Wrap(
-                                spacing: 8,
                                 runSpacing: 8,
                                 children: [
                                   _buildTypeChip('Medis', Icons.medical_services, true),

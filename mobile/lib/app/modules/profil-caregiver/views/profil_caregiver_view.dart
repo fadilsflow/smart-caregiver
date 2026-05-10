@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import '../controllers/profil_caregiver_controller.dart';
 
@@ -22,10 +21,7 @@ class ProfilCaregiverView extends GetView<ProfilCaregiverController> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(),
-                  _buildContent(),
-                ],
+                children: [_buildHeader(), _buildContent()],
               ),
             ),
           ),
@@ -42,10 +38,7 @@ class ProfilCaregiverView extends GetView<ProfilCaregiverController> {
       decoration: const ShapeDecoration(
         color: Color(0xE5FAFAFA),
         shape: RoundedRectangleBorder(
-          side: BorderSide(
-            width: 1,
-            color: Color(0xFFF4F4F5),
-          ),
+          side: BorderSide(width: 1, color: Color(0xFFF4F4F5)),
         ),
       ),
       child: Row(
@@ -83,12 +76,7 @@ class ProfilCaregiverView extends GetView<ProfilCaregiverController> {
   Widget _buildContent() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(
-        top: 24,
-        left: 20,
-        right: 20,
-        bottom: 100,
-      ),
+      padding: const EdgeInsets.only(top: 24, left: 20, right: 20, bottom: 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -116,14 +104,12 @@ class ProfilCaregiverView extends GetView<ProfilCaregiverController> {
                           blurRadius: 16,
                           offset: Offset(0, 4),
                           spreadRadius: 0,
-                        )
+                        ),
                       ],
                     ),
-                    child: CachedNetworkImage(
-                      imageUrl: "https://placehold.co/96x96",
-                      fit: BoxFit.fill,
-                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    child: Image.asset(
+                      'assets/images/caregiver_profile.png',
+                      fit: BoxFit.cover,
                     ),
                   ),
                   Container(
@@ -146,10 +132,14 @@ class ProfilCaregiverView extends GetView<ProfilCaregiverController> {
                           blurRadius: 6,
                           offset: Offset(0, 4),
                           spreadRadius: -1,
-                        )
+                        ),
                       ],
                     ),
-                    child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
+                    child: const Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                      size: 16,
+                    ),
                   ),
                 ],
               ),
@@ -197,7 +187,7 @@ class ProfilCaregiverView extends GetView<ProfilCaregiverController> {
                   blurRadius: 16,
                   offset: Offset(0, 4),
                   spreadRadius: 0,
-                )
+                ),
               ],
             ),
             child: Column(
@@ -207,10 +197,7 @@ class ProfilCaregiverView extends GetView<ProfilCaregiverController> {
                   text: 'Edit Profile',
                   onTap: () {},
                 ),
-                Container(
-                  height: 1,
-                  color: const Color(0xFFE5E2E1),
-                ),
+                Container(height: 1, color: const Color(0xFFE5E2E1)),
                 _buildMenuItem(
                   icon: Icons.person_add_outlined,
                   text: 'Undang',
@@ -223,9 +210,7 @@ class ProfilCaregiverView extends GetView<ProfilCaregiverController> {
 
           // Logout Button
           GestureDetector(
-            onTap: () {
-              // Get.offAllNamed(Routes.LOGIN); // Replace with actual logout route later
-            },
+            onTap: controller.logout,
             child: Container(
               width: double.infinity,
               height: 48,
@@ -240,7 +225,7 @@ class ProfilCaregiverView extends GetView<ProfilCaregiverController> {
                     blurRadius: 4,
                     offset: Offset(0, 2),
                     spreadRadius: 0,
-                  )
+                  ),
                 ],
               ),
               child: const Row(

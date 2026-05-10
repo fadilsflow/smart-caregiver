@@ -344,7 +344,6 @@ class _TimelineCardState extends State<TimelineCard> {
 
                         if (hasSymptoms)
                           Wrap(
-                            spacing: 8,
                             runSpacing: 8,
                             children: (record['symptoms'] as List<String>).map((
                               symptom,

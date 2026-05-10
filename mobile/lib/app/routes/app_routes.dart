@@ -1,3 +1,4 @@
+// ignore_for_file: constant_identifier_names
 part of 'app_pages.dart';
 // DO NOT EDIT. This is code generated via package:get_cli/get_cli.dart
 
@@ -17,6 +18,10 @@ abstract class Routes {
   static const JADWAL_LANSIA = _Paths.JADWAL_LANSIA;
   static const PROFIL_CAREGIVER = _Paths.PROFIL_CAREGIVER;
   static const NOTIFIKASI = _Paths.NOTIFIKASI;
+  static const TEMPLATE_JADWAL = _Paths.TEMPLATE_JADWAL;
+  static const REKOMENDASI_AI = _Paths.REKOMENDASI_AI;
+  static const SUCCESS_LOG_KESEHATAN = _Paths.SUCCESS_LOG_KESEHATAN;
+  static const REGISTER = _Paths.REGISTER;
 }
 
 abstract class _Paths {
@@ -35,4 +40,8 @@ abstract class _Paths {
   static const JADWAL_LANSIA = '/jadwal-lansia';
   static const PROFIL_CAREGIVER = '/profil-caregiver';
   static const NOTIFIKASI = '/notifikasi';
+  static const TEMPLATE_JADWAL = '/template-jadwal';
+  static const REKOMENDASI_AI = '/rekomendasi-ai';
+  static const SUCCESS_LOG_KESEHATAN = '/success-log-kesehatan';
+  static const REGISTER = '/register';
 }

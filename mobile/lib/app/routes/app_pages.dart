@@ -1,3 +1,4 @@
+// ignore_for_file: constant_identifier_names
 import 'package:get/get.dart';
 
 import '../modules/calendar/bindings/calendar_binding.dart';
@@ -22,10 +23,18 @@ import '../modules/profil-caregiver/bindings/profil_caregiver_binding.dart';
 import '../modules/profil-caregiver/views/profil_caregiver_view.dart';
 import '../modules/profil-lansia/bindings/profil_lansia_binding.dart';
 import '../modules/profil-lansia/views/profil_lansia_view.dart';
+import '../modules/rekomendasi_ai/bindings/rekomendasi_ai_binding.dart';
+import '../modules/rekomendasi_ai/views/rekomendasi_ai_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/success_log_kesehatan/bindings/success_log_kesehatan_binding.dart';
+import '../modules/success_log_kesehatan/views/success_log_kesehatan_view.dart';
 import '../modules/tambah_lansia/bindings/tambah_lansia_binding.dart';
 import '../modules/tambah_lansia/views/tambah_lansia_view.dart';
+import '../modules/template_jadwal/bindings/template_jadwal_binding.dart';
+import '../modules/template_jadwal/views/template_jadwal_view.dart';
+import '../modules/register/bindings/register_binding.dart';
+import '../modules/register/views/register_view.dart';
 
 part 'app_routes.dart';
 
@@ -103,6 +112,26 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => const SplashView(),
       binding: SplashBinding(),
+    ),
+    GetPage(
+      name: _Paths.TEMPLATE_JADWAL,
+      page: () => const TemplateJadwalView(),
+      binding: TemplateJadwalBinding(),
+    ),
+    GetPage(
+      name: _Paths.REKOMENDASI_AI,
+      page: () => const RekomendasiAiView(),
+      binding: RekomendasiAiBinding(),
+    ),
+    GetPage(
+      name: _Paths.SUCCESS_LOG_KESEHATAN,
+      page: () => const SuccessLogKesehatanView(),
+      binding: SuccessLogKesehatanBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER,
+      page: () => const RegisterView(),
+      binding: RegisterBinding(),
     ),
   ];
 }

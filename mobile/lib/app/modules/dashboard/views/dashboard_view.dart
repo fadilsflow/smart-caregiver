@@ -5,7 +5,7 @@ import '../../../routes/app_pages.dart';
 import '../controllers/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {
-  const DashboardView({Key? key}) : super(key: key);
+  const DashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,18 +35,18 @@ class DashboardView extends GetView<DashboardController> {
           Padding(
             padding: const EdgeInsets.only(right: 24.0),
             child: Center(
-              child: Container(
+              child: Obx(() => Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(color: const Color(0xFFF5F5F4), width: 1),
-                  image: const DecorationImage(
-                    image: NetworkImage('https://placehold.co/38x38'),
+                  image: DecorationImage(
+                    image: AssetImage(controller.patientImage.value),
                     fit: BoxFit.fill,
                   ),
                 ),
-              ),
+              )),
             ),
           ),
         ],
@@ -59,9 +59,9 @@ class DashboardView extends GetView<DashboardController> {
             children: [
               const SizedBox(height: 32),
               // Header Profile Info
-              const Text(
-                'Ibu Siti',
-                style: TextStyle(
+              Obx(() => Text(
+                controller.patientName.value,
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 32,
                   fontFamily: 'Plus Jakarta Sans',
@@ -69,13 +69,13 @@ class DashboardView extends GetView<DashboardController> {
                   height: 1.25,
                   letterSpacing: -0.64,
                 ),
-              ),
+              )),
               const SizedBox(height: 4),
               Row(
                 children: [
-                  const Text(
-                    '55 Tahun • Perempuan',
-                    style: TextStyle(
+                  Obx(() => Text(
+                    '${controller.patientAge.value} • ${controller.patientGender.value}',
+                    style: const TextStyle(
                       color: Color(0xFF4C4546),
                       fontSize: 14,
                       fontFamily: 'Plus Jakarta Sans',
@@ -83,7 +83,7 @@ class DashboardView extends GetView<DashboardController> {
                       height: 1.43,
                       letterSpacing: 0.14,
                     ),
-                  ),
+                  )),
                   const SizedBox(width: 12),
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -153,27 +153,68 @@ class DashboardView extends GetView<DashboardController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Tren Kesehatan',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontFamily: 'Plus Jakarta Sans',
-                        fontWeight: FontWeight.w600,
-                        height: 1.33,
-                        letterSpacing: -0.24,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Tren Kesehatan',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w600,
+                            height: 1.33,
+                            letterSpacing: -0.24,
+                          ),
+                        ),
+                        Obx(
+                          () => Container(
+                            height: 32,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF5F5F4),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: controller.selectedTrendFilter.value,
+                                icon: const Icon(Icons.keyboard_arrow_down, size: 16),
+                                style: const TextStyle(
+                                  color: Color(0xFF1C1917),
+                                  fontSize: 12,
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                onChanged: (String? newValue) {
+                                  if (newValue != null) {
+                                    controller.selectedTrendFilter.value = newValue;
+                                  }
+                                },
+                                items: <String>['7 Hari', '30 Hari']
+                                    .map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      'Stabilitas fisik keseluruhan selama 1 minggu',
-                      style: TextStyle(
-                        color: Color(0xFF4C4546),
-                        fontSize: 14,
-                        fontFamily: 'Plus Jakarta Sans',
-                        fontWeight: FontWeight.w600,
-                        height: 1.43,
-                        letterSpacing: 0.14,
+                    Obx(
+                      () => Text(
+                        'Stabilitas fisik keseluruhan selama ${controller.selectedTrendFilter.value}',
+                        style: const TextStyle(
+                          color: Color(0xFF4C4546),
+                          fontSize: 14,
+                          fontFamily: 'Plus Jakarta Sans',
+                          fontWeight: FontWeight.w600,
+                          height: 1.43,
+                          letterSpacing: 0.14,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -299,7 +340,7 @@ class DashboardView extends GetView<DashboardController> {
               const SizedBox(height: 32),
 
               // Health Metrics List
-              GridView.builder(
+              Obx(() => GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -440,7 +481,7 @@ class DashboardView extends GetView<DashboardController> {
                     ),
                   );
                 },
-              ),
+              )),
               const SizedBox(height: 100), // Spacing buat BottomNav
             ],
           ),

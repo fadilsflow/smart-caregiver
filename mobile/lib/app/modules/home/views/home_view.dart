@@ -49,26 +49,14 @@ class HomeView extends GetView<HomeController> {
                               borderRadius: BorderRadius.circular(9999),
                             ),
                           ),
-                          child: CachedNetworkImage(
-                            imageUrl: "https://placehold.co/40x40",
+                          child: Image.asset(
+                            'assets/images/caregiver_profile.png',
                             fit: BoxFit.fill,
-                            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
                           ),
                         ),
                       ),
                       const SizedBox(width: 16),
-                      const Text(
-                        'CareTrack',
-                        style: TextStyle(
-                          color: Color(0xFF18181B),
-                          fontSize: 19,
-                          fontFamily: 'Plus Jakarta Sans',
-                          fontWeight: FontWeight.w700,
-                          height: 1.27,
-                          letterSpacing: -0.75,
-                        ),
-                      ),
+                      Image.asset('assets/images/logo.png', height: 32),
                     ],
                   ),
                   GestureDetector(
@@ -402,7 +390,20 @@ class HomeView extends GetView<HomeController> {
     required bool isCritical,
   }) {
     return GestureDetector(
-      onTap: () => Get.toNamed(Routes.DASHBOARD),
+      onTap: () {
+        final imagePath = (name == 'Ibu Siti' || name == 'Oma Maria')
+            ? 'assets/images/patient_ibu_siti.png'
+            : 'assets/images/patient_pak_joko.png';
+        Get.toNamed(
+          Routes.DASHBOARD,
+          arguments: {
+            'name': name,
+            'age': age,
+            'image': imagePath,
+            'gender': (name == 'Ibu Siti' || name == 'Oma Maria') ? 'Perempuan' : 'Laki-laki',
+          },
+        );
+      },
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(16),
@@ -427,23 +428,36 @@ class HomeView extends GetView<HomeController> {
               width: 72,
               height: 72,
               clipBehavior: Clip.antiAlias,
-              decoration: const ShapeDecoration(
-                shape: CircleBorder(),
-              ),
-              child: CachedNetworkImage(
-                imageUrl: isCritical
-                    ? "https://ui-avatars.com/api/?name=Budi&background=f59e0b&color=fff"
-                    : "https://ui-avatars.com/api/?name=Siti&background=ec4899&color=fff",
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const Center(
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
+              decoration: const ShapeDecoration(shape: CircleBorder()),
+              child: () {
+                if (name == 'Ibu Siti' || name == 'Oma Maria') {
+                  return Image.asset(
+                    'assets/images/patient_ibu_siti.png',
+                    fit: BoxFit.cover,
+                  );
+                } else if (name == 'Opa Joko' || name == 'Budi') {
+                  return Image.asset(
+                    'assets/images/patient_pak_joko.png',
+                    fit: BoxFit.cover,
+                  );
+                } else {
+                  return CachedNetworkImage(
+                    imageUrl: isCritical
+                        ? "https://ui-avatars.com/api/?name=$name&background=f59e0b&color=fff"
+                        : "https://ui-avatars.com/api/?name=$name&background=ec4899&color=fff",
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => const Center(
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  );
+                }
+              }(),
             ),
             const SizedBox(width: 16),
             // Info
@@ -516,11 +530,7 @@ class HomeView extends GetView<HomeController> {
             ),
             const SizedBox(width: 12),
             // Chevron
-            const Icon(
-              Icons.chevron_right,
-              color: Color(0xFF71717A),
-              size: 24,
-            ),
+            const Icon(Icons.chevron_right, color: Color(0xFF71717A), size: 24),
           ],
         ),
       ),

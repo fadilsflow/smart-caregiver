@@ -42,7 +42,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 16,
                 children: [
                   Container(
                     width: double.infinity,
@@ -51,7 +50,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 24,
                       children: [
                         Container(
                           width: double.infinity,
@@ -67,17 +65,16 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                  spacing: 16,
                                   children: [
                                     Stack(
                                       children: [
-                                        Container(
+                                        Obx(() => Container(
                                           width: 96,
                                           height: 96,
                                           clipBehavior: Clip.antiAlias,
                                           decoration: ShapeDecoration(
-                                            image: const DecorationImage(
-                                              image: NetworkImage("https://placehold.co/96x96"),
+                                            image: DecorationImage(
+                                              image: AssetImage(controller.patientImage.value),
                                               fit: BoxFit.fill,
                                             ),
                                             shape: RoundedRectangleBorder(
@@ -93,7 +90,7 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                               )
                                             ],
                                           ),
-                                        ),
+                                        )),
                                         Positioned(
                                           left: 64,
                                           top: 64,
@@ -198,7 +195,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 12,
                             children: [
                               Container(
                                 width: double.infinity,
@@ -241,7 +237,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 4,
                                   children: [
                                     Container(
                                       width: double.infinity,
@@ -316,7 +311,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                        spacing: 4,
                                         children: [
                                           Container(
                                             width: double.infinity,
@@ -386,7 +380,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                        spacing: 4,
                                         children: [
                                           Container(
                                             width: double.infinity,
@@ -476,7 +469,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 12,
                             children: [
                               Container(
                                 width: double.infinity,
@@ -518,7 +510,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 4,
                                   children: [
                                     Container(
                                       width: double.infinity,
@@ -594,7 +585,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                        spacing: 8,
                                         children: [
                                           Container(
                                             width: double.infinity,
@@ -631,7 +621,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                             ),
                                           ),
                                           Wrap(
-                                            spacing: 8,
                                             runSpacing: 8,
                                             children: [
                                               Container(
@@ -731,7 +720,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                        spacing: 8,
                                         children: [
                                           Container(
                                             width: double.infinity,
@@ -768,7 +756,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                             ),
                                           ),
                                           Wrap(
-                                            spacing: 8,
                                             runSpacing: 8,
                                             children: [
                                               Container(
@@ -904,7 +891,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 12,
                             children: [
                               Container(
                                 width: double.infinity,
@@ -947,7 +933,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 4,
                                   children: [
                                     Container(
                                       width: double.infinity,
@@ -1085,7 +1070,6 @@ class ProfilLansiaView extends GetView<ProfilLansiaController> {
                                               mainAxisSize: MainAxisSize.min,
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               crossAxisAlignment: CrossAxisAlignment.center,
-                                              spacing: 8,
                                               children: [
                                                 Column(
                                                   mainAxisSize: MainAxisSize.min,

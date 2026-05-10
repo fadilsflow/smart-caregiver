@@ -70,46 +70,7 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                       ),
                       const SizedBox(height: 28),
 
-                      // --- SEGMENTED BUTTONS (Kondisi Keseluruhan) ---
-                      const Text(
-                        'KONDISI KESELURUHAN',
-                        style: TextStyle(
-                          color: Color(0xFF47464B),
-                          fontSize: 11,
-                          fontFamily: 'Plus Jakarta Sans',
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
                       const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildStatusChip(
-                              'Normal',
-                              Icons.sentiment_satisfied_alt,
-                              false,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: _buildStatusChip(
-                              'Perhatian',
-                              Icons.sentiment_neutral,
-                              true,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: _buildStatusChip(
-                              'Kritis',
-                              Icons.sentiment_very_dissatisfied,
-                              false,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
 
                       // --- INFO PASIEN & TANGGAL ---
                       Container(
@@ -241,10 +202,11 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                               Icons.water_drop_outlined,
                               const Color(0xFFE88B63),
                               const Color(0xFFFFEBDD),
-                              'Kolestrol',
+                              'Kolesterol',
                               '180',
                               'mg/dL',
                               TextInputType.number,
+                              controller.cholesterolController,
                             ),
                             _buildDivider(),
                             _buildVitalRow(
@@ -255,7 +217,8 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                               '120/80',
                               'mmHg',
                               TextInputType.text,
-                            ), // Pake text supaya bisa ketik "/"
+                              controller.tensiController,
+                            ),
                             _buildDivider(),
                             _buildVitalRow(
                               Icons.science_outlined,
@@ -264,9 +227,8 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                               'Asam Urat',
                               '5.5',
                               'mg/dL',
-                              const TextInputType.numberWithOptions(
-                                decimal: true,
-                              ),
+                              const TextInputType.numberWithOptions(decimal: true),
+                              controller.uricAcidController,
                             ),
                             _buildDivider(),
                             _buildVitalRow(
@@ -276,9 +238,8 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                               'Gula Darah',
                               '98.6',
                               'mg/dL',
-                              const TextInputType.numberWithOptions(
-                                decimal: true,
-                              ),
+                              const TextInputType.numberWithOptions(decimal: true),
+                              controller.bloodSugarController,
                             ),
                             _buildDivider(),
                             _buildVitalRow(
@@ -288,9 +249,8 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                               'Suhu',
                               '36.5',
                               '°C',
-                              const TextInputType.numberWithOptions(
-                                decimal: true,
-                              ),
+                              const TextInputType.numberWithOptions(decimal: true),
+                              controller.bodyTempController,
                             ),
                             _buildDivider(),
                             _buildVitalRow(
@@ -301,6 +261,7 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                               '72',
                               'bpm',
                               TextInputType.number,
+                              controller.heartRateController,
                             ),
                             _buildDivider(),
                             _buildVitalRow(
@@ -308,11 +269,10 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                               const Color(0xFFE88B63),
                               const Color(0xFFFFEBDD),
                               'Saturasi',
-                              '98.6',
+                              '98',
                               '%',
-                              const TextInputType.numberWithOptions(
-                                decimal: true,
-                              ),
+                              const TextInputType.numberWithOptions(decimal: true),
+                              controller.spo2Controller,
                             ),
                             _buildDivider(),
                             _buildVitalRow(
@@ -323,6 +283,7 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                               '70',
                               'Kg',
                               TextInputType.number,
+                              controller.weightController,
                             ),
                           ],
                         ),
@@ -341,6 +302,7 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
+                        controller: controller.notesController,
                         maxLines: 4,
                         decoration: InputDecoration(
                           hintText:
@@ -375,7 +337,7 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
                         height: 52,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Tindakan simpan
+                            controller.submitHealthRecord();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF192126),
@@ -408,37 +370,6 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
 
   // --- REUSABLE WIDGETS ---
 
-  Widget _buildStatusChip(String title, IconData icon, bool isActive) {
-    final bgColor = isActive
-        ? const Color(0xFFBBF246)
-        : const Color(0xFF192126);
-    final iconColor = isActive ? Colors.black : const Color(0xFFBBF246);
-    final textColor = isActive ? Colors.black : const Color(0xFF77767B);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 14),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(9999),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: iconColor, size: 20),
-          const SizedBox(height: 4),
-          Text(
-            title,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 12,
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   // 2. Fungsi diupdate untuk memuat TextField interaktif
   Widget _buildVitalRow(
@@ -449,6 +380,7 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
     String hintValue,
     String unit,
     TextInputType keyboardType,
+    TextEditingController textController,
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -487,6 +419,7 @@ class LogKesehatanView extends GetView<LogKesehatanController> {
               SizedBox(
                 width: 70, // Batas lebar agar inputan tidak terlalu panjang
                 child: TextField(
+                  controller: textController,
                   textAlign: TextAlign.right,
                   keyboardType: keyboardType, // Keyboard menyesuaikan isian
                   style: const TextStyle(

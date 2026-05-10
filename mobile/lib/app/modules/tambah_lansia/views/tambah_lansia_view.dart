@@ -43,7 +43,7 @@ class TambahLansiaView extends GetView<TambahLansiaController> {
                   shape: BoxShape.circle,
                   border: Border.all(color: const Color(0xFFF5F5F4), width: 1),
                   image: const DecorationImage(
-                    image: NetworkImage('https://placehold.co/40x40'),
+                    image: AssetImage('assets/images/caregiver_profile.png'),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -199,7 +199,6 @@ class TambahLansiaView extends GetView<TambahLansiaController> {
                 _buildFieldLabel('Tingkat Mobilitas'),
                 const SizedBox(height: 4),
                 Wrap(
-                  spacing: 8,
                   runSpacing: 8,
                   children: [
                     _buildRadioBtn(

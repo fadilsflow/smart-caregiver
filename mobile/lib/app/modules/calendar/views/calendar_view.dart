@@ -34,15 +34,20 @@ class CalendarView extends GetView<CalendarController> {
           Padding(
             padding: const EdgeInsets.only(right: 24.0),
             child: Center(
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFF5F5F4), width: 1),
-                  image: const DecorationImage(
-                    image: NetworkImage('https://placehold.co/40x40'),
-                    fit: BoxFit.fill,
+              child: Obx(
+                () => Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFFF5F5F4),
+                      width: 1,
+                    ),
+                    image: DecorationImage(
+                      image: AssetImage(controller.patientImage.value),
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ),
@@ -92,45 +97,90 @@ class CalendarView extends GetView<CalendarController> {
                                   spacing: 8,
                                   children: [
                                     ConstrainedBox(
-                                      constraints: const BoxConstraints(minWidth: 64),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 64,
+                                      ),
                                       child: Container(
-                                        padding: const EdgeInsets.only(top: 12, left: 16.89, right: 16.91, bottom: 12),
+                                        padding: const EdgeInsets.only(
+                                          top: 12,
+                                          left: 16.89,
+                                          right: 16.91,
+                                          bottom: 12,
+                                        ),
                                         decoration: ShapeDecoration(
                                           color: const Color(0xFFBBF246),
                                           shape: RoundedRectangleBorder(
-                                            side: const BorderSide(width: 1, color: Color(0x33C8C5CB)),
-                                            borderRadius: BorderRadius.circular(12),
+                                            side: const BorderSide(
+                                              width: 1,
+                                              color: Color(0x33C8C5CB),
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
                                           ),
                                           shadows: const [
-                                            BoxShadow(color: Color(0x0CA1A1AA), blurRadius: 16, offset: Offset(0, 4), spreadRadius: 0),
+                                            BoxShadow(
+                                              color: Color(0x0CA1A1AA),
+                                              blurRadius: 16,
+                                              offset: Offset(0, 4),
+                                              spreadRadius: 0,
+                                            ),
                                           ],
                                         ),
                                         child: const Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   width: 28.20,
                                                   height: 16,
-                                                  child: Text('WED', style: TextStyle(color: Color(0xFF47464B), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
+                                                  child: Text(
+                                                    'WED',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF47464B),
+                                                      fontSize: 12,
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      height: 1.33,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                             Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   width: 24.19,
                                                   height: 28,
-                                                  child: Text('23', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 20, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.40)),
+                                                  child: Text(
+                                                    '23',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF1C1B1C),
+                                                      fontSize: 20,
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      height: 1.40,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -139,42 +189,89 @@ class CalendarView extends GetView<CalendarController> {
                                       ),
                                     ),
                                     ConstrainedBox(
-                                      constraints: const BoxConstraints(minWidth: 64),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 64,
+                                      ),
                                       child: Container(
-                                        padding: const EdgeInsets.only(top: 12, left: 19.66, right: 19.65, bottom: 12),
+                                        padding: const EdgeInsets.only(
+                                          top: 12,
+                                          left: 19.66,
+                                          right: 19.65,
+                                          bottom: 12,
+                                        ),
                                         decoration: ShapeDecoration(
                                           color: Colors.black,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
                                           shadows: const [
-                                            BoxShadow(color: Color(0x26000000), blurRadius: 16, offset: Offset(0, 4), spreadRadius: 0),
+                                            BoxShadow(
+                                              color: Color(0x26000000),
+                                              blurRadius: 16,
+                                              offset: Offset(0, 4),
+                                              spreadRadius: 0,
+                                            ),
                                           ],
                                         ),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   width: 23.75,
                                                   height: 16,
-                                                  child: Text('THU', style: TextStyle(color: Colors.white.withValues(alpha: 0.80), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
+                                                  child: Text(
+                                                    'THU',
+                                                    style: TextStyle(
+                                                      color: Colors.white
+                                                          .withValues(
+                                                            alpha: 0.80,
+                                                          ),
+                                                      fontSize: 12,
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      height: 1.33,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                             const Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   width: 24.69,
                                                   height: 28,
-                                                  child: Text('24', style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.40)),
+                                                  child: Text(
+                                                    '24',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20,
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      height: 1.40,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -183,45 +280,90 @@ class CalendarView extends GetView<CalendarController> {
                                       ),
                                     ),
                                     ConstrainedBox(
-                                      constraints: const BoxConstraints(minWidth: 64),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 64,
+                                      ),
                                       child: Container(
-                                        padding: const EdgeInsets.only(top: 12, left: 18.86, right: 18.87, bottom: 12),
+                                        padding: const EdgeInsets.only(
+                                          top: 12,
+                                          left: 18.86,
+                                          right: 18.87,
+                                          bottom: 12,
+                                        ),
                                         decoration: ShapeDecoration(
                                           color: const Color(0xFFBBF246),
                                           shape: RoundedRectangleBorder(
-                                            side: const BorderSide(width: 1, color: Color(0x33C8C5CB)),
-                                            borderRadius: BorderRadius.circular(12),
+                                            side: const BorderSide(
+                                              width: 1,
+                                              color: Color(0x33C8C5CB),
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
                                           ),
                                           shadows: const [
-                                            BoxShadow(color: Color(0x0CA1A1AA), blurRadius: 16, offset: Offset(0, 4), spreadRadius: 0),
+                                            BoxShadow(
+                                              color: Color(0x0CA1A1AA),
+                                              blurRadius: 16,
+                                              offset: Offset(0, 4),
+                                              spreadRadius: 0,
+                                            ),
                                           ],
                                         ),
                                         child: const Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   width: 18.13,
                                                   height: 16,
-                                                  child: Text('FRI', style: TextStyle(color: Color(0xFF47464B), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
+                                                  child: Text(
+                                                    'FRI',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF47464B),
+                                                      fontSize: 12,
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      height: 1.33,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                             Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   width: 24.27,
                                                   height: 28,
-                                                  child: Text('25', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 20, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.40)),
+                                                  child: Text(
+                                                    '25',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF1C1B1C),
+                                                      fontSize: 20,
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      height: 1.40,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -230,45 +372,90 @@ class CalendarView extends GetView<CalendarController> {
                                       ),
                                     ),
                                     ConstrainedBox(
-                                      constraints: const BoxConstraints(minWidth: 64),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 64,
+                                      ),
                                       child: Container(
-                                        padding: const EdgeInsets.only(top: 12, left: 19, right: 19.02, bottom: 12),
+                                        padding: const EdgeInsets.only(
+                                          top: 12,
+                                          left: 19,
+                                          right: 19.02,
+                                          bottom: 12,
+                                        ),
                                         decoration: ShapeDecoration(
                                           color: const Color(0xFFBBF246),
                                           shape: RoundedRectangleBorder(
-                                            side: const BorderSide(width: 1, color: Color(0x33C8C5CB)),
-                                            borderRadius: BorderRadius.circular(12),
+                                            side: const BorderSide(
+                                              width: 1,
+                                              color: Color(0x33C8C5CB),
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
                                           ),
                                           shadows: const [
-                                            BoxShadow(color: Color(0x0CA1A1AA), blurRadius: 16, offset: Offset(0, 4), spreadRadius: 0),
+                                            BoxShadow(
+                                              color: Color(0x0CA1A1AA),
+                                              blurRadius: 16,
+                                              offset: Offset(0, 4),
+                                              spreadRadius: 0,
+                                            ),
                                           ],
                                         ),
                                         child: const Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   width: 21.80,
                                                   height: 16,
-                                                  child: Text('SAT', style: TextStyle(color: Color(0xFF47464B), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
+                                                  child: Text(
+                                                    'SAT',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF47464B),
+                                                      fontSize: 12,
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      height: 1.33,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                             Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   width: 23.98,
                                                   height: 28,
-                                                  child: Text('26', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 20, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.40)),
+                                                  child: Text(
+                                                    '26',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF1C1B1C),
+                                                      fontSize: 20,
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      height: 1.40,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -277,45 +464,90 @@ class CalendarView extends GetView<CalendarController> {
                                       ),
                                     ),
                                     ConstrainedBox(
-                                      constraints: const BoxConstraints(minWidth: 64),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 64,
+                                      ),
                                       child: Container(
-                                        padding: const EdgeInsets.only(top: 12, left: 18.41, right: 18.40, bottom: 12),
+                                        padding: const EdgeInsets.only(
+                                          top: 12,
+                                          left: 18.41,
+                                          right: 18.40,
+                                          bottom: 12,
+                                        ),
                                         decoration: ShapeDecoration(
                                           color: const Color(0xFFBBF246),
                                           shape: RoundedRectangleBorder(
-                                            side: const BorderSide(width: 1, color: Color(0x33C8C5CB)),
-                                            borderRadius: BorderRadius.circular(12),
+                                            side: const BorderSide(
+                                              width: 1,
+                                              color: Color(0x33C8C5CB),
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
                                           ),
                                           shadows: const [
-                                            BoxShadow(color: Color(0x0CA1A1AA), blurRadius: 16, offset: Offset(0, 4), spreadRadius: 0),
+                                            BoxShadow(
+                                              color: Color(0x0CA1A1AA),
+                                              blurRadius: 16,
+                                              offset: Offset(0, 4),
+                                              spreadRadius: 0,
+                                            ),
                                           ],
                                         ),
                                         child: const Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   width: 25.19,
                                                   height: 16,
-                                                  child: Text('SUN', style: TextStyle(color: Color(0xFF47464B), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
+                                                  child: Text(
+                                                    'SUN',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF47464B),
+                                                      fontSize: 12,
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      height: 1.33,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                             Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   width: 23.05,
                                                   height: 28,
-                                                  child: Text('27', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 20, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.40)),
+                                                  child: Text(
+                                                    '27',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF1C1B1C),
+                                                      fontSize: 20,
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      height: 1.40,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -330,527 +562,19 @@ class CalendarView extends GetView<CalendarController> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 12,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 8,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [Icon(Icons.wb_sunny_outlined, color: Color(0xFFBBF246), size: 24)],
-                                  ),
-                                  SizedBox(
-                                    width: 79.23,
-                                    height: 28,
-                                    child: Text('Morning', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 20, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.40)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 44,
-                                    top: 16,
-                                    bottom: 0,
-                                    child: Container(
-                                      width: 2,
-                                      decoration: ShapeDecoration(
-                                        color: const Color(0xFFE5E2E1),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999)),
-                                      ),
-                                    ),
-                                  ),
-                                  Column(
-                                    spacing: 16,
-                                    children: [
-                                      Opacity(
-                                        opacity: 0.60,
-                                        child: Container(
-                                          width: double.infinity,
-                                          padding: const EdgeInsets.all(16),
-                                          decoration: ShapeDecoration(
-                                            color: Colors.white.withValues(alpha: 0.50),
-                                            shape: RoundedRectangleBorder(
-                                              side: const BorderSide(width: 1, color: Color(0x33C8C5CB)),
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                          ),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            spacing: 16,
-                                            children: [
-                                              Container(
-                                                width: 48,
-                                                height: 48,
-                                                decoration: ShapeDecoration(
-                                                  color: const Color(0xFFE5E2E1),
-                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999)),
-                                                ),
-                                                child: const Row(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    Column(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [Icon(Icons.check_circle, color: Color(0xFF8C8B90), size: 24)],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const Expanded(
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text('Blood Pressure Check', style: TextStyle(color: Color(0xFF47464B), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, decoration: TextDecoration.lineThrough, height: 1.43, letterSpacing: 0.14)),
-                                                    Text('Systolic / Diastolic', style: TextStyle(color: Color(0xCC47464B), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w400, height: 1.43)),
-                                                  ],
-                                                ),
-                                              ),
-                                              const Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                children: [
-                                                  Text('07:30', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF47464B), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                  Text('AM', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF47464B), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.all(16),
-                                        decoration: ShapeDecoration(
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                          shadows: const [BoxShadow(color: Color(0x1EA1A1AA), blurRadius: 16, offset: Offset(0, 4), spreadRadius: 0)],
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          spacing: 16,
-                                          children: [
-                                            Container(
-                                              width: 48,
-                                              height: 48,
-                                              decoration: ShapeDecoration(color: const Color(0xFFE3E1EC), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999))),
-                                              child: const Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [Icon(Icons.medication_outlined, color: Color(0xFF1C1B1C), size: 24)],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const Expanded(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text('Morning Medication', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                  Text('Aspirin & Vitamins, with food', style: TextStyle(color: Color(0xFF47464B), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w400, height: 1.43)),
-                                                ],
-                                              ),
-                                            ),
-                                            const Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Text('08:00', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                Text('AM', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF47464B), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.all(16),
-                                        decoration: ShapeDecoration(
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                          shadows: const [BoxShadow(color: Color(0x1EA1A1AA), blurRadius: 16, offset: Offset(0, 4), spreadRadius: 0)],
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          spacing: 16,
-                                          children: [
-                                            Container(
-                                              width: 48,
-                                              height: 48,
-                                              decoration: ShapeDecoration(color: const Color(0xFFE3E1EC), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999))),
-                                              child: const Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [Icon(Icons.directions_walk, color: Color(0xFF1C1B1C), size: 24)],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const Expanded(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text('Physical Therapy', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                  Text('Light stretching', style: TextStyle(color: Color(0xFF47464B), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w400, height: 1.43)),
-                                                ],
-                                              ),
-                                            ),
-                                            const Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Text('10:30', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                Text('AM', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF47464B), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 12,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 8,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [Icon(Icons.wb_sunny_outlined, color: Color(0xFFBBF246), size: 24)],
-                                  ),
-                                  SizedBox(
-                                    width: 98.84,
-                                    height: 28,
-                                    child: Text('Afternoon', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 20, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.40)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 44,
-                                    top: 16,
-                                    bottom: 0,
-                                    child: Container(
-                                      width: 2,
-                                      decoration: ShapeDecoration(
-                                        color: const Color(0xFFE5E2E1),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999)),
-                                      ),
-                                    ),
-                                  ),
-                                  Column(
-                                    spacing: 16,
-                                    children: [
-                                      Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.all(16),
-                                        decoration: ShapeDecoration(
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                          shadows: const [BoxShadow(color: Color(0x1EA1A1AA), blurRadius: 16, offset: Offset(0, 4), spreadRadius: 0)],
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          spacing: 16,
-                                          children: [
-                                            Container(
-                                              width: 48,
-                                              height: 48,
-                                              decoration: ShapeDecoration(color: const Color(0xFFE3E1EC), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999))),
-                                              child: const Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [Icon(Icons.restaurant, color: Color(0xFF1C1B1C), size: 24)],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const Expanded(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text('Lunch & Hydration', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                  Text('Record fluid intake', style: TextStyle(color: Color(0xFF47464B), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w400, height: 1.43)),
-                                                ],
-                                              ),
-                                            ),
-                                            const Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Text('01:00', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                Text('PM', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF47464B), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.all(16),
-                                        decoration: ShapeDecoration(
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                          shadows: const [BoxShadow(color: Color(0x1EA1A1AA), blurRadius: 16, offset: Offset(0, 4), spreadRadius: 0)],
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          spacing: 16,
-                                          children: [
-                                            Container(
-                                              width: 48,
-                                              height: 48,
-                                              decoration: ShapeDecoration(color: const Color(0xFFE3E1EC), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999))),
-                                              child: const Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [Icon(Icons.people_alt_outlined, color: Color(0xFF1C1B1C), size: 24)],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const Expanded(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text('Family Visit', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                  Text('Sarah coming over', style: TextStyle(color: Color(0xFF47464B), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w400, height: 1.43)),
-                                                ],
-                                              ),
-                                            ),
-                                            const Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Text('03:30', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                Text('PM', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF47464B), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 12,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 8,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [Icon(Icons.nightlight_round_outlined, color: Color(0xFFBBF246), size: 24)],
-                                  ),
-                                  SizedBox(
-                                    width: 76.53,
-                                    height: 28,
-                                    child: Text('Evening', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 20, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.40)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 44,
-                                    top: 16,
-                                    bottom: 0,
-                                    child: Container(
-                                      width: 2,
-                                      decoration: ShapeDecoration(
-                                        color: const Color(0xFFE5E2E1),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999)),
-                                      ),
-                                    ),
-                                  ),
-                                  Column(
-                                    spacing: 16,
-                                    children: [
-                                      Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.all(16),
-                                        decoration: ShapeDecoration(
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                          shadows: const [BoxShadow(color: Color(0x1EA1A1AA), blurRadius: 16, offset: Offset(0, 4), spreadRadius: 0)],
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          spacing: 16,
-                                          children: [
-                                            Container(
-                                              width: 48,
-                                              height: 48,
-                                              decoration: ShapeDecoration(color: const Color(0xFFE3E1EC), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9999))),
-                                              child: const Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [Icon(Icons.dark_mode_outlined, color: Color(0xFF1C1B1C), size: 24)],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const Expanded(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text('Evening Wind Down', style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                  Text('Read chapter, dim lights', style: TextStyle(color: Color(0xFF47464B), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w400, height: 1.43)),
-                                                ],
-                                              ),
-                                            ),
-                                            const Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Text('08:00', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF1C1B1C), fontSize: 14, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w500, height: 1.43, letterSpacing: 0.14)),
-                                                Text('PM', textAlign: TextAlign.right, style: TextStyle(color: Color(0xFF47464B), fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, height: 1.33)),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                      Obx(
+                        () => Column(
+                          children: controller.mockSchedules
+                              .map(
+                                (schedule) =>
+                                    _buildScheduleCard(schedule, controller),
+                              )
+                              .toList(),
                         ),
                       ),
                     ],
                   ),
                 ),
-                
               ],
             ),
           ),
@@ -875,7 +599,7 @@ class CalendarView extends GetView<CalendarController> {
           ],
         ),
         child: IconButton(
-          onPressed: () => Get.toNamed(Routes.JADWAL_LANSIA),
+          onPressed: _showCreateBottomSheet,
           icon: const Icon(Icons.add, color: Colors.white),
         ),
       ),
@@ -945,5 +669,294 @@ class CalendarView extends GetView<CalendarController> {
         ),
       ),
     );
+  }
+
+  void _showCreateBottomSheet() {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Tambah Kegiatan',
+              style: TextStyle(
+                color: Color(0xFF1C1B1C),
+                fontSize: 20,
+                fontFamily: 'Plus Jakarta Sans',
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Pilih metode penambahan kegiatan untuk jadwal hari ini.',
+              style: TextStyle(
+                color: Color(0xFF77767B),
+                fontSize: 14,
+                fontFamily: 'Plus Jakarta Sans',
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            const SizedBox(height: 24),
+            _buildBottomSheetOption(
+              icon: Icons.edit_calendar_outlined,
+              title: 'Input Manual',
+              subtitle: 'Masukkan detail kegiatan secara manual',
+              onTap: () {
+                Get.back(); // close bottom sheet
+                Get.toNamed(Routes.JADWAL_LANSIA);
+              },
+            ),
+            const SizedBox(height: 16),
+            _buildBottomSheetOption(
+              icon: Icons.view_list_outlined,
+              title: 'Pilih dari Template',
+              subtitle: 'Gunakan template kegiatan yang sering dipakai',
+              onTap: () {
+                Get.back();
+                Get.toNamed(Routes.TEMPLATE_JADWAL);
+              },
+            ),
+            const SizedBox(height: 16),
+            _buildBottomSheetOption(
+              icon: Icons.auto_awesome_outlined,
+              title: 'Rekomendasi AI',
+              subtitle: 'Dapatkan saran kegiatan berdasarkan riwayat',
+              iconColor: const Color(0xFF192126),
+              iconBgColor: const Color(0xFFBBF246),
+              onTap: () {
+                Get.back();
+                Get.toNamed(Routes.REKOMENDASI_AI);
+              },
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+      isScrollControlled: true,
+    );
+  }
+
+  Widget _buildBottomSheetOption({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+    Color iconColor = const Color(0xFF1C1B1C),
+    Color iconBgColor = const Color(0xFFF2F2F2),
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: const Color(0xFFE5E5E5)),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: iconBgColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: iconColor),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Color(0xFF1C1B1C),
+                      fontSize: 16,
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      color: Color(0xFF77767B),
+                      fontSize: 12,
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right, color: Color(0xFFC8C5CB)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScheduleCard(
+    Map<String, dynamic> schedule,
+    CalendarController controller,
+  ) {
+    bool isCompleted = schedule['is_completed'];
+    DateTime time = schedule['scheduled_at'];
+    String title = schedule['title'];
+    String type = schedule['schedule_type'];
+
+    IconData iconData = Icons.event;
+    Color iconBgColor = const Color(0xFFE3E1EC);
+    if (type == 'medication') {
+      iconData = Icons.medication_outlined;
+      iconBgColor = const Color(0xFFFFE6E6);
+    } else if (type == 'routine_checkup') {
+      iconData = Icons.health_and_safety_outlined;
+      iconBgColor = const Color(0xFFE6F3E6);
+    } else if (type == 'daily_activity') {
+      iconData = Icons.directions_walk_outlined;
+      iconBgColor = const Color(0xFFFFEBDD);
+    }
+
+    String timeString =
+        "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
+    String amPm = time.hour >= 12 ? "PM" : "AM";
+    int hour12 = time.hour > 12
+        ? time.hour - 12
+        : (time.hour == 0 ? 12 : time.hour);
+    timeString =
+        "${hour12.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
+
+    Widget cardContent = Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      decoration: ShapeDecoration(
+        color: isCompleted
+            ? Colors.white.withValues(alpha: 0.50)
+            : Colors.white,
+        shape: RoundedRectangleBorder(
+          side: isCompleted
+              ? const BorderSide(width: 1, color: Color(0x33C8C5CB))
+              : BorderSide.none,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        shadows: isCompleted
+            ? []
+            : const [
+                BoxShadow(
+                  color: Color(0x1EA1A1AA),
+                  blurRadius: 16,
+                  offset: Offset(0, 4),
+                  spreadRadius: 0,
+                ),
+              ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: ShapeDecoration(
+              color: iconBgColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(9999),
+              ),
+            ),
+            child: Icon(iconData, color: const Color(0xFF1C1B1C), size: 24),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    decoration: isCompleted ? TextDecoration.lineThrough : null,
+                    color: const Color(0xFF1C1B1C),
+                    fontSize: 14,
+                    fontFamily: 'Plus Jakarta Sans',
+                    fontWeight: FontWeight.w500,
+                    height: 1.43,
+                    letterSpacing: 0.14,
+                  ),
+                ),
+                Text(
+                  '${schedule['duration_minutes']} min',
+                  style: const TextStyle(
+                    color: Color(0xFF47464B),
+                    fontSize: 14,
+                    fontFamily: 'Plus Jakarta Sans',
+                    fontWeight: FontWeight.w400,
+                    height: 1.43,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                timeString,
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  decoration: isCompleted ? TextDecoration.lineThrough : null,
+                  color: const Color(0xFF1C1B1C),
+                  fontSize: 14,
+                  fontFamily: 'Plus Jakarta Sans',
+                  fontWeight: FontWeight.w500,
+                  height: 1.43,
+                  letterSpacing: 0.14,
+                ),
+              ),
+              Text(
+                amPm,
+                textAlign: TextAlign.right,
+                style: const TextStyle(
+                  color: Color(0xFF47464B),
+                  fontSize: 12,
+                  fontFamily: 'Plus Jakarta Sans',
+                  fontWeight: FontWeight.w600,
+                  height: 1.33,
+                ),
+              ),
+            ],
+          ),
+          if (isCompleted) ...[
+            const SizedBox(width: 16),
+            const Icon(Icons.check_circle, color: Color(0xFFBBF246)),
+          ],
+          if (!isCompleted) ...[
+            const SizedBox(width: 16),
+            GestureDetector(
+              onTap: () => controller.toggleScheduleCompletion(schedule['id']),
+              child: const Icon(
+                Icons.radio_button_unchecked,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+
+    return isCompleted
+        ? Opacity(opacity: 0.60, child: cardContent)
+        : cardContent;
   }
 }

@@ -7,13 +7,14 @@ class SplashView extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
+    // Reverting to MediaQuery as it's more reliable for the first frame's build
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // Dark Blue Top Background with Curve
+          // Dark Blue Top Background with Curve (Original Layout Restored)
           Positioned(
             top: -size.height * 0.1,
             left: -size.width * 0.5,
@@ -26,15 +27,14 @@ class SplashView extends GetView<SplashController> {
                   bottom: Radius.circular(800), // Very wide curve
                 ),
               ),
-              // Subtle background patterns can be added here if needed
             ),
           ),
 
           // Main Content
           Column(
             children: [
-              // Spacer to position the logo on the curve's edge
-              SizedBox(height: size.height * 0.5 - 60),
+              // Spacer to position the logo on the curve's edge (Original Spacing Restored)
+              SizedBox(height: (size.height * 0.5 - 60).clamp(0.0, double.infinity)),
 
               // Logo in a white circle
               Center(
@@ -55,7 +55,7 @@ class SplashView extends GetView<SplashController> {
                   ),
                   child: const Center(
                     child: Icon(
-                      Icons.eco, // Keeping the eco leaf icon
+                      Icons.eco,
                       size: 60,
                       color: Color(0xFFBBF246),
                     ),

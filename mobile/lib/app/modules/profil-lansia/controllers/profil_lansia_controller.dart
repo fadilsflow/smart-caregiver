@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
 
 class ProfilLansiaController extends GetxController {
-  //TODO: Implement ProfilLansiaController
 
   final currentIndex = 3.obs;
+  final patientImage = 'assets/images/patient_ibu_siti.png'.obs;
 
-  final TextEditingController namaController = TextEditingController(text: 'Ibu Siti');
-  final TextEditingController umurController = TextEditingController(text: '55');
-  final TextEditingController jenisKelaminController = TextEditingController(text: 'Perempuan');
+  final TextEditingController namaController = TextEditingController();
+  final TextEditingController umurController = TextEditingController();
+  final TextEditingController jenisKelaminController = TextEditingController();
   final TextEditingController riwayatMedisController = TextEditingController(text: 'Hipertensi ringan');
   final TextEditingController minatHobiController = TextEditingController(text: 'Berkebun dan Membaca');
 
@@ -19,14 +19,22 @@ class ProfilLansiaController extends GetxController {
     int previousIndex = currentIndex.value;
     currentIndex.value = index;
     
+    final args = {
+      'from': previousIndex,
+      'name': namaController.text,
+      'age': umurController.text,
+      'image': patientImage.value,
+      'gender': jenisKelaminController.text,
+    };
+    
     if (index == 0) {
-      Get.offNamed(Routes.DASHBOARD, arguments: {'from': previousIndex});
+      Get.offNamed(Routes.DASHBOARD, arguments: args);
     } else if (index == 1) {
-      Get.offNamed(Routes.CALENDAR, arguments: {'from': previousIndex});
+      Get.offNamed(Routes.CALENDAR, arguments: args);
     } else if (index == 2) {
-      Get.offNamed(Routes.PATIENT_DETAIL, arguments: {'from': previousIndex});
+      Get.offNamed(Routes.PATIENT_DETAIL, arguments: args);
     } else if (index == 3) {
-      Get.offNamed(Routes.PROFIL_LANSIA, arguments: {'from': previousIndex});
+      Get.offNamed(Routes.PROFIL_LANSIA, arguments: args);
     }
   }
 
@@ -35,8 +43,18 @@ class ProfilLansiaController extends GetxController {
   void onInit() {
     super.onInit();
 
-    if (Get.arguments != null && Get.arguments is Map && Get.arguments['from'] != null) {
-      currentIndex.value = Get.arguments['from'];
+    if (Get.arguments != null && Get.arguments is Map) {
+      if (Get.arguments['from'] != null) {
+        currentIndex.value = Get.arguments['from'];
+      }
+      namaController.text = Get.arguments['name'] ?? 'Ibu Siti';
+      umurController.text = (Get.arguments['age'] ?? '55 Tahun').replaceAll(' Tahun', '');
+      jenisKelaminController.text = Get.arguments['gender'] ?? 'Perempuan';
+      patientImage.value = Get.arguments['image'] ?? 'assets/images/patient_ibu_siti.png';
+    } else {
+      namaController.text = 'Ibu Siti';
+      umurController.text = '55';
+      jenisKelaminController.text = 'Perempuan';
     }
   }
 
