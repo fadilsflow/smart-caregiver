@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 from fastapi.exceptions import RequestValidationError
 from dotenv import load_dotenv
 from slowapi import _rate_limit_exceeded_handler
@@ -43,6 +45,16 @@ app = FastAPI(
     description="Backend API for Smart Caregiver Application",
     version="1.0.0",
     lifespan=lifespan,
+)
+
+# ── CORS
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # ── Logging 
