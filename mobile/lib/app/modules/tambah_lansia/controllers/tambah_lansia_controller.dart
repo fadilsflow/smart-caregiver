@@ -15,7 +15,9 @@ class TambahLansiaController extends GetxController {
   
   final minatHobi = ''.obs;
 
-  final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker;
+
+  TambahLansiaController({ImagePicker? picker}) : _picker = picker ?? ImagePicker();
 
   Future<void> pickImage() async {
     try {
