@@ -78,9 +78,7 @@ lib/
             └── bindings/
 ```
 
-## Konfigurasi
+## 📝 Catatan
 
-Sesuaikan API base URL di `lib/app/core/config.dart` sesuai environment:
-
-- **Development**: `http://localhost:8000`
-- **Production**: URL server production
+App ini merupakan capstone project yang menggunakan **mock data lokal** untuk seluruh fitur.
+Tidak ada service API layer yang terintegrasi — semua data dummy sudah disediakan di masing-masing controller.
